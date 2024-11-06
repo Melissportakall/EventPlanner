@@ -1,33 +1,74 @@
-import React from 'react'
-import './LoginForm.css'
-import { FaUser,FaUnlockAlt } from "react-icons/fa";
+import React, { useState } from 'react';
+import './LoginForm.css';
+import { FaUser, FaUnlockAlt } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+
 const LoginForm = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        // Giriş başarılı, /mainmenu adresine yönlendir
+        navigate("/mainmenu");
+      } else {
+        // Giriş başarısız, hata mesajını göster
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Giriş işlemi başarısız:", error);
+    }
+  };
+
   return (
-
     <div className='wrapper'>
-        <form action = "">
-            <h1>Login</h1>
-            <div className="input-box">
-                <input type="text" placeholder="Username" required/>
-                <FaUser className='icon'/>
-            </div>
-            <div className="input-box">
-                <input type="password" placeholder="Password" required/>
-                <FaUnlockAlt className='icon'/>
-            </div>
-            <div className="remember-forgot">
-                <label><input type="checkbox"/>Remember me</label>
-                <a href="#">Forgot password?</a>
-            </div>
-            <button type="submit">Login</button>
-            <div className="register-link">
-                <p>Don't have an account? <a href="#">Register Here</a></p>
-
-            </div>
-        </form>
-
+      <form onSubmit={handleSubmit}>
+        <h1>Login</h1>
+        <div className="input-box">
+          <input 
+            type="text" 
+            placeholder="Username" 
+            id='loginUsername' 
+            required 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <FaUser className='icon'/>
+        </div>
+        <div className="input-box">
+          <input 
+            type="password" 
+            placeholder="Password" 
+            id='loginPassword' 
+            required 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FaUnlockAlt className='icon'/>
+        </div>
+        <div className="remember-forgot">
+          <label>
+            <input type="checkbox" id='loginRememberMe'/>Remember me
+          </label>
+          <a href="#" id='loginForgotPassword'>Forgot password?</a>
+        </div>
+        <button type="submit" id='loginButton'>Login</button>
+        <div className="register-link">
+          <p>Don't have an account? <a href="#" id='loginRegisterHere'>Register Here</a></p>
+        </div>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
