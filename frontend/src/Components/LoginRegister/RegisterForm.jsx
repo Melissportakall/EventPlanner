@@ -44,8 +44,8 @@ const RegisterForm = () => {
             });
             const data = await response.json();
             if (data.success) {
+                navigate("/login");
                 alert(data.message);
-                navigate("/login"); // Redirect to login after successful registration
             } else {
                 alert("Kayıt başarısız.");
             }
