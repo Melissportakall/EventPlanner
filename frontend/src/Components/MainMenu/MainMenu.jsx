@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { LuPartyPopper } from "react-icons/lu";
 import { IoChatboxEllipsesOutline, IoCreateOutline } from "react-icons/io5";
 import './Card.css';
-import AppBar from '/Users/melisportakal/Desktop/frontend1/frontend/src/Components/AppBar/AppBar.jsx'; 
+import AppBar from '../AppBar/AppBar.jsx'; 
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
