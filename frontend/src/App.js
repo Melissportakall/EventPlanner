@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginForm from './Components/LoginForm/LoginForm';
 import RegisterForm from './Components/LoginRegister/RegisterForm';
 import MainMenu from './Components/MainMenu/MainMenu';
+import CreateEvent from './Components/CreateEvent/CreateEvent';
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
 
         {/* Main menu route */}
         <Route path="/mainmenu" element={<MainMenu />} />
+
+        <Route path="/createevent" element={<CreateEvent />} />
       </Routes>
     </Router>
   );

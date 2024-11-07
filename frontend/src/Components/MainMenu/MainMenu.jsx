@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { LuPartyPopper } from "react-icons/lu";
 import { IoChatboxEllipsesOutline, IoCreateOutline } from "react-icons/io5";
 import './Card.css';
-import AppBar from '../AppBar/AppBar.jsx'; 
+import AppBar from '/Users/melisportakal/Desktop/frontend1/frontend/src/Components/AppBar/AppBar.jsx'; 
+import { Link } from 'react-router-dom';
+import CreateEvent from '/Users/melisportakal/Desktop/frontend1/frontend/src/Components/CreateEvent/CreateEvent.jsx';
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
@@ -31,7 +33,7 @@ const MainMenu = () => {
     const exampleEvents = [
       { title: 'My Events', icon: <LuPartyPopper /> },
       { title: 'Chats', icon: <IoChatboxEllipsesOutline /> },
-      { title: 'Create Event', icon: <IoCreateOutline /> },
+      { title: 'Create Event', icon: <IoCreateOutline /> ,path:'/CreateEvent' },
     ];
     setEvents(exampleEvents); // Örnek etkinlikleri duruma ekle
   }, []);
@@ -57,10 +59,10 @@ const MainMenu = () => {
 const EventCard = ({ event }) => {
   return (
     <div className='card'>
-      <div className='icon'>{event.icon}</div> {/* İkonu göster */}
-      <h2>{event.title}</h2>
-      <p>{event.description}</p>
-      <p>{event.date}</p>
+      <Link to={event.path || '#'}> {/* Tıklanabilir hale getir */}
+        <div className='icon'>{event.icon}</div> {/* İkonu göster */}
+        <h2>{event.title}</h2>
+      </Link>
     </div>
   );
 }
