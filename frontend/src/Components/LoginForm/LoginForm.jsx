@@ -38,7 +38,6 @@ const LoginForm = () => {
           <input 
             type="text" 
             placeholder="Username" 
-            id='loginUsername' 
             required 
             value={username} 
             onChange={(e) => setUsername(e.target.value)}
@@ -49,7 +48,6 @@ const LoginForm = () => {
           <input 
             type="password" 
             placeholder="Password" 
-            id='loginPassword' 
             required 
             value={password} 
             onChange={(e) => setPassword(e.target.value)}
@@ -58,13 +56,13 @@ const LoginForm = () => {
         </div>
         <div className="remember-forgot">
           <label>
-            <input type="checkbox" id='loginRememberMe'/>Remember me
+            <input type="checkbox" />Remember me
           </label>
           <a href="#" id='loginForgotPassword'>Forgot password?</a>
         </div>
-        <button type="submit" id='loginButton'>Login</button>
+        <button type="submit">Login</button>
         <div className="register-link">
-          <p>Don't have an account? <a href="#" id='loginRegisterHere'>Register Here</a></p>
+          <p>Don't have an account? <span onClick={() => navigate("/register")} style={{ cursor: 'pointer' }}>Register Here</span></p>
         </div>
       </form>
     </div>
