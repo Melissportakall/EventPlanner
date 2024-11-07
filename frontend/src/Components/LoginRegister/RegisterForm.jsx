@@ -32,7 +32,7 @@ const RegisterForm = ({ toggleForm }) => {
             });
             const data = await response.json();
             if (data.success) {
-                toggleForm();
+                navigate("/login");
                 alert(data.message);
             } else {
                 alert("Registration failed.");
