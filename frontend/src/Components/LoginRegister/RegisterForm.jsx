@@ -1,10 +1,11 @@
 // RegisterForm.jsx
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { FaUser, FaUnlockAlt, FaBirthdayCake, FaTransgender, FaPhone } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
+import { AiOutlinePicture } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 
-const RegisterForm = () => {
+const RegisterForm = ({ toggleForm }) => {
     const [formData, setFormData] = useState({
         username: "",
         name: "",
@@ -16,26 +17,13 @@ const RegisterForm = () => {
         password: ""
     });
 
-    const [isChecked, setIsChecked] = useState(false);
-    const navigate = useNavigate();
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleCheckboxChange = (e) => {
-        setIsChecked(e.target.checked);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!isChecked) {
-            alert("Please agree to the terms & conditions to register.");
-            return;
-        }
-
         try {
             const response = await fetch("/register", {
                 method: "POST",
@@ -44,15 +32,17 @@ const RegisterForm = () => {
             });
             const data = await response.json();
             if (data.success) {
-                navigate("/login");
+                toggleForm();
                 alert(data.message);
             } else {
-                alert("Kayıt başarısız.");
+                alert("Registration failed.");
             }
         } catch (error) {
-            console.error("Hata:", error);
+            console.error("Error during registration:", error);
         }
     };
+
+    const navigate = useNavigate();
 
     return (
         <div className="wrapper">
@@ -140,21 +130,9 @@ const RegisterForm = () => {
                         <FaUnlockAlt className='icon' />
                     </div>
                     <div className="remember-forgot">
-                        <label>
-                            <input 
-                                type="checkbox" 
-                                required 
-                                onChange={handleCheckboxChange}
-                            />
-                            I agree to the terms & conditions
-                        </label>
+                        <label><input type="checkbox" required /> I agree to the terms & conditions</label>
                     </div>
-                    <button 
-                        type="submit" 
-                        disabled={!isChecked} // Disable button if checkbox is not checked
-                    >
-                        Register
-                    </button>
+                    <button type="submit">Register</button>
                     <div className="register-link">
                         <p>Already have an account? <span onClick={() => navigate("/login")} style={{ cursor: 'pointer' }}>Login</span></p>
                     </div>
