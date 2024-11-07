@@ -11,22 +11,28 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Prepare the form data to send to the backend
+      const formData = {
+        username: username,
+        password: password
+      };
+
       const response = await fetch("/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify(formData),
+        credentials: 'include'  // Ensure cookies are included with the request
       });
-      
+
       const data = await response.json();
       if (data.success) {
-        // Giriş başarılı, /mainmenu adresine yönlendir
-        navigate("/mainmenu");
-      } else {
-        // Giriş başarısız, hata mesajını göster
         alert(data.message);
+        navigate("/mainmenu");  // Redirect to Main Menu
+      } else {
+        alert("Invalid username or password");
       }
     } catch (error) {
-      console.error("Giriş işlemi başarısız:", error);
+      console.error("Error:", error);
     }
   };
 
