@@ -4,7 +4,8 @@ import { IoChatboxEllipsesOutline, IoCreateOutline } from "react-icons/io5";
 import './Card.css';
 import AppBar from '../AppBar/AppBar.jsx'; 
 import { Link } from 'react-router-dom';
-import CreateEvent from '../CreateEvent/CreateEvent.jsx';
+import ShowEvents from '../ShowEvents/ShowEvents'; 
+import RandomCategoryChart from '../PieCharts/PieCharts';
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
@@ -27,14 +28,14 @@ const MainMenu = () => {
     
     // Eğer kullanıcı ID'si varsa kullanıcı verilerini çekmek için API'yi çağır
     if (userId) {
-      fetch(`/get_user_data?user_id=${userId}`, {
+      fetch(`/get_user_info?user_id=${userId}`, {
         method: 'GET',
         credentials: 'include' // Cookie'yi backend'e göndermek için
       })
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          setUserData({ name: data.name, surname: data.surname });
+          setUserData(data.user); // Tüm kullanıcı bilgilerini ayarla
         } else {
           console.log(data.message);
         }
@@ -56,18 +57,41 @@ const MainMenu = () => {
   
   return (
     <div style={{ color: 'white' }}>
-      <AppBar /> {/* AppBar bileşenini burada render et */}
+      
       <h1>Welcome to the Main Menu!</h1>
       {userData ? (
-        <p>Welcome, {userData.name} {userData.surname}</p>
+        <UserCard userData={userData} />
       ) : (
         <p>No user data found.</p>
       )}
+        <ShowEvents /> 
+        <RandomCategoryChart /> 
       <div>
         {events.map((event, index) => (
           <EventCard key={index} event={event} />
         ))}
       </div>
+    </div>
+  );
+};
+
+const UserCard = ({ userData }) => {
+  return (
+    <div className="user-card">
+    <div className="user-image">
+        {/* Burada kullanıcı resmi için bir alan oluşturuyoruz */}
+        <img src={userData.profileImage || 'default-image-url.jpg'} alt="User" />
+      </div>
+      <h3>Kullanıcı Bilgileri</h3>
+      <ul>
+        <li><strong>Ad:</strong> {userData.name}</li>
+        <li><strong>Soyad:</strong> {userData.surname}</li>
+        <li><strong>Email:</strong> {userData.email}</li>
+        <li><strong>Telefon:</strong> {userData.phone}</li>
+        <li><strong>Cinsiyet:</strong> {userData.gender}</li>
+        <li><strong>Doğum Tarihi:</strong> {userData.birthdate}</li>
+        <li><strong>Yaş:</strong> {userData.age}</li>
+      </ul>
     </div>
   );
 };

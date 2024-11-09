@@ -83,7 +83,7 @@ const CreateEvent = () => {
       const result = await response.json();
       if (result.success) {
         console.log("Event created successfully.");
-        navigate("/mainmenu");
+        navigate("/login");
         alert("Event created successfully.");
       } else {
         console.log("Error creating event:", result.message);

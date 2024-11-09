@@ -36,3 +36,42 @@
     margin-bottom: 8px; /* Başlık ile ikon arasındaki boşluk */
     text-align: center; /* İkonu ortalamak için */
 }
+
+.user-card {
+    background-color:rgba(255, 255, 255, 0.1); /* Yarı saydam beyaz arka plan */
+    border-radius: 8px; /* Köşeleri yuvarlat */
+    padding: 20px; /* İçerik için boşluk */
+    margin: 20px 0; /* Üst ve alt için boşluk */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
+    width: 250px; /* Kartın genişliğini ayarla */
+    position: fixed; /* Kartı sabit konumda tut */
+    top: 100px; /* Üstten boşluk */
+    left: 20px; /* Soldan boşluk */
+  }
+  
+  .user-card h3 {
+    margin-bottom: 15px; /* Başlık altındaki boşluk */
+  }
+  
+  .user-card ul {
+    list-style-type: none; /* Madde işaretlerini kaldır */
+    padding: 0; /* Varsayılan iç boşluğu kaldır */
+  }
+  
+  .user-card li {
+    margin: 5px 0; /* Her bir madde için boşluk */
+  }
+
+  .user-image {
+    width: 100%; /* Resim alanının genişliğini kartın genişliği ile eşleştir */
+    height: 150px; /* Resim alanının yüksekliği */
+    overflow: hidden; /* Taşan kısımları gizle */
+    border-radius: 8px 8px 0 0; /* Üst köşeleri yuvarlat */
+  }
+  
+  .user-image img {
+    width: 100%; /* Resmin genişliği */
+    height: auto; /* Yüksekliği otomatik ayarla */
+    object-fit: cover; /* Resmin kesilmesini önle ve alanı doldur */
+  }
+  

@@ -1,0 +1,19 @@
+.chart-card {
+    width: 300px; /* Kartın genişliği */
+    margin: 20px auto; /* Kartı ortalamak için */
+    border: 1px solid #ccc; /* Kartın kenar çizgisi */
+    border-radius: 8px; /* Kenar yuvarlama */
+    padding: 16px; /* İçerik için boşluk */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Gölge efekti */
+  }
+  
+  .chart-title {
+    text-align: center; /* Başlığı ortala */
+    margin-bottom: 16px; /* Başlık ile grafiğin arasındaki boşluk */
+  }
+  
+  .chart-container {
+    width: 100%; /* Grafiğin genişliği */
+    height: 200px; /* Grafiğin yüksekliği */
+  }
+  
