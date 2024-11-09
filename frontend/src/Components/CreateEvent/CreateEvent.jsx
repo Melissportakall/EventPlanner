@@ -99,7 +99,7 @@ const CreateEvent = () => {
       <div className="container">
         <div className="wrapper">
           <div className="form-box">
-            <h1>Registration</h1>
+            <h1>Create Event</h1>
 
             {/* Event Name */}
             <div className="input-box">
