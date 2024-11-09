@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { LuPartyPopper } from "react-icons/lu";
 import { IoChatboxEllipsesOutline, IoCreateOutline } from "react-icons/io5";
 import './Card.css';
-import AppBar from '/Users/melisportakal/Desktop/frontend1/frontend/src/Components/AppBar/AppBar.jsx'; 
+import AppBar from '../AppBar/AppBar.jsx'; 
 import { Link } from 'react-router-dom';
-import CreateEvent from '/Users/melisportakal/Desktop/frontend1/frontend/src/Components/CreateEvent/CreateEvent.jsx';
+import CreateEvent from '../CreateEvent/CreateEvent.jsx';
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
@@ -22,28 +22,44 @@ const MainMenu = () => {
   const [events, setEvents] = useState([]); // Etkinlikler için durum
 
   useEffect(() => {
-    const userDataFromCookie = getUserDataFromCookies();
-    if (userDataFromCookie) {
-      setUserData(userDataFromCookie);
+    // Kullanıcı ID'sini cookie'den al
+    const userId = getUserDataFromCookies();
+    
+    // Eğer kullanıcı ID'si varsa kullanıcı verilerini çekmek için API'yi çağır
+    if (userId) {
+      fetch(`/get_user_data?user_id=${userId}`, {
+        method: 'GET',
+        credentials: 'include' // Cookie'yi backend'e göndermek için
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          setUserData({ name: data.name, surname: data.surname });
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch(error => console.error('Error fetching user data:', error));
     } else {
-      console.log("No user data found in cookies");
+      console.log("No user ID found in cookies");
     }
 
     // Örnek etkinlik verisi
     const exampleEvents = [
       { title: 'My Events', icon: <LuPartyPopper /> },
       { title: 'Chats', icon: <IoChatboxEllipsesOutline /> },
-      { title: 'Create Event', icon: <IoCreateOutline /> ,path:'/CreateEvent' },
+      { title: 'Create Event', icon: <IoCreateOutline />, path: '/CreateEvent' },
     ];
     setEvents(exampleEvents); // Örnek etkinlikleri duruma ekle
-  }, []);
 
+  }, []);
+  
   return (
-    <div>
+    <div style={{ color: 'white' }}>
       <AppBar /> {/* AppBar bileşenini burada render et */}
       <h1>Welcome to the Main Menu!</h1>
       {userData ? (
-        <p>Welcome, User ID: {userData}</p>
+        <p>Welcome, {userData.name} {userData.surname}</p>
       ) : (
         <p>No user data found.</p>
       )}

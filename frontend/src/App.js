@@ -21,6 +21,7 @@ function App() {
         {/* Main menu route */}
         <Route path="/mainmenu" element={<MainMenu />} />
 
+        {/* Create event route */}
         <Route path="/createevent" element={<CreateEvent />} />
       </Routes>
     </Router>
