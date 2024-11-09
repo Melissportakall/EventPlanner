@@ -26,6 +26,7 @@ const CreateEvent = () => {
     event_name: '',
     date: '',
     time: '',
+    duration: '',
     description: '',
     category: ''
   });
@@ -143,6 +144,18 @@ const CreateEvent = () => {
                 placeholder="Event Time"
                 name="time"
                 value={eventData.time}
+                onChange={handleChange}
+              />
+              <FaClock className="icon" />
+            </div>
+
+            {/* Event Duration */}
+            <div className="input-box">
+              <input
+                type="text"
+                placeholder="Event Duration (min)"
+                name="duration"
+                value={eventData.duration}
                 onChange={handleChange}
               />
               <FaClock className="icon" />
