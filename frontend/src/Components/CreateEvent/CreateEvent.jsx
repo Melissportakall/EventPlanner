@@ -96,7 +96,7 @@ const CreateEvent = () => {
 
   return (
     <>
-      <AppBar />
+      
       <div className="container">
         <div className="wrapper">
           <div className="form-box">

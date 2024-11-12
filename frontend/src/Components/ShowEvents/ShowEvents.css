@@ -4,7 +4,7 @@
   }
   
   .event-table {
-    width: 100%; /* Tablonun genişliği */
+    width: 80%; /* Tablonun genişliği */
     border-collapse: collapse; /* Kenarları birleştir */
     background-color: rgba(255, 255, 255, 0.1); /* Yarı saydam arka plan */
     border-radius: 8px; /* Köşeleri yuvarlat */

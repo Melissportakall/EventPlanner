@@ -42,11 +42,27 @@ const RandomCategoryChart = () => {
     ],
   };
 
+
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          color: 'black', // Kategori yazıları siyah
+        },
+      },
+      tooltip: {
+        titleColor: 'black', // Tooltip başlığı siyah
+        bodyColor: 'black', // Tooltip içeriği siyah
+      },
+    },
+  };
+
   return (
     <div className="chart-card">
       <h3 className="chart-title">Rate Of Past Events</h3>
       <div className="chart-container">
-        <Pie data={data} style={{ width: '100%', height: '200px' }} />
+        <Pie data={data} options={options} style={
+          { width: '100%', height: '200px' ,}} />
       </div>
     </div>
   );

@@ -1,77 +1,82 @@
 .card {
-    border: 8px solid transparent; /* Çerçevenin kalınlığı artırıldı */
-    background: transparent; 
-    border:8px solid rgba(255,255,255,.2);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 10px rgba(0,0,0,.2);
-    border-radius: 50px; /* Kenar yuvarlaklığı */
-    border-image: linear-gradient(45deg, pink, rgb(25, 25, 79),rgb(56, 56, 136), purple, black, violet, rgb(86, 13, 13)); /* Rengarenk  /* Rengarenk çerçeve */
-    border-image-slice: 2; /* Çerçevenin görüntülenme şekli */
-    padding: 50px; /* İçerik ile kenar arasındaki boşluk */
-    margin: 30px; /* Kartlar arasındaki boşluk */
-    height: 170px;
-    width: 600px; /* Kartın genişliği */
-    box-shadow: 0 2px 8px rgba(252, 252, 252, 0.1); /* Gölge */
-    transition: transform 0.5s; /* Animasyon süresi */
+  border: 8px solid transparent; /* Çerçevenin kalınlığı artırıldı */
+  background: transparent; 
+  border:8px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0,0,0,.2);
+  border-radius: 50px; /* Kenar yuvarlaklığı */
+  border-image: linear-gradient(45deg, pink, rgb(25, 25, 79),rgb(56, 56, 136), purple, black, violet, rgb(86, 13, 13)); /* Rengarenk  /* Rengarenk çerçeve */
+  border-image-slice: 2; /* Çerçevenin görüntülenme şekli */
+  padding: 50px; /* İçerik ile kenar arasındaki boşluk */
+  margin: 30px; /* Kartlar arasındaki boşluk */
+  height: 200px;
+  width: 500px; /* Kartın genişliği */
+  box-shadow: 0 2px 8px rgba(252, 252, 252, 0.1); /* Gölge */
+  transition: transform 0.5s; /* Animasyon süresi */
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* İki eşit genişlikte sütun */
+  /*gap: 1px; /* Kartlar arasındaki boşluk */
 }
 
 .card:hover {
-    transform: scale(1.05); /* Hover efekti */
+  transform: scale(1.05); /* Hover efekti */
 }
 
 .card EventCard {
-    color: white; /* Yazının rengi */
-    font-size: 16%; /* Yazı boyutu */
+  color: white; /* Yazının rengi */
+  font-size: 16%; /* Yazı boyutu */
 }
 .card h2 {
-    color: white; /* Başlık rengi */
-    font-size: 30px; /* Başlık boyutu */
-    text-align: center; /* Başlığı ortalamak için */
+  color: white; /* Başlık rengi */
+  font-size: 30px; /* Başlık boyutu */
+  text-align: center; /* Başlığı ortalamak için */
 }
 
 .icon {
-    font-size: 35px; /* İkon boyutu */
-    color: white; /* İkon rengi */
-    margin-top: 1px 0; /* Üst ve alt boşlukları ayarlayın */
-    margin-bottom: 8px; /* Başlık ile ikon arasındaki boşluk */
-    text-align: center; /* İkonu ortalamak için */
+  font-size: 35px; /* İkon boyutu */
+  color: white; /* İkon rengi */
+  margin-top: 1px 0; /* Üst ve alt boşlukları ayarlayın */
+  margin-bottom: 8px; /* Başlık ile ikon arasındaki boşluk */
+  text-align: center; /* İkonu ortalamak için */
 }
 
 .user-card {
-    background-color:rgba(255, 255, 255, 0.1); /* Yarı saydam beyaz arka plan */
-    border-radius: 8px; /* Köşeleri yuvarlat */
-    padding: 20px; /* İçerik için boşluk */
-    margin: 20px 0; /* Üst ve alt için boşluk */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
-    width: 250px; /* Kartın genişliğini ayarla */
-    position: fixed; /* Kartı sabit konumda tut */
-    top: 100px; /* Üstten boşluk */
-    left: 20px; /* Soldan boşluk */
-  }
-  
-  .user-card h3 {
-    margin-bottom: 15px; /* Başlık altındaki boşluk */
-  }
-  
-  .user-card ul {
-    list-style-type: none; /* Madde işaretlerini kaldır */
-    padding: 0; /* Varsayılan iç boşluğu kaldır */
-  }
-  
-  .user-card li {
-    margin: 5px 0; /* Her bir madde için boşluk */
-  }
+  background-color:rgba(255, 255, 255, 0.1); /* Yarı saydam beyaz arka plan */
+  border-radius: 8px; /* Köşeleri yuvarlat */
+  padding: 20px; /* İçerik için boşluk */
+  margin: 20px 0; /* Üst ve alt için boşluk */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
+  width: 250px; /* Kartın genişliğini ayarla */
+  position: fixed; /* Kartı sabit konumda tut */
+  top: 100px; /* Üstten boşluk */
+  left: 20px; /* Soldan boşluk */
+}
 
-  .user-image {
-    width: 100%; /* Resim alanının genişliğini kartın genişliği ile eşleştir */
-    height: 150px; /* Resim alanının yüksekliği */
-    overflow: hidden; /* Taşan kısımları gizle */
-    border-radius: 8px 8px 0 0; /* Üst köşeleri yuvarlat */
-  }
-  
-  .user-image img {
-    width: 100%; /* Resmin genişliği */
-    height: auto; /* Yüksekliği otomatik ayarla */
-    object-fit: cover; /* Resmin kesilmesini önle ve alanı doldur */
-  }
-  
+.user-card h3 {
+  margin-bottom: 15px; /* Başlık altındaki boşluk */
+}
+
+.user-card ul {
+  list-style-type: none; /* Madde işaretlerini kaldır */
+  padding: 0; /* Varsayılan iç boşluğu kaldır */
+}
+
+.user-card li {
+  margin: 5px 0; /* Her bir madde için boşluk */
+}
+
+.user-image {
+  width: 100%; /* Resim alanının genişliğini kartın genişliği ile eşleştir */
+  height: 150px; /* Resim alanının yüksekliği */
+  overflow: hidden; /* Taşan kısımları gizle */
+  border-radius: 8px 8px 0 0; /* Üst köşeleri yuvarlat */
+}
+
+.user-image img {
+  width: 100%; /* Resmin genişliği */
+  height: auto; /* Yüksekliği otomatik ayarla */
+  object-fit: cover; /* Resmin kesilmesini önle ve alanı doldur */
+}

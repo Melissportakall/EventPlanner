@@ -1,0 +1,31 @@
+.event-list-container {
+  padding: 20px;
+}
+
+.modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+.modal-box h5 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.modal-box p {
+  margin-bottom: 10px;
+}
+
+.modal-box button {
+  margin-top: 20px;
+  width: 100%;
+}
