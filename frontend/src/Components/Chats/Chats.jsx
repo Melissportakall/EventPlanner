@@ -1,35 +1,33 @@
-// Chats.js (Ana bileşen)
 import React, { useState, useEffect } from 'react';
-import GroupList from './GroupList';  // Grup listesi bileşeni
-import ChatPage from './Chatpage';    // Sohbet sayfası bileşeni
-import './Chats.css';  // CSS dosyası
+import UserList from './UserList';
+import MessageApp from './Chatpage';
+import './Chats.css';
 
 const Chats = () => {
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [groups, setGroups] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Kullanıcının gruplarını al
-    fetch('/get_user_groups')  // API'den grupları al
+    fetch('/get_users')
       .then(res => res.json())
-      .then(data => setGroups(data))
+      .then(data => setUsers(data))
       .catch(err => console.error(err));
   }, []);
 
-  const handleGroupSelect = (groupId) => {
-    setSelectedGroup(groupId);  // Seçilen grubu güncelle
+  const handleUserSelect = (userId) => {
+    setSelectedUser(userId);
   };
 
   return (
     <div className="chats">
       <div className="sidebar">
-        <GroupList groups={groups} onGroupSelect={handleGroupSelect} />
+        <UserList users={users} onUserSelect={handleUserSelect} />
       </div>
       <div className="chat">
-        {selectedGroup ? (
-          <ChatPage groupId={selectedGroup} />  // Seçilen grup için sohbeti göster
+        {selectedUser ? (
+          <MessageApp recipientId={selectedUser} />
         ) : (
-          <h2>Bir grup seçin</h2>  // Hiçbir grup seçilmemişse bu mesajı göster
+          <h2>Bir kullanıcı seçin</h2>
         )}
       </div>
     </div>

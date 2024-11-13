@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';
-import { GoogleMap } from '@react-google-maps/api'; // LoadScript'i kaldırdık
+import { GoogleMap } from '@react-google-maps/api';
 import './MyEvents.css';
 
 const containerStyle = {
@@ -16,11 +16,10 @@ const MyEvents = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [map, setMap] = useState(null);
   const [markerPosition, setMarkerPosition] = useState({ lat: 41.015137, lng: 28.979530 });
-  const [marker, setMarker] = useState(null); // State for marker
-  const [isLoaded, setIsLoaded] = useState(false); // State for map loading status
+  const [marker, setMarker] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Google Maps script yüklenip hazır olduğunda isLoaded state'ini true yapıyoruz
     const loadMapScript = () => {
       if (window.google) {
         setIsLoaded(true);
@@ -60,7 +59,7 @@ const MyEvents = () => {
         const latLng = { lat: location.lat(), lng: location.lng() };
         setMarkerPosition(latLng);
         if (map) {
-          map.panTo(latLng); // Haritayı yeni konuma odakla
+          map.panTo(latLng);
         }
       } else {
         console.error('Geocode was not successful for the following reason:', status);
@@ -75,7 +74,7 @@ const MyEvents = () => {
     setOpen(true);
 
     if (event.location) {
-      fetchCoordinates(event.location); // Etkinlik adresini fetchCoordinates fonksiyonuna gönder
+      fetchCoordinates(event.location);
     }
   };
 
@@ -90,14 +89,12 @@ const MyEvents = () => {
 
   useEffect(() => {
     if (isLoaded && map && selectedEvent) {
-      // Eğer AdvancedMarkerElement varsa kullanılır, yoksa klasik marker eklenir
       if (window.google.maps.marker?.AdvancedMarkerElement) {
         const marker = new window.google.maps.marker.AdvancedMarkerElement({
           map,
           position: markerPosition,
         });
 
-        // Marker'ı temizlemek için cleanup function döndürülür
         return () => {
           marker.setMap(null);
         };
@@ -107,7 +104,6 @@ const MyEvents = () => {
           position: markerPosition,
         });
 
-        // Marker'ı temizlemek için cleanup function döndürülür
         return () => {
           marker.setMap(null);
         };
@@ -166,13 +162,11 @@ const MyEvents = () => {
               <Typography variant="body1">
                 <strong>Location:</strong> {selectedEvent.location}
               </Typography>
-
-              {/* Google Map with AdvancedMarkerElement */}
               <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={markerPosition} // Marker konumunu merkeze al
+                center={markerPosition}
                 zoom={13}
-                onLoad={(mapInstance) => setMap(mapInstance)} // Harita yüklendiğinde mapInstance'ı al
+                onLoad={(mapInstance) => setMap(mapInstance)}
               ></GoogleMap>
 
               <Button variant="contained" color="primary" onClick={() => alert('Leave Event functionality')}>

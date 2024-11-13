@@ -1,51 +1,87 @@
-// ChatPage.js
 import React, { useState, useEffect } from 'react';
 
-const ChatPage = ({ groupId }) => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
+function MessageApp({ recipientId }) {
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
 
-  useEffect(() => {
-    // Grup mesajlarını al
-    fetch(`/get_group_messages?group_id=${groupId}`)
-      .then(res => res.json())
-      .then(data => setMessages(data))
-      .catch(err => console.error(err));
-  }, [groupId]);
+    //mesajları burdan alıyoz
+    const fetchMessages = () => {
+        if (!recipientId) return; //alıcı id yoksa veri çekme
 
-  const handleSendMessage = () => {
-    // Yeni mesaj gönder
-    fetch('/send_message', {
-      method: 'POST',
-      body: JSON.stringify({ group_id: groupId, message }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then(res => res.json())
-      .then(data => {
-        setMessages([...messages, { sender_id: 'You', message }]);
-        setMessage('');
-      })
-      .catch(err => console.error(err));
-  };
+        fetch(`/get_messages?alici_id=${recipientId}`, {
+            method: 'GET',
+            credentials: 'include'  //cookieyi al
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Gelen Mesajlar:', data);
+                setMessages(data);
+            })
+            .catch(error => console.error('Error fetching messages:', error));
+    };
 
-  return (
-    <div className="chat-page">
-      <div className="message-list">
-        {messages.map((msg, index) => (
-          <div key={index} className="message">
-            <strong>{msg.sender_id}: </strong>{msg.message}
-          </div>
-        ))}
-      </div>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Mesaj yaz..."
-      />
-      <button onClick={handleSendMessage}>Gönder</button>
-    </div>
-  );
-};
+    // Mesaj gönderme fonksiyonu
+    const sendMessage = () => {
+        if (!newMessage.trim()) return; //mesaj kutusu boşsa gönerme
 
-export default ChatPage;
+        const messageData = {
+            alici_id: recipientId,
+            mesaj_metni: newMessage
+        };
+
+        fetch('/send_message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(messageData),
+            credentials: 'include'  //cookieyi gönder
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Mesaj gönderildi') {
+                setNewMessage('');  //gönderdikten sonra inputu temizle
+                fetchMessages(); //mesaj gönderince chati yenile
+            }
+        })
+        .catch(error => console.error('Error sending message:', error));
+    };
+
+    useEffect(() => {
+        if (recipientId) {
+            fetchMessages(); //kişi seçtiğinde chati getir
+        }
+    }, [recipientId]);
+
+    return (
+        <div>
+            <h1>Message App</h1>
+            <div>
+                {/* Mesajları buraya yazıyon */}
+                <input
+                    type="text"
+                    value={newMessage}
+                    onChange={e => setNewMessage(e.target.value)}
+                    placeholder="Mesajınızı yazın"
+                />
+                <button onClick={sendMessage}>Gönder</button>
+            </div>
+            <div>
+                <h2>Mesajlar</h2>
+                <div className="messages-container">
+                    {messages.map((message) => (
+                        <div
+                            key={message.id}
+                            className={`message-bubble ${message.gonderici_ad === 'Ben' ? 'sent' : 'received'}`}
+                        >
+                            <strong>{message.gonderici_ad}:</strong> {message.mesaj_metni} <br />
+                            <small>{message.tarih}</small>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default MessageApp;
