@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';
-import { GoogleMap, Marker } from '@react-google-maps/api';
+import { GoogleMap } from '@react-google-maps/api'; // LoadScript'i kaldırdık
 import './MyEvents.css';
 
 const containerStyle = {
@@ -14,6 +14,30 @@ const MyEvents = () => {
   const [open, setOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [map, setMap] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState({ lat: 41.015137, lng: 28.979530 });
+  const [marker, setMarker] = useState(null); // State for marker
+  const [isLoaded, setIsLoaded] = useState(false); // State for map loading status
+
+  useEffect(() => {
+    // Google Maps script yüklenip hazır olduğunda isLoaded state'ini true yapıyoruz
+    const loadMapScript = () => {
+      if (window.google) {
+        setIsLoaded(true);
+      } else {
+        console.error("Google Maps API yüklenemedi.");
+      }
+    };
+    
+    if (window.google) {
+      loadMapScript();
+    } else {
+      window.addEventListener("load", loadMapScript);
+      return () => {
+        window.removeEventListener("load", loadMapScript);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     fetch('/get_joined_events')
@@ -28,9 +52,31 @@ const MyEvents = () => {
       .catch(error => console.error('Error fetching events:', error));
   }, []);
 
+  const fetchCoordinates = (address) => {
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address: address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        const latLng = { lat: location.lat(), lng: location.lng() };
+        setMarkerPosition(latLng);
+        if (map) {
+          map.panTo(latLng); // Haritayı yeni konuma odakla
+        }
+      } else {
+        console.error('Geocode was not successful for the following reason:', status);
+        setSnackbarMessage('Location not found. Showing default location.');
+        setSnackbarOpen(true);
+      }
+    });
+  };
+
   const handleOpen = (event) => {
     setSelectedEvent(event);
     setOpen(true);
+
+    if (event.location) {
+      fetchCoordinates(event.location); // Etkinlik adresini fetchCoordinates fonksiyonuna gönder
+    }
   };
 
   const handleClose = () => {
@@ -42,10 +88,32 @@ const MyEvents = () => {
     setSnackbarOpen(false);
   };
 
-  const isValidCoordinates = (lat, lng) => !isNaN(lat) && !isNaN(lng);
+  useEffect(() => {
+    if (isLoaded && map && selectedEvent) {
+      // Eğer AdvancedMarkerElement varsa kullanılır, yoksa klasik marker eklenir
+      if (window.google.maps.marker?.AdvancedMarkerElement) {
+        const marker = new window.google.maps.marker.AdvancedMarkerElement({
+          map,
+          position: markerPosition,
+        });
 
-  const fallbackLat = 41.015137;
-  const fallbackLng = 28.979530;
+        // Marker'ı temizlemek için cleanup function döndürülür
+        return () => {
+          marker.setMap(null);
+        };
+      } else {
+        const marker = new window.google.maps.Marker({
+          map,
+          position: markerPosition,
+        });
+
+        // Marker'ı temizlemek için cleanup function döndürülür
+        return () => {
+          marker.setMap(null);
+        };
+      }
+    }
+  }, [isLoaded, map, selectedEvent, markerPosition]); // Marker ekleme ve silme için gerekli bağımlılıklar
 
   return (
     <div className="event-list-container">
@@ -99,27 +167,13 @@ const MyEvents = () => {
                 <strong>Location:</strong> {selectedEvent.location}
               </Typography>
 
+              {/* Google Map with AdvancedMarkerElement */}
               <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={{
-                  lat: isValidCoordinates(selectedEvent.location_latitude, selectedEvent.location_longitude)
-                    ? selectedEvent.location_latitude
-                    : fallbackLat,
-                  lng: isValidCoordinates(selectedEvent.location_latitude, selectedEvent.location_longitude)
-                    ? selectedEvent.location_longitude
-                    : fallbackLng,
-                }}
+                center={markerPosition} // Marker konumunu merkeze al
                 zoom={13}
-              >
-                {isValidCoordinates(selectedEvent.location_latitude, selectedEvent.location_longitude) && (
-                  <Marker
-                    position={{
-                      lat: selectedEvent.location_latitude,
-                      lng: selectedEvent.location_longitude,
-                    }}
-                  />
-                )}
-              </GoogleMap>
+                onLoad={(mapInstance) => setMap(mapInstance)} // Harita yüklendiğinde mapInstance'ı al
+              ></GoogleMap>
 
               <Button variant="contained" color="primary" onClick={() => alert('Leave Event functionality')}>
                 Leave Event
