@@ -49,10 +49,10 @@ const MainMenu = () => {
 
     // Örnek etkinlik verisi
     const exampleEvents = [
-      { title: 'My Events', icon: <LuPartyPopper /> ,path: '/MyEvents'},
-      { title: 'Chats', icon: <IoChatboxEllipsesOutline /> , path: '/Chats'},
-      { title: 'Create Event', icon: <IoCreateOutline />, path: '/CreateEvent' },
-      { title: 'All Events', icon: <IoCreateOutline />, path: '/AllEvents' },
+      { title: 'My Events', icon: <LuPartyPopper /> ,path: '/my-events'},
+      { title: 'Chats', icon: <IoChatboxEllipsesOutline /> , path: '/chats'},
+      { title: 'Create Event', icon: <IoCreateOutline />, path: '/create-event'},
+      { title: 'All Events', icon: <IoCreateOutline />, path: '/all-events'},
     ];
     setEvents(exampleEvents); // Örnek etkinlikleri duruma ekle
 

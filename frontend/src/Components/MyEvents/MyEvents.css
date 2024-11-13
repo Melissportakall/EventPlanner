@@ -1,60 +1,62 @@
-/* Genel stil */
+/* Container for the events */
 .my-events-container {
-    padding: 20px;
-  }
-  
-  /* Grid düzeni */
-  .my-events-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  /* Kartlar için stil */
-  .event-card {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-  
-  /* Kart hover etkisi */
-  .event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Başlık stili */
-  .event-card h6 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  /* Tarih ve saat stili */
-  .event-card .event-time {
-    color: #888;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-  }
-  
-  /* Açıklama stili */
-  .event-card p {
-    color: #444;
-    font-size: 1rem;
-    line-height: 1.5;
-    margin-bottom: 10px;
-  }
-  
-  /* Boş etkinlik durumunda stil */
-  .no-events-message {
-    font-size: 1.1rem;
-    color: #555;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
+  padding: 20px;
+}
+
+/* Grid layout for the event cards */
+.my-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Controls the number of columns */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Event card styling */
+.event-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  width: 100%;           /* Full width inside grid item */
+  aspect-ratio: 1 / 1;   /* Makes the card square */
+}
+
+
+/* Hover effect */
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Title styling */
+.event-card h6 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Date and time styling */
+.event-card .event-time {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+/* Description styling */
+.event-card p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* No-events message styling */
+.no-events-message {
+  font-size: 1.1rem;
+  color: #555;
+  text-align: center;
+  margin-top: 20px;
+}

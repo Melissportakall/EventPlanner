@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import AppBar from '../AppBar/AppBar';
-import { FaUser, FaUnlockAlt, FaBirthdayCake, FaTransgender, FaPhone, FaClock, FaClipboardList } from "react-icons/fa";
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { LuPartyPopper } from "react-icons/lu";
-import { IoChatboxEllipsesOutline, IoCreateOutline } from "react-icons/io5";
-import { IoMdMail } from "react-icons/io";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { AiOutlinePicture } from "react-icons/ai";
+import { FaRegCalendarAlt, FaClock, FaClipboardList } from "react-icons/fa";
 import { MdCenterFocusStrong } from "react-icons/md";
-import { FaLocationDot } from "react-icons/fa6";
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
 const containerStyle = {
@@ -35,7 +29,6 @@ const CreateEvent = () => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
     setMarkerPosition({ lat, lng });
-
     getAddress(lat, lng);
   };
 
@@ -95,110 +88,88 @@ const CreateEvent = () => {
   };
 
   return (
-    <>
-      
-      <div className="container">
-        <div className="wrapper">
-          <div className="form-box">
-            <h1>Create Event</h1>
-
-            {/* Event Name */}
-            <div className="input-box">
-              <input
-                type="text"
-                placeholder="Event Name"
-                name="event_name"
-                value={eventData.event_name}
-                onChange={handleChange}
-              />
-              <LuPartyPopper className="icon" />
-            </div>
-
-            {/* Event Date */}
-            <div className="input-box">
-              <input
-                type="date"
-                name="date"
-                value={eventData.date}
-                onChange={handleChange}
-              />
-              <FaRegCalendarAlt className="icon" />
-            </div>
-
-            {/* Event Description */}
-            <div className="input-box">
-              <input
-                type="text"
-                placeholder="Description"
-                name="description"
-                value={eventData.description}
-                onChange={handleChange}
-              />
-              <MdCenterFocusStrong className="icon" />
-            </div>
-
-            {/* Event Time */}
-            <div className="input-box">
-              <input
-                type="text"
-                placeholder="Event Time"
-                name="time"
-                value={eventData.time}
-                onChange={handleChange}
-              />
-              <FaClock className="icon" />
-            </div>
-
-            {/* Event Duration */}
-            <div className="input-box">
-              <input
-                type="text"
-                placeholder="Event Duration (min)"
-                name="duration"
-                value={eventData.duration}
-                onChange={handleChange}
-              />
-              <FaClock className="icon" />
-            </div>
-
-            {/* Event Category */}
-            <div className="input-box">
-              <input
-                type="text"
-                placeholder="Category"
-                name="category"
-                value={eventData.category}
-                onChange={handleChange}
-              />
-              <FaClipboardList className="icon" />
-            </div>
-
-            {/* Google Maps */}
-            <div id="map-container">
-              <label>Location</label>
-              <LoadScript googleMapsApiKey="AIzaSyDtydezxJOCiLH1LI08WpbZ5qltWhjYxoI">
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={markerPosition}
-                  zoom={13}
-                  onClick={handleMapClick} //tıklanan yere konumla
-                >
-                  <Marker position={markerPosition} />
-                </GoogleMap>
-              </LoadScript>
-            </div>
-
-            {/*adresi göster*/}
-            <div className="address-container">
-              <h3>Address:</h3>
-              <p>{address}</p>
-            </div>
-
-            <button type="submit" onClick={handleSubmit}>Create Event</button>
+    <div className="container">
+      <div className="wrapper">
+        <div className="form-box">
+          <h1>Create Event</h1>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Event Name"
+              name="event_name"
+              value={eventData.event_name}
+              onChange={handleChange}
+            />
+            <LuPartyPopper className="icon" />
           </div>
+          <div className="input-box">
+            <input
+              type="date"
+              name="date"
+              value={eventData.date}
+              onChange={handleChange}
+            />
+            <FaRegCalendarAlt className="icon" />
+          </div>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Description"
+              name="description"
+              value={eventData.description}
+              onChange={handleChange}
+            />
+            <MdCenterFocusStrong className="icon" />
+          </div>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Event Time"
+              name="time"
+              value={eventData.time}
+              onChange={handleChange}
+            />
+            <FaClock className="icon" />
+          </div>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Event Duration (min)"
+              name="duration"
+              value={eventData.duration}
+              onChange={handleChange}
+            />
+            <FaClock className="icon" />
+          </div>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Category"
+              name="category"
+              value={eventData.category}
+              onChange={handleChange}
+            />
+            <FaClipboardList className="icon" />
+          </div>
+          <div id="map-container">
+            <label>Location</label>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={markerPosition}
+              zoom={13}
+              onClick={handleMapClick}
+            >
+              <Marker position={markerPosition} />
+            </GoogleMap>
+          </div>
+          <div className="address-container">
+            <h3>Address:</h3>
+            <p>{address}</p>
+          </div>
+          <button type="submit" onClick={handleSubmit}>Create Event</button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
