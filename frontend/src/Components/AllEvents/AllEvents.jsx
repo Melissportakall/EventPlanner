@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './AllEvents.css'; // Stil dosyası
 import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';  // MUI bileşenlerini import ediyoruz
+import { GoogleMap } from '@react-google-maps/api';
+
+const containerStyle = {
+  width: '100%',
+  height: '400px',
+};
 
 const AllEvents = () => {
   const [events, setEvents] = useState([]);
@@ -8,6 +14,29 @@ const AllEvents = () => {
   const [open, setOpen] = useState(false); // Modal'ın açık/kapalı durumu
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar açık/kapalı durumu
   const [snackbarMessage, setSnackbarMessage] = useState(''); // Snackbar mesajı
+  const [map, setMap] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState({ lat: 41.015137, lng: 28.979530 });
+  const [marker, setMarker] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadMapScript = () => {
+      if (window.google) {
+        setIsLoaded(true);
+      } else {
+        console.error("Google Maps API yüklenemedi.");
+      }
+    };
+    
+    if (window.google) {
+      loadMapScript();
+    } else {
+      window.addEventListener("load", loadMapScript);
+      return () => {
+        window.removeEventListener("load", loadMapScript);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     fetch('/get_all_events')
@@ -22,9 +51,31 @@ const AllEvents = () => {
       .catch(error => console.error('Error fetching events:', error));
   }, []);
 
+  const fetchCoordinates = (address) => {
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address: address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        const latLng = { lat: location.lat(), lng: location.lng() };
+        setMarkerPosition(latLng);
+        if (map) {
+          map.panTo(latLng);
+        }
+      } else {
+        console.error('Geocode was not successful for the following reason:', status);
+        setSnackbarMessage('Location not found. Showing default location.');
+        setSnackbarOpen(true);
+      }
+    });
+  };
+
   const handleOpen = (event) => {
     setSelectedEvent(event);
     setOpen(true); // Modal'ı aç
+
+    if (event.location) {
+      fetchCoordinates(event.location);
+    }
   };
 
   const handleClose = () => {
@@ -68,6 +119,30 @@ const AllEvents = () => {
     setSnackbarOpen(false); // Snackbar'ı kapat
   };
 
+  useEffect(() => {
+    if (isLoaded && map && selectedEvent) {
+      if (window.google.maps.marker?.AdvancedMarkerElement) {
+        const marker = new window.google.maps.marker.AdvancedMarkerElement({
+          map,
+          position: markerPosition,
+        });
+
+        return () => {
+          marker.setMap(null);
+        };
+      } else {
+        const marker = new window.google.maps.Marker({
+          map,
+          position: markerPosition,
+        });
+
+        return () => {
+          marker.setMap(null);
+        };
+      }
+    }
+  }, [isLoaded, map, selectedEvent, markerPosition]);
+
   return (
     <div className="event-list-container">
       {/* Başlık Ekle */}
@@ -102,6 +177,12 @@ const AllEvents = () => {
               <Typography variant="body1"><strong>Saat:</strong> {selectedEvent.time}</Typography>
               <Typography variant="body1"><strong>Lokasyon:</strong> {selectedEvent.location}</Typography>
               <Typography variant="body1"><strong>Süre:</strong> {selectedEvent.duration}</Typography>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={markerPosition}
+                zoom={13}
+                onLoad={(mapInstance) => setMap(mapInstance)}
+              ></GoogleMap>
               <Button variant="contained" color="primary" onClick={handleJoin}>Katıl</Button>
             </>
           )}

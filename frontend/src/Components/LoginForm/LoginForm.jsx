@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginForm.css';
 import { FaUser, FaUnlockAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
@@ -8,10 +8,21 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const clearAllCookies = () => {
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+      const [name] = cookie.split("=");
+      document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    }
+  };
+  
+  useEffect(() => {
+    clearAllCookies();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Prepare the form data to send to the backend
       const formData = {
         username: username,
         password: password
@@ -21,13 +32,13 @@ const LoginForm = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        credentials: 'include'  // Ensure cookies are included with the request
+        credentials: 'include'
       });
 
       const data = await response.json();
       if (data.success) {
         alert(data.message);
-        navigate("/mainmenu");  // Redirect to Main Menu
+        navigate("/mainmenu");
       } else {
         alert("Invalid username or password");
       }

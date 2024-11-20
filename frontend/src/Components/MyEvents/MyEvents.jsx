@@ -69,6 +69,30 @@ const MyEvents = () => {
     });
   };
 
+  const handleLeaveEvent = (eventId) => {
+    fetch('/leave_event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ eventId }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert(data.message);
+          window.location.reload();
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error leaving event:', error);
+        alert('An error occurred while trying to leave the event.');
+      });
+  };
+  
+
   const handleOpen = (event) => {
     setSelectedEvent(event);
     setOpen(true);
@@ -109,7 +133,7 @@ const MyEvents = () => {
         };
       }
     }
-  }, [isLoaded, map, selectedEvent, markerPosition]); // Marker ekleme ve silme için gerekli bağımlılıklar
+  }, [isLoaded, map, selectedEvent, markerPosition]);
 
   return (
     <div className="event-list-container">
@@ -169,7 +193,7 @@ const MyEvents = () => {
                 onLoad={(mapInstance) => setMap(mapInstance)}
               ></GoogleMap>
 
-              <Button variant="contained" color="primary" onClick={() => alert('Leave Event functionality')}>
+              <Button variant="contained" color="primary" onClick={() => handleLeaveEvent(selectedEvent?.id)}>
                 Leave Event
               </Button>
             </>

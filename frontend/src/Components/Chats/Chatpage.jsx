@@ -19,8 +19,30 @@ function MessageApp({ recipientId }) {
             })
             .catch(error => console.error('Error fetching messages:', error));
     };
+    
 
-    // Mesaj gönderme fonksiyonu
+    // HER SANİYE MESAJLARI YENİLEME
+    
+    useEffect(() => {
+        if (!recipientId) return;
+
+        const interval = setInterval(() => {
+            fetch(`/get_messages?alici_id=${recipientId}`, {
+                method: 'GET',
+                credentials: 'include'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Gelen Mesajlar:', data);
+                    setMessages(data);
+                })
+                .catch(error => console.error('Error fetching messages:', error));
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, [recipientId]);
+
+    
     const sendMessage = () => {
         if (!newMessage.trim()) return; //mesaj kutusu boşsa gönerme
 
@@ -54,19 +76,9 @@ function MessageApp({ recipientId }) {
     }, [recipientId]);
 
     return (
-        <div>
+        <div className="chat-app">
             <h1>Message App</h1>
-            <div>
-                {/* Mesajları buraya yazıyon */}
-                <input
-                    type="text"
-                    value={newMessage}
-                    onChange={e => setNewMessage(e.target.value)}
-                    placeholder="Mesajınızı yazın"
-                />
-                <button onClick={sendMessage}>Gönder</button>
-            </div>
-            <div>
+            <div className="chat-container">
                 <h2>Mesajlar</h2>
                 <div className="messages-container">
                     {messages.map((message) => (
@@ -78,6 +90,15 @@ function MessageApp({ recipientId }) {
                             <small>{message.tarih}</small>
                         </div>
                     ))}
+                </div>
+                <div className="input-container">
+                    <input
+                        type="text"
+                        value={newMessage}
+                        onChange={e => setNewMessage(e.target.value)}
+                        placeholder="Mesajınızı yazın"
+                    />
+                    <button onClick={sendMessage}>Gönder</button>
                 </div>
             </div>
         </div>
