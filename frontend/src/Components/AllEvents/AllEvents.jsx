@@ -20,6 +20,10 @@ const AllEvents = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    document.title = 'All Events';
+  }, []);
+
+  useEffect(() => {
     const loadMapScript = () => {
       if (window.google) {
         setIsLoaded(true);

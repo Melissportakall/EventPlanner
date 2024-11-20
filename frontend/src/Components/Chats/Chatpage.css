@@ -1,30 +1,42 @@
-.messages-container {
+.chat-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 600px;
-    margin: 20px;
+    height: 600px;              /* Chat uygulaması yüksekliği */
+    border: 1px solid #ddd;     /* Çerçeve (isteğe bağlı) */
 }
 
-.message-bubble {
-    padding: 10px 15px;
-    border-radius: 20px;
-    max-width: 70%;
-    word-wrap: break-word;
+.messages-container {
+    flex-grow: 1;
+    overflow-y: auto;           /* Dikey kaydırma */
+    padding: 10px;
+}
+
+.input-container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.input-container input {
+    flex: 1;
+    padding: 8px;
     font-size: 16px;
-    display: inline-block;
-    clear: both;
-    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;  /* Buton ve input arasında boşluk */
 }
 
-.message-bubble.sent {
-    background-color: #0084FF;  /* Mavi */
-    color: white;
-    align-self: flex-end;
+.input-container button {
+    padding: 8px 16px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.message-bubble.received {
-    background-color: #333;  /* Siyah */
-    color: white;
-    align-self: flex-start;
+.input-container button:hover {
+    background-color: #0056b3;
 }

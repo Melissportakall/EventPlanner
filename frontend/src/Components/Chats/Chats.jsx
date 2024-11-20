@@ -8,6 +8,10 @@ const Chats = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    document.title = 'Chats';
+  }, []);
+
+  useEffect(() => {
     fetch('/get_users')
       .then(res => res.json())
       .then(data => setUsers(data))

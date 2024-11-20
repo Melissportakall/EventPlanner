@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { LuPartyPopper } from "react-icons/lu";
 import { FaRegCalendarAlt, FaClock, FaClipboardList } from "react-icons/fa";
@@ -11,6 +11,10 @@ const containerStyle = {
 };
 
 const CreateEvent = () => {
+  useEffect(() => {
+    document.title = 'Create Event';
+  }, []);
+
   const [markerPosition, setMarkerPosition] = useState({
     lat: 41.015137,
     lng: 28.979530

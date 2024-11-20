@@ -1,14 +1,17 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AuthGuard = ({ children }) => {
-  const userCookie = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("user_data="));
+  const navigate = useNavigate();
 
-  if (!userCookie) {
-    return <Navigate to="/login-required" replace />;
-  }
+  useEffect(() => {
+    const cookies = document.cookie;
+    const hasRememberMe = cookies.includes("remember_me=true");
+
+    if (!cookies.includes("user_data") && !hasRememberMe) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   return children;
 };

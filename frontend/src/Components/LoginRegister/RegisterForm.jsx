@@ -1,11 +1,15 @@
 // RegisterForm.jsx
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { FaUser, FaUnlockAlt, FaBirthdayCake, FaTransgender, FaPhone } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { AiOutlinePicture } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = ({ toggleForm }) => {
+    useEffect(() => {
+        document.title = 'Register';
+      }, []);
+
     const [formData, setFormData] = useState({
         username: "",
         name: "",

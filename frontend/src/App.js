@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LoadScript } from '@react-google-maps/api';
 import LoginForm from './Components/LoginForm/LoginForm';
@@ -12,6 +12,25 @@ import MyEvents from './Components/MyEvents/MyEvents';
 import Chats from './Components/Chats/Chats';
 
 function App() {
+  useEffect(() => {
+    const handleTabClose = () => {
+      const rememberMe = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('remember_me='))
+        ?.split('=')[1];
+
+      if (rememberMe !== 'true') {
+        document.cookie = 'user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleTabClose);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleTabClose);
+    };
+  }, []);
+
   return (
     <LoadScript googleMapsApiKey="AIzaSyDtydezxJOCiLH1LI08WpbZ5qltWhjYxoI">
       <Router>

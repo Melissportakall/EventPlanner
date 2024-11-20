@@ -4,6 +4,10 @@ function MessageApp({ recipientId }) {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
+    useEffect(() => {
+        document.title = 'Chats';
+      }, []);
+
     //mesajları burdan alıyoz
     const fetchMessages = () => {
         if (!recipientId) return; //alıcı id yoksa veri çekme
