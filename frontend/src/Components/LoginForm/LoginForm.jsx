@@ -9,30 +9,28 @@ const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  const clearAllCookies = () => {
-    const cookies = document.cookie.split("; ");
-    for (const cookie of cookies) {
-      const [name] = cookie.split("=");
-      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
+  const clearSessionCookies = () => {
+    //oturumla ilgili cookieleri temizle
+    document.cookie = "user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   };
-
+  
   useEffect(() => {
     document.title = 'Login';
   }, []);
 
   useEffect(() => {
-    // Sayfa yüklendiğinde "remember_me" cookie'sini kontrol et
     const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
       const [name, value] = cookie.split("=");
       acc[name] = value;
       return acc;
     }, {});
-
+  
     if (cookies.remember_me === "true") {
+      //remember me işaretliyse ana menüye yönlendir
       navigate("/mainmenu");
     } else {
-      clearAllCookies();
+      //remember me işaretli değilse oturum çerezlerini temizle
+      clearSessionCookies();
     }
   }, [navigate]);
 
@@ -55,7 +53,7 @@ const LoginForm = () => {
       if (data.success) {
         alert(data.message);
 
-        // Eğer Remember Me işaretliyse cookie ayarla
+        //remember me işaretliyse cookie ayarla
         if (rememberMe) {
           document.cookie = `remember_me=true; path=/; max-age=${60 * 60 * 24 * 30}`;
         }

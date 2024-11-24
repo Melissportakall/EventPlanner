@@ -101,6 +101,9 @@ function MessageApp({ recipientId }) {
                         value={newMessage}
                         onChange={e => setNewMessage(e.target.value)}
                         placeholder="Mesajınızı yazın"
+                        onKeyDown={e => {
+                            if (e.key === 'Enter') sendMessage();
+                        }}
                     />
                     <button onClick={sendMessage}>Gönder</button>
                 </div>
