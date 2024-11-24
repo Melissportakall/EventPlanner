@@ -90,7 +90,7 @@ const UserCard = ({ userData, handleLogout }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const UserID = getUserDataFromCookies();
   const UserProfilePicture = userData.profileImage
-  ? `http://localhost:5000/uploads/${userData.profileImage.split("\\").pop()}`
+  ? `http://127.0.0.1:5000/uploads/${userData.profileImage.split("\\").pop()}`
   : defaultImage;
   console.log(UserProfilePicture);
 
@@ -236,7 +236,8 @@ const UserCard = ({ userData, handleLogout }) => {
                 <input
                   type="password"
                   name="password"
-                  value={editedUserData.password}
+                  value={editedUserData.password || ""}
+                  placeholder="Change password (optional)"
                   onChange={handleInputChange}
                   style={{ width: '100%', marginBottom: '10px', padding: '8px', borderRadius: '5px' }}
                 />

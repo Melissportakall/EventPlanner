@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LoadScript } from '@react-google-maps/api';
 import LoginForm from './Components/LoginForm/LoginForm';
-import LoginRequired from './Components/LoginForm/LoginRequired';
 import AuthGuard from './Components/AuthGuard/AuthGuard';
 import RegisterForm from './Components/LoginRegister/RegisterForm';
 import MainMenu from './Components/MainMenu/MainMenu';
