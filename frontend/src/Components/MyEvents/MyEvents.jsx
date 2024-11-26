@@ -1,7 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';
+import { Grid, Paper, Typography, Modal, Button, Box, Snackbar ,Tabs, Tab, TextField, MenuItem, Select, InputLabel, FormControl} from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
 import './MyEvents.css';
+import Navbar from '../Navbar/Navbar';
+import Eventsdateinfo from '../Eventsdateinfo/Eventsdateinfo';
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const containerStyle = {
   width: '100%',
@@ -19,6 +44,23 @@ const MyEvents = () => {
   const [marker, setMarker] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   useEffect(() => {
     document.title = 'My Events';
   }, []);
@@ -31,7 +73,7 @@ const MyEvents = () => {
         console.error("Google Maps API yüklenemedi.");
       }
     };
-    
+
     if (window.google) {
       loadMapScript();
     } else {
@@ -95,7 +137,7 @@ const MyEvents = () => {
         alert('An error occurred while trying to leave the event.');
       });
   };
-  
+
 
   const handleOpen = (event) => {
     setSelectedEvent(event);
@@ -139,9 +181,149 @@ const MyEvents = () => {
     }
   }, [isLoaded, map, selectedEvent, markerPosition]);
 
+
+
+
+  const [startingPoint, setStartingPoint] = useState('');
+  const [travelMode, setTravelMode] = useState('DRIVING'); //varsayılan
+  const [directionsRenderer, setDirectionsRenderer] = useState(null);
+
+const drawRoute = () => {
+    const directionsService = new window.google.maps.DirectionsService();
+  
+    //önceden render edileni sil
+    if (directionsRenderer) {
+      directionsRenderer.setMap(null);
+    }
+  
+    const newDirectionsRenderer = new window.google.maps.DirectionsRenderer();
+    setDirectionsRenderer(newDirectionsRenderer);
+  
+    if (map) {
+      //renderer'a haritayı ekle
+      newDirectionsRenderer.setMap(map);
+    }
+  
+    directionsService.route(
+      {
+        origin: startingPoint,
+        destination: selectedEvent.location,
+        travelMode: travelMode || 'DRIVING', //varsayılan
+      },
+      (result, status) => {
+        if (status === 'OK') {
+          //yeni rota çiz
+          newDirectionsRenderer.setDirections(result);
+        } else {
+          console.error('Error fetching directions:', status);
+          setSnackbarMessage('Could not find a route. Please check your input.');
+          setSnackbarOpen(true);
+        }
+      }
+    );
+  };
+
+<Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
+        <Box className="modal-box">
+          {selectedEvent && (
+            <>
+              <Typography variant="h6" align="center" marginBottom={2} marginTop={2}>
+                <strong>{selectedEvent.event_name}</strong>
+              </Typography>
+              <Typography variant="body1">
+                <strong>Description:</strong> {selectedEvent.description}
+              </Typography>
+              <Typography variant="body1">
+                <strong>Date:</strong> {selectedEvent.date}
+              </Typography>
+              <Typography variant="body1">
+                <strong>Time:</strong> {selectedEvent.time}
+              </Typography>
+              <Typography variant="body1">
+                <strong>Location:</strong> {selectedEvent.location}
+              </Typography>
+
+              {/* Google Map */}
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={markerPosition}
+                zoom={13}
+                onLoad={(mapInstance) => setMap(mapInstance)}
+              ></GoogleMap>
+
+              {/* Starting Point and Travel Mode */}
+              <Grid container spacing={2} marginTop={2}>
+                {/* Starting Point */}
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Starting Point"
+                    variant="outlined"
+                    fullWidth
+                    value={startingPoint}
+                    onChange={(e) => setStartingPoint(e.target.value)}
+                  />
+                </Grid>
+
+                {/* Travel Mode */}
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="travel-mode-label">Travel Mode</InputLabel>
+                    <Select
+                      labelId="travel-mode-label"
+                      value={travelMode}
+                      onChange={(e) => setTravelMode(e.target.value)}
+                    >
+                      <MenuItem value="DRIVING">Driving</MenuItem>
+                      <MenuItem value="WALKING">Walking</MenuItem>
+                      <MenuItem value="TRANSIT">Transit</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              {/* Get Directions Button */}
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={drawRoute}
+                style={{ marginTop: '10px', marginRight: '10px' }}
+              >
+                Get Directions
+              </Button>
+
+              {/* Leave Event Button */}
+              <Button
+                variant="contained"
+                style={{
+                  marginTop: '10px',
+                  backgroundColor: 'red',
+                  color: 'white',
+                }}
+                onClick={() => handleLeaveEvent(selectedEvent?.id)}
+              >
+                Leave Event
+              </Button>
+            </>
+          )}
+        </Box>
+      </Modal>
+
+
+
+
+
+
+
+
+
+
+
   return (
+
     <div className="event-list-container">
       <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
+        <Navbar />
+        <Eventsdateinfo />
         My Events
       </Typography>
 

@@ -1,20 +1,26 @@
+
 .card {
-  border: 8px solid transparent; /* Çerçevenin kalınlığı artırıldı */
-  background: transparent; 
-  border:8px solid rgba(255,255,255,.2);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(0,0,0,.2);
-  border-image: linear-gradient(45deg, pink, rgb(25, 25, 79),rgb(56, 56, 136), purple, black, violet, rgb(86, 13, 13)); /* Rengarenk  /* Rengarenk çerçeve */
-  border-image-slice: 2; /* Çerçevenin görüntülenme şekli */
+  background: linear-gradient(135deg, #b184ce, #2a90af); /* Kartın arka planı için gradyan */
+  border: none; /* Çerçeve kaldırıldı */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Hafif bir gölge */
+  border-radius: 15px; /* Kartın köşelerini yuvarlatma */
   padding: 50px; /* İçerik ile kenar arasındaki boşluk */
+
   margin: 30px; /* Kartlar arasındaki boşluk */
-  height: 200px;
+  height: 200px; /* Kartın yüksekliği */
   width: 500px; /* Kartın genişliği */
+  color: white; /* Kart içindeki yazı rengi */
+  font-family: 'Poppins', sans-serif;
+  text-align: center; /* Kart içeriğini ortala */
+  transform: translateX(80px); /* Kartı sağa kaydır */
   box-shadow: 0 2px 8px rgba(252, 252, 252, 0.1); /* Gölge */
   transition: transform 0.5s; /* Animasyon süresi */
+  /*transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover animasyonu */
 }
 
 .card-container {
+ 
+
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* İki eşit genişlikte sütun */
   /*gap: 1px; /* Kartlar arasındaki boşluk */
@@ -22,27 +28,29 @@
 
 .card:hover {
   transform: scale(1.05); /* Hover efekti */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Hover ile gölge derinleşir */
 }
 
 .card EventCard {
-  color: white; /* Yazının rengi */
+  color: rgb(35, 31, 31); /* Yazının rengi */
   font-size: 16%; /* Yazı boyutu */
 }
 .card h2 {
-  color: white; /* Başlık rengi */
+  color: rgb(40, 34, 34); /* Başlık rengi */
   font-size: 30px; /* Başlık boyutu */
   text-align: center; /* Başlığı ortalamak için */
-}
+} */
 
 .icon {
   font-size: 35px; /* İkon boyutu */
-  color: white; /* İkon rengi */
+  color: rgb(51, 48, 48); /* İkon rengi */
   margin-top: 1px 0; /* Üst ve alt boşlukları ayarlayın */
   margin-bottom: 8px; /* Başlık ile ikon arasındaki boşluk */
   text-align: center; /* İkonu ortalamak için */
 }
 
 .user-card {
+  background: linear-gradient(135deg, #dc87ce, #5aaac2); /* Kartın arka planı için gradyan */
   background-color: rgba(255, 255, 255, 0.1); /* Yarı saydam beyaz arka plan */
   border-radius: 8px; /* Köşeleri yuvarlat */
   padding: 20px; /* İçerik için boşluk */
@@ -50,18 +58,17 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
   width: 250px; /* Kart genişliği */
   position: fixed; /* Kartı sabit konumda tut */
-  top: 100px; /* Üstten boşluk */
-  left: 20px; /* Soldan boşluk */
+  top: 20px; /* Üstten boşluk */
+  left: 40px; /* Soldan boşluk */
 }
 
 .user-card h3 {
   margin-bottom: 15px; /* Başlık altındaki boşluk */
   text-align: center; /* Başlığı ortala */
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 1), /* Sağ alt gölge */
-               -1px -1px 0px rgba(0, 0, 0, 1), /* Sol üst gölge */
-               1px -1px 0px rgba(0, 0, 0, 1), /* Sağ üst gölge */
-               -1px 1px 0px rgba(0, 0, 0, 1); /* Sol alt gölge */
-  color: white; /* Başlık rengini beyaz yap */
+  color: black; /* Başlık rengini siyah yap */
+  max-width: 200px; /* Genişliği kısıtla */
+  margin: 0 auto; /* Ortala */
+  text-shadow: none; /* Gölgeyi kaldır */
 }
 
 .user-card ul {
@@ -71,15 +78,14 @@
 
 .user-card li {
   margin: 5px 0; /* Her bir madde için boşluk */
-  color: white; /* Yazı rengi */
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 1), /* Sağ alt gölge */
-               -1px -1px 0px rgba(0, 0, 0, 1), /* Sol üst gölge */
-               1px -1px 0px rgba(0, 0, 0, 1), /* Sağ üst gölge */
-               -1px 1px 0px rgba(0, 0, 0, 1); /* Sol alt gölge */
+  color: black; /* Yazı rengini siyah yap */
+  text-shadow: none; /* Gölgeyi kaldır */
+  max-width: 200px; /* Genişliği kısıtla */
+  margin: 0 auto; /* Ortala */
 }
 
 .user-image {
-  width: 210x; /* Resim alanının genişliğini kartın genişliği ile eşleştir */
+  width: 210px; /* Resim alanının genişliğini kartın genişliği ile eşleştir */
   height: 210px; /* Resim alanının yüksekliği */
   overflow: hidden; /* Taşan kısımları gizle */
   border-radius: 8px; /* Kenarları yuvarlat */
@@ -92,6 +98,7 @@
   object-fit: cover; /* Resmi kesilmeden alanı doldur */
   border-radius: 50%; /* Resim kenarlarını yuvarlat */
 }
+
 
 /* Modal arka planının stilini güncelle */
 .modal {
@@ -156,3 +163,84 @@
   font-size: 16px;
   color: rgb(0, 0, 0);
 }
+
+.navbar {
+  position: fixed; /* Sayfa kaydırıldığında yerinde kalır */
+  top: 10px; /* Üstten 10 piksel boşluk bırakır */
+  right: 10px; /* Sağdan 10 piksel boşluk bırakır */
+  display: flex; /* Menü öğelerini yatay olarak hizalar */
+  flex-direction: row; /* Yatay düzeni garanti altına alır */
+  gap: 200px; /* Menü öğeleri arasındaki boşluk */
+  background-color: rgba(12, 14, 17, 0.311); /* Arka planı yarı şeffaf */
+  padding: 20px 40px; /* Menüye iç boşluk ekler */
+  border-radius: 8px; /* Yuvarlak köşeler */
+  box-shadow: 0 4px 8px rgba(110, 106, 97, 0.2); /* Hafif gölge efekti */
+  z-index: 1000; /* Diğer içeriklerin üstünde görünmesini sağlar */
+  align-items: center; /* Dikey hizalama */
+  height: 50px; /* Menü yüksekliği */
+  width: 1240px; /* Menü genişliği */
+  margin-bottom: 50px; /* Navbar ile bileşenler arasındaki boşluk */
+}
+
+.nav-list {
+  display: flex; /* Listeyi yatay hale getirir */
+  list-style: none; /* Noktaları kaldırır */
+  padding: 0; /* İç boşluğu kaldırır */
+  margin: 0; /* Dış boşluğu kaldırır */
+}
+
+.nav-item {
+  flex-grow: 1; /* Her bir öğenin eşit şekilde genişlemesini sağlar */
+  margin: 0 15px; /* Sol ve sağdan 15 piksel boşluk ekleyin */
+}
+
+.nav-link {
+  color: white; /* Yazı rengini beyaz yapar */
+  text-decoration: none; /* Alt çizgiyi kaldırır */
+  font-size: 25px; /* Yazı boyutunu biraz büyütür */
+  transition: color 0.3s ease; /* Geçiş efekti ekler */
+  display: flex; /* Flex kullanarak ikon ve metni yan yana hizalar */
+  align-items: center; /* Dikey merkezleme */
+}
+
+.nav-link:hover {
+  color: #e1a5e9; /* Üzerine gelindiğinde yeşil renk */
+  text-shadow: 0 1px 5px rgba(73, 70, 64, 0.7); /* Hafif parlama efekti */
+}
+
+.component {
+  padding-top: 20px; /* Bileşenin üst kısmına boşluk ekleyin */
+  margin-top: 0; /* Bileşen ile navbar arasındaki boşluğu ayarlamak için sıfırlayın */
+}
+
+.logout-button {
+  height: 40px; /* Butonun yüksekliğini ayarlayın */
+  margin-left: auto; /* Oto boşluk ile sağa yaslayın */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  position: absolute; /* Kesin konumlandırma */
+  top: 5rem; /* Üstten 1rem boşluk */
+  left: 20rem; /* Soldan 1rem boşluk */
+}
+
+h1 {
+  font-size: 3rem; /* 48px */
+  font-weight: bold;
+  margin: 0; /* Boşluk kaldırıldı */
+  padding: 0;
+  
+}
+
+h2 {
+  font-size: 2.5rem; /* 40px */
+  font-weight: 600; /* Semibold */
+  margin: 0.5rem 0 1rem 0; /* Üst ve alt boşluklar düzenlendi */
+  padding: 0;
+}
+

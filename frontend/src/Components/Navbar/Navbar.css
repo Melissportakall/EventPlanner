@@ -1,0 +1,43 @@
+.navbar {
+    position:sticky; /* Sayfa kaydırıldığında yerinde kalır */
+    top: 10px; /* Üstten 10 piksel boşluk bırakır */
+    right: 10px; /* Sağdan 10 piksel boşluk bırakır */
+    display: flex; /* Menü öğelerini yatay olarak hizalar */
+    flex-direction: row; /* Yatay düzeni garanti altına alır */
+    gap: 200px; /* Menü öğeleri arasındaki boşluk */
+    background-color: rgba(12, 14, 17, 0.311); /* Arka planı yarı şeffaf */
+    padding: 20px 40px; /* Menüye iç boşluk ekler */
+    border-radius: 8px; /* Yuvarlak köşeler */
+    box-shadow: 0 4px 8px rgba(110, 106, 97, 0.2); /* Hafif gölge efekti */
+    z-index: 1000; /* Diğer içeriklerin üstünde görünmesini sağlar */
+    align-items: center; /* Dikey hizalama */
+    height: 50px; /* Menü yüksekliği */
+    width: 1240px; /* Menü genişliği */
+    margin-bottom: 50px; /* Navbar ile bileşenler arasındaki boşluk */
+  }
+  
+  .nav-list {
+    display: flex; /* Listeyi yatay hale getirir */
+    list-style: none; /* Noktaları kaldırır */
+    padding: 0; /* İç boşluğu kaldırır */
+    margin: 0; /* Dış boşluğu kaldırır */
+  }
+  
+  .nav-item {
+    flex-grow: 1; /* Her bir öğenin eşit şekilde genişlemesini sağlar */
+    margin: 0 15px; /* Sol ve sağdan 15 piksel boşluk ekleyin */
+  }
+  
+  .nav-link {
+    color: white; /* Yazı rengini beyaz yapar */
+    text-decoration: none; /* Alt çizgiyi kaldırır */
+    font-size: 25px; /* Yazı boyutunu biraz büyütür */
+    transition: color 0.3s ease; /* Geçiş efekti ekler */
+    display: flex; /* Flex kullanarak ikon ve metni yan yana hizalar */
+    align-items: center; /* Dikey merkezleme */
+  }
+  
+  .nav-link:hover {
+    color: #e1a5e9; /* Üzerine gelindiğinde yeşil renk */
+    text-shadow: 0 1px 5px rgba(73, 70, 64, 0.7); /* Hafif parlama efekti */
+  }

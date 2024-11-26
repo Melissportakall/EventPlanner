@@ -1,28 +1,39 @@
 .container {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevent overflow outside the container */
+    height: 100vh; /* Tam ekran yüksekliği */
+    overflow: hidden;
+    width: 100%; /* Sayfa genişliğini tam kullan */
+    max-width: 1200px; /* Genişlik sınırı ekleyebilirsiniz */
+    margin: 0 auto; /* Ortalamak için */
 }
 
 .wrapper {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    flex: 1; /* Takes the remaining space after the map */
+    flex: 1;
     padding: 20px;
-    margin-top: 40px; /* Add space between AppBar and wrapper */
-    background: rgba(0, 0, 0, 0.6); /* Transparent background */
+    margin-top: 40px;
+    background: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
-    overflow-y: auto; /* Allow scrolling if necessary */
-    flex-shrink: 0; /* Prevent shrinking */
+    overflow-y: auto;
+    flex-shrink: 0;
+    max-width: 1100px; /* Max genişlik */
+    width: 100%;
+}
+
+.form-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Elemanlar arasındaki boşluk */
+    justify-content: space-between; /* Elemanları yatayda düzenler */
 }
 
 .input-box {
     position: relative;
-    width: 100%;
+    width: 48%; /* Genişlik 2 kutu için */
     height: 50px;
-    margin: 20px 0;
 }
 
 .input-box input {
@@ -31,9 +42,9 @@
     background: transparent;
     border: none;
     outline: none;
-    border: 2px solid rgba(255, 255, 255, .2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 40px;
-    font-size: 16px;
+    font-size: 20px;
     color: #fff;
     padding: 20px 45px 20px 20px;
 }
@@ -43,23 +54,17 @@
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
+    font-size: 30px;
 }
 
 /* Map container */
 #map-container {
     width: 100%;
-    height: 400px; /* Fixed height for the map */
-    margin-top: 20px; /* Space between form fields and map */
-    margin-bottom: 20px; /* Space between map and button */
+    height: 400px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     display: flex;
-    justify-content: center; /* Center map */
-}
-
-/* Map itself */
-#map {
-    width: 100%;
-    height: 100%;
+    justify-content: center;
 }
 
 /* Button styling */
@@ -70,23 +75,19 @@
     outline: none;
     background: #fff;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-size: 18px;
     color: slateblue;
     cursor: pointer;
     font-weight: 700;
-    margin-top: 20px; /* Space between map and button */
+    margin-top: 20px;
 }
 
-/* Ensure content inside .wrapper scrolls properly */
-.wrapper {
-    overflow-y: auto; /* Allow scrolling if necessary */
-    flex-grow: 1; /* Ensure wrapper takes remaining space */
+/* Address container */
+.address-container {
+    margin-top: 10px;
+    font-size: 14px;
+    color: white;
 }
 
-/* Optional: style for mobile responsiveness */
-@media (max-width: 768px) {
-    #map-container {
-        height: 300px; /* Smaller map height for mobile */
-    }
-}
+

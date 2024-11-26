@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './AllEvents.css'; // Stil dosyası
 import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';  // MUI bileşenlerini import ediyoruz
 import { GoogleMap } from '@react-google-maps/api';
-
+import Navbar from '../Navbar/Navbar';
+import Eventsdateinfo from '../Eventsdateinfo/Eventsdateinfo';
 const containerStyle = {
   width: '100%',
   height: '400px',
@@ -31,7 +32,7 @@ const AllEvents = () => {
         console.error("Google Maps API yüklenemedi.");
       }
     };
-    
+
     if (window.google) {
       loadMapScript();
     } else {
@@ -150,18 +151,20 @@ const AllEvents = () => {
   return (
     <div className="event-list-container">
       {/* Başlık Ekle */}
-      <Typography variant="h4" align="center" style={{color:'white'}}gutterBottom>
+      <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
         All Events Here!
+        <Navbar />
+        <Eventsdateinfo />
       </Typography>
 
       <Grid container spacing={3}>
         {events.length > 0 ? (
           events.map((event) => (
             <Grid item xs={12} sm={4} md={4} key={event.id}>
-              <Paper elevation={3} style={{ padding: '20px', textAlign: 'center', cursor: 'pointer', minHeight: '250px' }} onClick={() => handleOpen(event)}>
-                <Typography variant="h6">{event.event_name}</Typography>
-                <Typography color="textSecondary">{event.date}</Typography>
-                <Typography color="textSecondary">{event.time}</Typography>
+              <Paper elevation={3} style={{ padding: '5px', textAlign: 'center', cursor: 'pointer', minHeight: '250px' }} className='event-card' onClick={() => handleOpen(event)}>
+                <Typography variant="h6" className='event-card-title'>{event.event_name}</Typography>
+                <Typography classname='event-dateils' color="textSecondary">{event.date}</Typography>
+                <Typography classname='event-dateils' color="textSecondary">{event.time}</Typography>
               </Paper>
             </Grid>
           ))
@@ -200,6 +203,8 @@ const AllEvents = () => {
         onClose={handleSnackbarClose}
         message={snackbarMessage}
       />
+
+
     </div>
   );
 };

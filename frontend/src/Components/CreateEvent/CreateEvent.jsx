@@ -4,7 +4,8 @@ import { LuPartyPopper } from "react-icons/lu";
 import { FaRegCalendarAlt, FaClock, FaClipboardList } from "react-icons/fa";
 import { MdCenterFocusStrong } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-
+import './CreateEvent.css';
+import Navbar from '../Navbar/Navbar'; 
 const containerStyle = {
   width: '100%',
   height: '400px',
@@ -93,87 +94,84 @@ const CreateEvent = () => {
 
   return (
     <div className="container">
-      <div className="wrapper">
-        <div className="form-box">
-          <h1>Create Event</h1>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Event Name"
-              name="event_name"
-              value={eventData.event_name}
-              onChange={handleChange}
-            />
-            <LuPartyPopper className="icon" />
-          </div>
-          <div className="input-box">
-            <input
-              type="date"
-              name="date"
-              value={eventData.date}
-              onChange={handleChange}
-            />
-            <FaRegCalendarAlt className="icon" />
-          </div>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Description"
-              name="description"
-              value={eventData.description}
-              onChange={handleChange}
-            />
-            <MdCenterFocusStrong className="icon" />
-          </div>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Event Time"
-              name="time"
-              value={eventData.time}
-              onChange={handleChange}
-            />
-            <FaClock className="icon" />
-          </div>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Event Duration (min)"
-              name="duration"
-              value={eventData.duration}
-              onChange={handleChange}
-            />
-            <FaClock className="icon" />
-          </div>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Category"
-              name="category"
-              value={eventData.category}
-              onChange={handleChange}
-            />
-            <FaClipboardList className="icon" />
-          </div>
-          <div id="map-container">
-            <label>Location</label>
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={markerPosition}
-              zoom={13}
-              onClick={handleMapClick}
-            >
-              <Marker position={markerPosition} />
-            </GoogleMap>
-          </div>
-          <div className="address-container">
-            <h3>Address:</h3>
-            <p>{address}</p>
-          </div>
-          <button type="submit" onClick={handleSubmit}>Create Event</button>
-        </div>
+  <Navbar />
+  <div className="wrapper">
+    <div className="form-box">
+      <h1>Create Event</h1>
+      <div className="input-box">
+        <input
+          type="text"
+          placeholder="Event Name"
+          name="event_name"
+          value={eventData.event_name}
+          onChange={handleChange}
+        />
+        <LuPartyPopper className="icon" />
       </div>
+
+      <div className="input-box">
+        <input
+          type="date"
+          name="date"
+          value={eventData.date}
+          onChange={handleChange}
+        />
+        <FaRegCalendarAlt className="icon" />
+      </div>
+
+      <div className="input-box">
+        <input
+          type="text"
+          placeholder="Event Time"
+          name="time"
+          value={eventData.time}
+          onChange={handleChange}
+        />
+        <FaClock className="icon" />
+      </div>
+
+      <div className="input-box">
+        <input
+          type="text"
+          placeholder="Event Duration (min)"
+          name="duration"
+          value={eventData.duration}
+          onChange={handleChange}
+        />
+        <FaClock className="icon" />
+      </div>
+
+      <div className="input-box">
+        <input
+          type="text"
+          placeholder="Category"
+          name="category"
+          value={eventData.category}
+          onChange={handleChange}
+        />
+        <FaClipboardList className="icon" />
+      </div>
+
+      <div id="map-container">
+        <label>Location</label>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={markerPosition}
+          zoom={13}
+          onClick={handleMapClick}
+        >
+          <Marker position={markerPosition} />
+        </GoogleMap>
+      </div>
+      <div className="address-container">
+        <h3>Address:</h3>
+        <p>{address}</p>
+      </div>
+      <button type="submit" onClick={handleSubmit}>Create Event</button>
     </div>
+  </div>
+</div>
+
   );
 };
 

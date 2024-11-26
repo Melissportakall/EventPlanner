@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0400;600;700&display=swap');
+
+
 .event-list-container {
   padding: 20px;
 }
@@ -11,13 +14,13 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 400px;
-  max-height: 80%;
+  width: 700px;
+  max-height: 60%;
   overflow-y: auto;
 }
 
 .modal-box h5 {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   margin-bottom: 15px;
 }
 
@@ -29,3 +32,38 @@
   margin-top: 20px;
   width: 100%;
 }
+
+/* Kartlar için stil */
+.event-card {
+  padding: 5px; /* Padding'i küçült */
+  height: 50px; /* Kart yüksekliğini ayarlayın */
+  width: 50; /* Kart genişliği 100% olacak şekilde ayarlandı */
+  box-sizing: border-box; /* Padding ve border'ı toplam boyuta dahil et */
+  margin: 0 5px; /* Sağ ve sol margin'i 5px olarak ayarlayın */
+}
+
+/* Grid container'ı için stil */
+.grid-container {
+  display: grid;
+  gap: 5px; /* Kartlar arasındaki boşluğu artır */
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 120px genişliğinde kartlar için sütunlar oluştur */
+  padding-left: 0;  /* Grid sol boşluğunu sıfırla */
+  padding-right: 0; /* Grid sağ boşluğunu sıfırla */
+}
+
+
+/* Kart başlığı için stil */
+.event-card-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem; /* Başlık boyutunu biraz daha küçült */
+  font-weight: bold;
+}
+
+/* Kart tarih ve saat için stil */
+.event-card-details {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.7rem; /* Tarih ve saat boyutunu küçült */
+  color: gray;
+}
+
+

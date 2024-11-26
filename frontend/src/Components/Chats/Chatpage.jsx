@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import './Chats.css'
+import './Chatpage.css';
 
 function MessageApp({ recipientId }) {
     const [messages, setMessages] = useState([]);

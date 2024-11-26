@@ -16,10 +16,9 @@ body {
   justify-content: center; 
   align-items: center;
   min-height: 100vh;
-  background: url(./Components/Assets/billy-huynh-W8KTS-mhFUE-unsplash.jpg)
-  no-repeat;
-  background-size: cover;
-  background-position:center;
+  background: linear-gradient(to bottom, rgb(251, 212, 245), #2b8fd6a4); /* Arka plan rengi */
+  
+  
 }
 
 code {

@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import RandomCategoryChart from '../PieCharts/PieCharts';
 import defaultImage from './default-image-url.jpg';
 import Snackbar from '@mui/material/Snackbar';
+import AllEvents from '../AllEvents/AllEvents';
+import Navbar from '../Navbar/Navbar';
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
@@ -35,6 +37,15 @@ const MainMenu = () => {
     navigate('/login');
   };
 
+  const navItems = [
+    { title: 'My Events', icon: <LuPartyPopper />, path: '/my-events' },
+    { title: 'Chats', icon: <IoChatboxEllipsesOutline />, path: '/chats' },
+    { title: 'Create Event', icon: <IoCreateOutline />, path: '/create-event' },
+    { title: 'All Events', icon: <IoCreateOutline />, path: '/all-events' },
+    { title: 'Edit Profile', icon: <IoCreateOutline />, path: '/edit-profile' },
+    
+  ];
+
   useEffect(() => {
     const userId = getUserDataFromCookies();
 
@@ -56,30 +67,27 @@ const MainMenu = () => {
       console.log("No user ID found in cookies");
     }
 
-    const exampleEvents = [
-      { title: 'My Events', icon: <LuPartyPopper />, path: '/my-events' },
-      { title: 'Chats', icon: <IoChatboxEllipsesOutline />, path: '/chats' },
-      { title: 'Create Event', icon: <IoCreateOutline />, path: '/create-event' },
-      { title: 'All Events', icon: <IoCreateOutline />, path: '/all-events' },
-    ];
-    setEvents(exampleEvents);
+   
   }, []);
 
+
+  
   return (
-    <div style={{ color: 'white' }}>
-      <h1>Welcome to the Main Menu!</h1>
+    <div style={{ color: 'white' 
+      
+    }}>
+      <div class="container">
+      <h1>Welcome!</h1>
+      <h2>Special events for you!</h2>
       {userData ? (
         <UserCard userData={userData} handleLogout={handleLogout} />
       ) : (
         <p>No user data found.</p>
       )}
-      <RandomCategoryChart />
-      <div className="card-container">
-        {events.map((event, index) => (
-          <EventCard key={index} event={event} />
-        ))}
       </div>
-    </div>
+      {/* Navbar */}
+      <Navbar/>
+     </div>
   );
 };
 
@@ -90,7 +98,7 @@ const UserCard = ({ userData, handleLogout }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const UserID = getUserDataFromCookies();
   const UserProfilePicture = userData.profileImage
-  ? `http://127.0.0.1:5000/uploads/${userData.profileImage.split("\\").pop()}`
+  ? `http://127.0.0.1:5001/uploads/${userData.profileImage.split("\\").pop()}`
   : defaultImage;
   console.log(UserProfilePicture);
 
