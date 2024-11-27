@@ -5,16 +5,14 @@ export const LogOut = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Kullanıcı oturumunu sonlandır
-    // Örneğin, bir token'i temizle
-    localStorage.removeItem('token');
+    document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `remember_me=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 
-    // 2 saniye bekleyip login ekranına yönlendir
     const timeout = setTimeout(() => {
-      navigate('/register');
-    }, 2000);
+      navigate('/login');
+    }, 500);
 
-    return () => clearTimeout(timeout); // Temizlik işlemi
+    return () => clearTimeout(timeout);
   }, [navigate]);
 
   return (

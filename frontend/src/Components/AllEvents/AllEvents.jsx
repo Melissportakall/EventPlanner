@@ -1,27 +1,80 @@
 import React, { useEffect, useState } from 'react';
-import './AllEvents.css'; // Stil dosyası
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';  // MUI bileşenlerini import ediyoruz
+import './AllEvents.css';
+import { Grid, Paper, Typography, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
 import Navbar from '../Navbar/Navbar';
-import Eventsdateinfo from '../Eventsdateinfo/Eventsdateinfo';
+import UserCard from '../UserCard/Usercard.jsx'
+import { useNavigate } from 'react-router-dom';
+
 const containerStyle = {
   width: '100%',
   height: '400px',
 };
 
+const getUserDataFromCookies = () => {
+  const cookies = document.cookie.split('; ');
+  for (let cookie of cookies) {
+    const [key, value] = cookie.split('=');
+    if (key === 'user_data') {
+      return value;
+    }
+  }
+  return null;
+};
+
 const AllEvents = () => {
   const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null); // Seçilen etkinlik için state
-  const [open, setOpen] = useState(false); // Modal'ın açık/kapalı durumu
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar açık/kapalı durumu
-  const [snackbarMessage, setSnackbarMessage] = useState(''); // Snackbar mesajı
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [tabValue, setTabValue] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const [map, setMap] = useState(null);
   const [markerPosition, setMarkerPosition] = useState({ lat: 41.015137, lng: 28.979530 });
-  const [marker, setMarker] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = 'All Events';
+
+    // Fetch all events
+    fetch('/get_joined_events')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.events) {
+          setEvents(data.events);
+          filterEvents(data.events, 0); // Default to upcoming events
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch((error) => console.error('Error fetching events:', error));
+  }, []);
+
+  useEffect(() => {
+    const userId = getUserDataFromCookies();
+
+    if (userId) {
+      fetch(`/get_user_info?user_id=${userId}`, {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            setUserData(data.user);
+          } else {
+            console.log(data.message);
+          }
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+    } else {
+      console.log("No user ID found in cookies");
+    }
+
+   
   }, []);
 
   useEffect(() => {
@@ -32,7 +85,7 @@ const AllEvents = () => {
         console.error("Google Maps API yüklenemedi.");
       }
     };
-
+    
     if (window.google) {
       loadMapScript();
     } else {
@@ -43,18 +96,18 @@ const AllEvents = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetch('/get_all_events')
-      .then(response => response.json())
-      .then(data => {
-        if (data.events) {
-          setEvents(data.events);
-        } else {
-          console.log(data.message);
-        }
-      })
-      .catch(error => console.error('Error fetching events:', error));
-  }, []);
+  const filterEvents = (events, tabIndex) => {
+    const now = new Date();
+    if (tabIndex === 0) {
+      // Filter upcoming events
+      const upcoming = events.filter((event) => new Date(event.date) >= now);
+      setFilteredEvents(upcoming);
+    } else if (tabIndex === 1) {
+      // Filter past events
+      const past = events.filter((event) => new Date(event.date) < now);
+      setFilteredEvents(past);
+    }
+  };
 
   const fetchCoordinates = (address) => {
     const geocoder = new window.google.maps.Geocoder();
@@ -72,6 +125,11 @@ const AllEvents = () => {
         setSnackbarOpen(true);
       }
     });
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+    filterEvents(events, newValue);
   };
 
   const handleOpen = (event) => {
@@ -148,28 +206,48 @@ const AllEvents = () => {
     }
   }, [isLoaded, map, selectedEvent, markerPosition]);
 
+  const handleLogout = () => {
+    document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `remember_me=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+
+    navigate('/login');
+  };
+
   return (
     <div className="event-list-container">
-      {/* Başlık Ekle */}
-      <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
-        All Events Here!
+      {userData ? (
+          <UserCard userData={userData} handleLogout={handleLogout} />
+        ) : (
+          <p>No user data found.</p>
+        )}
+
+      <Typography variant="h4" align="center" style={{color:'white'}}gutterBottom>
         <Navbar />
-        <Eventsdateinfo />
+        All Events Here!
       </Typography>
 
       <Grid container spacing={3}>
-        {events.length > 0 ? (
-          events.map((event) => (
+        {filteredEvents.length > 0 ? (
+          filteredEvents.map((event) => (
             <Grid item xs={12} sm={4} md={4} key={event.id}>
-              <Paper elevation={3} style={{ padding: '5px', textAlign: 'center', cursor: 'pointer', minHeight: '250px' }} className='event-card' onClick={() => handleOpen(event)}>
-                <Typography variant="h6" className='event-card-title'>{event.event_name}</Typography>
-                <Typography classname='event-dateils' color="textSecondary">{event.date}</Typography>
-                <Typography classname='event-dateils' color="textSecondary">{event.time}</Typography>
+              <Paper
+                  elevation={3}
+                  style={{
+                  padding: '20px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  minHeight: '250px',
+                }}
+                onClick={() => handleOpen(event)}
+              >
+                <Typography variant="h6">{event.event_name}</Typography>
+                <Typography color="textSecondary">{event.date}</Typography>
+                <Typography color="textSecondary">{event.time}</Typography>
               </Paper>
             </Grid>
           ))
         ) : (
-          <Typography variant="body1">Henüz etkinlik bulunmamaktadır.</Typography>
+          <Typography variant="body1">No events found.</Typography>
         )}
       </Grid>
 
@@ -203,8 +281,6 @@ const AllEvents = () => {
         onClose={handleSnackbarClose}
         message={snackbarMessage}
       />
-
-
     </div>
   );
 };

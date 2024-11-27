@@ -49,7 +49,7 @@ function App() {
                   <Route path="/all-events" element={<AllEvents />} />
                   <Route path="/my-events" element={<MyEvents />} />
                   <Route path="/chats" element={<Chats />} />
-                  <Route path="/viewmyprofile" element={<ViewMyProfile />} />
+                  <Route path="/view-profile" element={<ViewMyProfile />} />
                   <Route path="/logout" element={<LogOut />} />
                 </Routes>
               </AuthGuard>

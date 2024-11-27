@@ -10,7 +10,7 @@ const Navbar = () => {
     { title: 'Chats', icon: <IoChatboxEllipsesOutline />, path: '/chats' },
     { title: 'Create Event', icon: <IoCreateOutline />, path: '/create-event' },
     { title: 'All Events', icon: <IoCreateOutline />, path: '/all-events' },
-    { title: 'View My Profile', icon: <IoCreateOutline />, path: '/viewmyprofile' },
+    { title: 'View My Profile', icon: <IoCreateOutline />, path: '/view-profile' },
     { title: 'Log Out', icon: <IoCreateOutline />, path: '/logout' },
     
   ];
