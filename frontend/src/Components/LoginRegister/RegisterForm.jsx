@@ -1,5 +1,4 @@
-// RegisterForm.jsx
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUser, FaUnlockAlt, FaBirthdayCake, FaTransgender, FaPhone } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { AiOutlinePicture } from "react-icons/ai";
@@ -8,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const RegisterForm = ({ toggleForm }) => {
     useEffect(() => {
         document.title = 'Register';
-      }, []);
+    }, []);
 
     const [formData, setFormData] = useState({
         username: "",
@@ -18,12 +17,26 @@ const RegisterForm = ({ toggleForm }) => {
         gender: "",
         phonenumber: "",
         email: "",
-        password: ""
+        password: "",
+        interests: []
     });
+
+    const [isModalOpen, setIsModalOpen] = useState(false); // İlgi alanları modalını kontrol eder
+    const [availableInterests] = useState(["Music", "Sports", "Technology", "Art", "Travel", "Books"]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleCheckboxChange = (e) => {
+        const { value, checked } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            interests: checked
+                ? [...prevState.interests, value] // Ekleniyor
+                : prevState.interests.filter((interest) => interest !== value) // Çıkarılıyor
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -133,6 +146,22 @@ const RegisterForm = ({ toggleForm }) => {
                         />
                         <FaUnlockAlt className='icon' />
                     </div>
+
+                    {/* İlgi Alanları */}
+                    <div className="input-box">
+                        <input 
+                            type="text" 
+                            placeholder="Select Interests" 
+                            value={formData.interests.join(", ")} 
+                            readOnly 
+                        />
+                        <AiOutlinePicture 
+                            className='icon' 
+                            onClick={() => setIsModalOpen(true)} 
+                            style={{ cursor: 'pointer' }}
+                        />
+                    </div>
+
                     <div className="remember-forgot">
                         <label><input type="checkbox" required /> I agree to the terms & conditions</label>
                     </div>
@@ -142,6 +171,29 @@ const RegisterForm = ({ toggleForm }) => {
                     </div>
                 </form>
             </div>
+
+            {/* İlgi Alanları Modali */}
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Select Your Interests</h2>
+                        <div className="checkbox-list">
+                            {availableInterests.map((interest, index) => (
+                                <label key={index}>
+                                    <input 
+                                        type="checkbox" 
+                                        value={interest} 
+                                        onChange={handleCheckboxChange}
+                                        checked={formData.interests.includes(interest)}
+                                    />
+                                    {interest}
+                                </label>
+                            ))}
+                        </div>
+                        <button onClick={() => setIsModalOpen(false)}>Done</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

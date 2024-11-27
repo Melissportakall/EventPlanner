@@ -1,52 +1,53 @@
+
 .user-card {
-  background: linear-gradient(135deg, #dc87ce, #5aaac2); /* Kartın arka planı için gradyan */
-  background-color: rgba(255, 255, 255, 0.1); /* Yarı saydam beyaz arka plan */
-  border-radius: 8px; /* Köşeleri yuvarlat */
-  padding: 20px; /* İçerik için boşluk */
-  margin: 20px 0; /* Üst ve alt boşluk */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
-  width: 250px; /* Kart genişliği */
-  position: fixed; /* Kartı sabit konumda tut */
-  top: 20px; /* Üstten boşluk */
-  left: 40px; /* Soldan boşluk */
-}
-
-.user-card h3 {
-  margin-bottom: 15px; /* Başlık altındaki boşluk */
-  text-align: center; /* Başlığı ortala */
-  color: black; /* Başlık rengini siyah yap */
-  max-width: 200px; /* Genişliği kısıtla */
-  margin: 0 auto; /* Ortala */
-  text-shadow: none; /* Gölgeyi kaldır */
-}
-
-.user-card ul {
-  list-style-type: none; /* Madde işaretlerini kaldır */
-  padding: 0; /* Varsayılan iç boşluğu kaldır */
-}
-
-.user-card li {
-  margin: 5px 0; /* Her bir madde için boşluk */
-  color: black; /* Yazı rengini siyah yap */
-  text-shadow: none; /* Gölgeyi kaldır */
-  max-width: 200px; /* Genişliği kısıtla */
-  margin: 0 auto; /* Ortala */
-}
-
-.user-image {
-  width: 210px; /* Resim alanının genişliğini kartın genişliği ile eşleştir */
-  height: 210px; /* Resim alanının yüksekliği */
-  overflow: hidden; /* Taşan kısımları gizle */
-  border-radius: 8px; /* Kenarları yuvarlat */
-  margin-bottom: 15px; /* Resim ile içerik arasına boşluk */
-}
-
-.user-image img {
-  width: 100%; /* Resmin genişliği */
-  height: 100%; /* Resmin yüksekliği */
-  object-fit: cover; /* Resmi kesilmeden alanı doldur */
-  border-radius: 50%; /* Resim kenarlarını yuvarlat */
-}
+    background: linear-gradient(135deg, #dc87ce, #5aaac2); /* Kartın arka planı için gradyan */
+    background-color: rgba(255, 255, 255, 0.1); /* Yarı saydam beyaz arka plan */
+    border-radius: 8px; /* Köşeleri yuvarlat */
+    padding: 20px; /* İçerik için boşluk */
+    margin: 20px 0; /* Üst ve alt boşluk */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
+    width: 250px; /* Kart genişliği */
+    position: fixed; /* Kartı sabit konumda tut */
+    top: 20px; /* Üstten boşluk */
+    left: 40px; /* Soldan boşluk */
+  }
+  
+  .user-card h3 {
+    margin-bottom: 15px; /* Başlık altındaki boşluk */
+    text-align: center; /* Başlığı ortala */
+    color: black; /* Başlık rengini siyah yap */
+    max-width: 200px; /* Genişliği kısıtla */
+    margin: 0 auto; /* Ortala */
+    text-shadow: none; /* Gölgeyi kaldır */
+  }
+  
+  .user-card ul {
+    list-style-type: none; /* Madde işaretlerini kaldır */
+    padding: 0; /* Varsayılan iç boşluğu kaldır */
+  }
+  
+  .user-card li {
+    margin: 5px 0; /* Her bir madde için boşluk */
+    color: black; /* Yazı rengini siyah yap */
+    text-shadow: none; /* Gölgeyi kaldır */
+    max-width: 200px; /* Genişliği kısıtla */
+    margin: 0 auto; /* Ortala */
+  }
+  
+  .user-image {
+    width: 210px; /* Resim alanının genişliğini kartın genişliği ile eşleştir */
+    height: 210px; /* Resim alanının yüksekliği */
+    overflow: hidden; /* Taşan kısımları gizle */
+    border-radius: 8px; /* Kenarları yuvarlat */
+    margin-bottom: 15px; /* Resim ile içerik arasına boşluk */
+  }
+  
+  .user-image img {
+    width: 100%; /* Resmin genişliği */
+    height: 100%; /* Resmin yüksekliği */
+    object-fit: cover; /* Resmi kesilmeden alanı doldur */
+    border-radius: 50%; /* Resim kenarlarını yuvarlat */
+  }
   
   
   /* Modal arka planının stilini güncelle */

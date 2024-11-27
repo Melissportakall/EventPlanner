@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import NavBar from '../Navbar/Navbar';
 import defaultImage from './default-image-url.jpg';
-import './ViewMyProfile.css';
+import './ViewMyProfile.css'; // CSS dosyasını dahil ettik
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
@@ -22,11 +22,9 @@ const ViewMyProfile = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const UserID = getUserDataFromCookies();
-
-  const UserProfilePicture =
-    userData && userData.profileImage
-      ? `http://127.0.0.1:5001/uploads/${userData.profileImage.split("\\").pop()}`
-      : defaultImage;
+  const UserProfilePicture = userData && userData.profileImage
+    ? `http://127.0.0.1:5001/uploads/${userData.profileImage.split("\\").pop()}`
+    : defaultImage;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,7 +39,7 @@ const ViewMyProfile = () => {
             setUserData(data.user);
             setEditedUserData(data.user);
           } else {
-            console.error('Error fetching user data:', data.message);
+            console.log(data.message);
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -65,7 +63,7 @@ const ViewMyProfile = () => {
       formData.append('surname', editedUserData.surname);
       formData.append('email', editedUserData.email);
       formData.append('phone', editedUserData.phone);
-      formData.append('password', editedUserData.password || '');
+      formData.append('password', editedUserData.password);
 
       if (editedUserData.profileImageFile) {
         formData.append('photo', editedUserData.profileImageFile);
@@ -78,10 +76,15 @@ const ViewMyProfile = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log('User data updated:', data);
         setSnackbarMessage('Profil başarıyla güncellendi!');
         setSnackbarOpen(true);
         setIsModalOpen(false);
-        setUserData({ ...editedUserData, profileImage: data.profileImage });
+
+        setEditedUserData((prevData) => ({
+          ...prevData,
+          profileImage: `/static/uploads/${data.profileImage}`,
+        }));
       } else {
         console.error('Failed to update user data');
       }
@@ -93,7 +96,10 @@ const ViewMyProfile = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setEditedUserData({ ...editedUserData, profileImageFile: file });
+      setEditedUserData((prevData) => ({
+        ...prevData,
+        profileImageFile: file,
+      }));
     }
   };
 
@@ -107,45 +113,84 @@ const ViewMyProfile = () => {
   };
 
   const renderModal = () => (
-    <div className="modal-overlay" onClick={handleCancel}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="modal-overlay"
+      onClick={handleCancel}
+    >
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2>Edit Profile</h2>
         <div className="profile-image-container">
-          <img src={UserProfilePicture} alt="User" className="modal-profile-image" />
-          <input type="file" onChange={handleImageChange} />
+          <img
+            src={UserProfilePicture}
+            alt="User"
+            className="modal-profile-image"
+          />
+          <input
+            type="file"
+            onChange={handleImageChange}
+          />
         </div>
         <form>
           <label>
             Name:
-            <input type="text" name="name" value={editedUserData.name || ''} onChange={handleInputChange} />
+            <input
+              type="text"
+              name="name"
+              value={editedUserData.name}
+              onChange={handleInputChange}
+            />
           </label>
           <label>
             Surname:
-            <input type="text" name="surname" value={editedUserData.surname || ''} onChange={handleInputChange} />
+            <input
+              type="text"
+              name="surname"
+              value={editedUserData.surname}
+              onChange={handleInputChange}
+            />
           </label>
           <label>
             Email:
-            <input type="email" name="email" value={editedUserData.email || ''} onChange={handleInputChange} />
+            <input
+              type="email"
+              name="email"
+              value={editedUserData.email}
+              onChange={handleInputChange}
+            />
           </label>
           <label>
             Phone:
-            <input type="text" name="phone" value={editedUserData.phone || ''} onChange={handleInputChange} />
+            <input
+              type="text"
+              name="phone"
+              value={editedUserData.phone}
+              onChange={handleInputChange}
+            />
           </label>
           <label>
             Password:
             <input
               type="password"
               name="password"
-              value={editedUserData.password || ''}
+              value={editedUserData.password || ""}
               placeholder="Change password (optional)"
               onChange={handleInputChange}
             />
           </label>
           <div className="buttons-container">
-            <button type="button" onClick={handleCancel}>
+            <button
+              type="button"
+              onClick={handleCancel}
+            >
               Cancel
             </button>
-            <button type="button" onClick={handleProfileUpdate}>
+            <button
+              type="button"
+              onClick={handleProfileUpdate}
+            >
               Save
             </button>
           </div>
@@ -161,28 +206,20 @@ const ViewMyProfile = () => {
         {userData ? (
           <div className="profile-details">
             <div className="profile-image-container">
-              <img src={UserProfilePicture} alt="User Profile" className="profile-image" />
+              <img
+                src={UserProfilePicture}
+                alt="User Profile"
+                className="profile-image"
+              />
             </div>
             <div className="profile-text">
-              <h2>
-                {userData.name} {userData.surname}
-              </h2>
-              <p>
-                <strong>Total Points:</strong> {userData.points || '25'}
-              </p>
-              <p>
-                <strong>Gender:</strong> {userData.gender}
-              </p>
-              <p>
-                <strong>Birth Date:</strong> {userData.birthdate}
-              </p>
+              <h2>{userData.name} {userData.surname}</h2>
+              <p><strong>Total Points:</strong> {userData.points || '25'}</p>
+              <p><strong>Gender:</strong> {userData.gender}</p>
+              <p><strong>Birth Date:</strong> {userData.birthdate}</p>
               <h3>Contact Information</h3>
-              <p>
-                <strong>Email:</strong> {userData.email}
-              </p>
-              <p>
-                <strong>Phone:</strong> {userData.phone}
-              </p>
+              <p><strong>Email:</strong> {userData.email}</p>
+              <p><strong>Phone:</strong> {userData.phone}</p>
               <button onClick={() => setIsModalOpen(true)}>Edit Profile</button>
             </div>
           </div>
@@ -191,6 +228,7 @@ const ViewMyProfile = () => {
         )}
         {isModalOpen && renderModal()}
       </div>
+  
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
@@ -199,6 +237,7 @@ const ViewMyProfile = () => {
       />
     </div>
   );
+  
 };
 
 export default ViewMyProfile;

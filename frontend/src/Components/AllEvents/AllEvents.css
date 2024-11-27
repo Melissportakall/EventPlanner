@@ -14,13 +14,13 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 400px;
-  max-height: 80%;
+  width: 700px;
+  max-height: 60%;
   overflow-y: auto;
 }
 
 .modal-box h5 {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   margin-bottom: 15px;
 }
 

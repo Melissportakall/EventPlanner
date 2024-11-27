@@ -1,5 +1,5 @@
 .navbar {
-    position:sticky; /* Sayfa kaydırıldığında yerinde kalır */
+    
     top: 10px; /* Üstten 10 piksel boşluk bırakır */
     right: 10px; /* Sağdan 10 piksel boşluk bırakır */
     display: flex; /* Menü öğelerini yatay olarak hizalar */
@@ -12,7 +12,7 @@
     z-index: 1000; /* Diğer içeriklerin üstünde görünmesini sağlar */
     align-items: center; /* Dikey hizalama */
     height: 50px; /* Menü yüksekliği */
-    width: 1240px; /* Menü genişliği */
+    width: 100vw; /* Tam genişlik */
     margin-bottom: 50px; /* Navbar ile bileşenler arasındaki boşluk */
   }
   
@@ -21,17 +21,18 @@
     list-style: none; /* Noktaları kaldırır */
     padding: 0; /* İç boşluğu kaldırır */
     margin: 0; /* Dış boşluğu kaldırır */
+    width: 100%; /* Liste genişliğini navbar ile eşit yap */
+    justify-content: space-around; /* Öğeler arasında eşit boşluk */
   }
   
   .nav-item {
-    flex-grow: 1; /* Her bir öğenin eşit şekilde genişlemesini sağlar */
-    margin: 0 15px; /* Sol ve sağdan 15 piksel boşluk ekleyin */
+    margin: 0; /* Öğe boşluklarını kaldır */
   }
   
   .nav-link {
     color: white; /* Yazı rengini beyaz yapar */
     text-decoration: none; /* Alt çizgiyi kaldırır */
-    font-size: 25px; /* Yazı boyutunu biraz büyütür */
+    font-size: 20px; /* Yazı boyutunu biraz büyütür */
     transition: color 0.3s ease; /* Geçiş efekti ekler */
     display: flex; /* Flex kullanarak ikon ve metni yan yana hizalar */
     align-items: center; /* Dikey merkezleme */

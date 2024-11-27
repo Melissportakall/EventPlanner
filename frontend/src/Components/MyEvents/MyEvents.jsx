@@ -1,10 +1,31 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar, Tabs, Tab, TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Grid, Paper, Typography, Modal, Button, Box, Snackbar ,Tabs, Tab, TextField, MenuItem, Select, InputLabel, FormControl} from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
-import Navbar from '../Navbar/Navbar';
 import './MyEvents.css';
-import UserCard from '../UserCard/Usercard.jsx'
-import { useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
+import Eventsdateinfo from '../Eventsdateinfo/Eventsdateinfo';
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const containerStyle = {
@@ -12,136 +33,69 @@ const containerStyle = {
   height: '400px',
 };
 
-const getUserDataFromCookies = () => {
-  const cookies = document.cookie.split('; ');
-  for (let cookie of cookies) {
-    const [key, value] = cookie.split('=');
-    if (key === 'user_data') {
-      return value;
-    }
-  }
-  return null;
-};
-
-
 const MyEvents = () => {
   const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
-  const [tabValue, setTabValue] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [open, setOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [map, setMap] = useState(null);
   const [markerPosition, setMarkerPosition] = useState({ lat: 41.015137, lng: 28.979530 });
+  const [marker, setMarker] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [startingPoint, setStartingPoint] = useState('');
-  const [travelMode, setTravelMode] = useState('DRIVING'); //varsayılan
-  const [directionsRenderer, setDirectionsRenderer] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const navigate = useNavigate();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   useEffect(() => {
     document.title = 'My Events';
-
-    // Fetch all events
-    fetch('/get_joined_events')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.events) {
-          setEvents(data.events);
-          filterEvents(data.events, 0); // Default to upcoming events
-        } else {
-          console.log(data.message);
-        }
-      })
-      .catch((error) => console.error('Error fetching events:', error));
   }, []);
-
-  useEffect(() => {
-    const userId = getUserDataFromCookies();
-
-    if (userId) {
-      fetch(`/get_user_info?user_id=${userId}`, {
-        method: 'GET',
-        credentials: 'include',
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            setUserData(data.user);
-          } else {
-            console.log(data.message);
-          }
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-    } else {
-      console.log("No user ID found in cookies");
-    }
-
-   
-  }, []);
-
-  const filterEvents = (events, tabIndex) => {
-    const now = new Date();
-    if (tabIndex === 0) {
-      // Filter upcoming events
-      const upcoming = events.filter((event) => new Date(event.date) >= now);
-      setFilteredEvents(upcoming);
-    } else if (tabIndex === 1) {
-      // Filter past events
-      const past = events.filter((event) => new Date(event.date) < now);
-      setFilteredEvents(past);
-    }
-  };
 
   useEffect(() => {
     const loadMapScript = () => {
       if (window.google) {
         setIsLoaded(true);
       } else {
-        console.error('Google Maps API yüklenemedi.');
+        console.error("Google Maps API yüklenemedi.");
       }
     };
 
     if (window.google) {
       loadMapScript();
     } else {
-      window.addEventListener('load', loadMapScript);
+      window.addEventListener("load", loadMapScript);
       return () => {
-        window.removeEventListener('load', loadMapScript);
+        window.removeEventListener("load", loadMapScript);
       };
     }
   }, []);
 
   useEffect(() => {
-    if (isLoaded && map && selectedEvent) {
-      if (window.google.maps.marker?.AdvancedMarkerElement) {
-        const marker = new window.google.maps.marker.AdvancedMarkerElement({
-          map,
-          position: markerPosition,
-        });
-
-        return () => {
-          marker.setMap(null);
-        };
-      } else {
-        const marker = new window.google.maps.Marker({
-          map,
-          position: markerPosition,
-        });
-
-        return () => {
-          marker.setMap(null);
-        };
-      }
-    }
-  }, [isLoaded, map, selectedEvent, markerPosition]);
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-    filterEvents(events, newValue);
-  };
+    fetch('/get_joined_events')
+      .then(response => response.json())
+      .then(data => {
+        if (data.events) {
+          setEvents(data.events);
+        } else {
+          console.log(data.message);
+        }
+      })
+      .catch(error => console.error('Error fetching events:', error));
+  }, []);
 
   const fetchCoordinates = (address) => {
     const geocoder = new window.google.maps.Geocoder();
@@ -184,7 +138,57 @@ const MyEvents = () => {
       });
   };
 
-  const drawRoute = () => {
+
+  const handleOpen = (event) => {
+    setSelectedEvent(event);
+    setOpen(true);
+
+    if (event.location) {
+      fetchCoordinates(event.location);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  useEffect(() => {
+    if (isLoaded && map && selectedEvent) {
+      if (window.google.maps.marker?.AdvancedMarkerElement) {
+        const marker = new window.google.maps.marker.AdvancedMarkerElement({
+          map,
+          position: markerPosition,
+        });
+
+        return () => {
+          marker.setMap(null);
+        };
+      } else {
+        const marker = new window.google.maps.Marker({
+          map,
+          position: markerPosition,
+        });
+
+        return () => {
+          marker.setMap(null);
+        };
+      }
+    }
+  }, [isLoaded, map, selectedEvent, markerPosition]);
+
+
+
+
+  const [startingPoint, setStartingPoint] = useState('');
+  const [travelMode, setTravelMode] = useState('DRIVING'); //varsayılan
+  const [directionsRenderer, setDirectionsRenderer] = useState(null);
+
+const drawRoute = () => {
     const directionsService = new window.google.maps.DirectionsService();
   
     //önceden render edileni sil
@@ -219,98 +223,7 @@ const MyEvents = () => {
     );
   };
 
-  const handleOpen = (event) => {
-    setSelectedEvent(event);
-    setOpen(true);
-
-    if (event.location) {
-      fetchCoordinates(event.location);
-    }
-  };
-
-  const handleClose = () => {
-    if (directionsRenderer) {
-      directionsRenderer.setMap(null);
-    }
-    setOpen(false);
-    setSelectedEvent(null);
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
-  const handleLogout = () => {
-    document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    document.cookie = `remember_me=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-
-    navigate('/login');
-  };
-
-  return (
-    <div className="event-list-container">
-      {userData ? (
-          <UserCard userData={userData} handleLogout={handleLogout} />
-        ) : (
-          <p>No user data found.</p>
-        )}
-      <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
-        <Navbar />
-        My Events
-      </Typography>
-
-      <Tabs
-        value={tabValue}
-        onChange={handleTabChange}
-        centered
-        sx={{
-          '& .MuiTab-root': {
-            backgroundColor: 'transparent',
-            color: 'white',
-            textTransform: 'none',
-            fontWeight: 'bold',
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            margin: '0 5px',
-            minWidth: '150px',
-          },
-          '& .Mui-selected': {
-            backgroundColor: 'white',
-            color: 'black',
-          },
-          marginBottom: '20px',
-        }}
-      >
-        <Tab label="Upcoming Events" />
-        <Tab label="Past Events" />
-      </Tabs>
-
-      <Grid container spacing={3}>
-        {filteredEvents.length > 0 ? (
-          filteredEvents.map((event) => (
-            <Grid item xs={12} sm={4} md={4} key={event.id}>
-              <Paper
-                elevation={3}
-                style={{
-                  padding: '20px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  minHeight: '250px',
-                }}
-                onClick={() => handleOpen(event)}
-              >
-                <Typography variant="h6">{event.event_name}</Typography>
-                <Typography color="textSecondary">{event.date}</Typography>
-                <Typography color="textSecondary">{event.time}</Typography>
-              </Paper>
-            </Grid>
-          ))
-        ) : (
-          <Typography variant="body1">No events found.</Typography>
-        )}
-      </Grid>
-
-      <Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
+<Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
         <Box className="modal-box">
           {selectedEvent && (
             <>
@@ -388,6 +301,85 @@ const MyEvents = () => {
                 }}
                 onClick={() => handleLeaveEvent(selectedEvent?.id)}
               >
+                Leave Event
+              </Button>
+            </>
+          )}
+        </Box>
+      </Modal>
+
+
+
+
+
+
+
+
+
+
+
+  return (
+
+    <div className="event-list-container">
+      <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
+        <Navbar />
+        <Eventsdateinfo />
+        My Events
+      </Typography>
+
+      <Grid container spacing={3}>
+        {events.length > 0 ? (
+          events.map((event) => (
+            <Grid item xs={12} sm={4} md={4} key={event.id}>
+              <Paper
+                elevation={3}
+                style={{
+                  padding: '20px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  minHeight: '250px',
+                }}
+                onClick={() => handleOpen(event)}
+              >
+                <Typography variant="h6">{event.event_name}</Typography>
+                <Typography color="textSecondary">{event.date}</Typography>
+                <Typography color="textSecondary">{event.time}</Typography>
+              </Paper>
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="body1">No events found.</Typography>
+        )}
+      </Grid>
+
+      {/* Modal */}
+      <Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
+        <Box className="modal-box">
+          {selectedEvent && (
+            <>
+              <Typography variant="h6" align="center" marginBottom={2} marginTop={2}>
+                <strong>{selectedEvent.event_name}</strong>
+              </Typography>
+              <Typography variant="body1">
+                <strong>Description:</strong> {selectedEvent.description}
+              </Typography>
+              <Typography variant="body1">
+                <strong>Date:</strong> {selectedEvent.date}
+              </Typography>
+              <Typography variant="body1">
+                <strong>Time:</strong> {selectedEvent.time}
+              </Typography>
+              <Typography variant="body1">
+                <strong>Location:</strong> {selectedEvent.location}
+              </Typography>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={markerPosition}
+                zoom={13}
+                onLoad={(mapInstance) => setMap(mapInstance)}
+              ></GoogleMap>
+
+              <Button variant="contained" color="primary" onClick={() => handleLeaveEvent(selectedEvent?.id)}>
                 Leave Event
               </Button>
             </>

@@ -9,7 +9,8 @@ import CreateEvent from './Components/CreateEvent/CreateEvent';
 import AllEvents from './Components/AllEvents/AllEvents';
 import MyEvents from './Components/MyEvents/MyEvents';
 import Chats from './Components/Chats/Chats';
-import ViewProfile from './Components/ViewProfile/ViewMyProfile';
+import ViewMyProfile from './Components/ViewMyProfile/ViewMyProfile';
+import LogOut from './Components/LogOut/LogOut';
 
 function App() {
   useEffect(() => {
@@ -44,11 +45,12 @@ function App() {
               <AuthGuard>
                 <Routes>
                   <Route path="/mainmenu" element={<MainMenu />} />
-                  <Route path="/view-profile" element={<ViewProfile />} />
                   <Route path="/create-event" element={<CreateEvent />} />
                   <Route path="/all-events" element={<AllEvents />} />
                   <Route path="/my-events" element={<MyEvents />} />
                   <Route path="/chats" element={<Chats />} />
+                  <Route path="/viewmyprofile" element={<ViewMyProfile />} />
+                  <Route path="/logout" element={<LogOut />} />
                 </Routes>
               </AuthGuard>
             }
