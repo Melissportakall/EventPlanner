@@ -6,14 +6,54 @@ import { MdCenterFocusStrong } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import './CreateEvent.css';
 import Navbar from '../Navbar/Navbar'; 
+import UserCard from '../UserCard/Usercard.jsx'
+
 const containerStyle = {
   width: '100%',
   height: '400px',
 };
 
+const getUserDataFromCookies = () => {
+  const cookies = document.cookie.split('; ');
+  for (let cookie of cookies) {
+    const [key, value] = cookie.split('=');
+    if (key === 'user_data') {
+      return value;
+    }
+  }
+  return null;
+};
+
 const CreateEvent = () => {
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = 'Create Event';
+  }, []);
+
+  useEffect(() => {
+    const userId = getUserDataFromCookies();
+
+    if (userId) {
+      fetch(`/get_user_info?user_id=${userId}`, {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            setUserData(data.user);
+          } else {
+            console.log(data.message);
+          }
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+    } else {
+      console.log("No user ID found in cookies");
+    }
+
+   
   }, []);
 
   const [markerPosition, setMarkerPosition] = useState({
@@ -36,8 +76,6 @@ const CreateEvent = () => {
     setMarkerPosition({ lat, lng });
     getAddress(lat, lng);
   };
-
-  const navigate = useNavigate();
 
   const getAddress = (lat, lng) => {
     const geocoder = new window.google.maps.Geocoder();
@@ -92,85 +130,98 @@ const CreateEvent = () => {
     }
   };
 
+  const handleLogout = () => {
+    document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `remember_me=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+
+    navigate('/login');
+  };
+
   return (
     <div className="container">
-  <Navbar />
-  <div className="wrapper">
-    <div className="form-box">
-      <h1>Create Event</h1>
-      <div className="input-box">
-        <input
-          type="text"
-          placeholder="Event Name"
-          name="event_name"
-          value={eventData.event_name}
-          onChange={handleChange}
-        />
-        <LuPartyPopper className="icon" />
-      </div>
+      {userData ? (
+          <UserCard userData={userData} handleLogout={handleLogout} />
+        ) : (
+          <p>No user data found.</p>
+        )}
 
-      <div className="input-box">
-        <input
-          type="date"
-          name="date"
-          value={eventData.date}
-          onChange={handleChange}
-        />
-        <FaRegCalendarAlt className="icon" />
-      </div>
+      <Navbar />
+      <div className="wrapper">
+        <div className="form-box">
+          <h1>Create Event</h1>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Event Name"
+              name="event_name"
+              value={eventData.event_name}
+              onChange={handleChange}
+            />
+            <LuPartyPopper className="icon" />
+          </div>
 
-      <div className="input-box">
-        <input
-          type="text"
-          placeholder="Event Time"
-          name="time"
-          value={eventData.time}
-          onChange={handleChange}
-        />
-        <FaClock className="icon" />
-      </div>
+          <div className="input-box">
+            <input
+              type="date"
+              name="date"
+              value={eventData.date}
+              onChange={handleChange}
+            />
+            <FaRegCalendarAlt className="icon" />
+          </div>
 
-      <div className="input-box">
-        <input
-          type="text"
-          placeholder="Event Duration (min)"
-          name="duration"
-          value={eventData.duration}
-          onChange={handleChange}
-        />
-        <FaClock className="icon" />
-      </div>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Event Time"
+              name="time"
+              value={eventData.time}
+              onChange={handleChange}
+            />
+            <FaClock className="icon" />
+          </div>
 
-      <div className="input-box">
-        <input
-          type="text"
-          placeholder="Category"
-          name="category"
-          value={eventData.category}
-          onChange={handleChange}
-        />
-        <FaClipboardList className="icon" />
-      </div>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Event Duration (min)"
+              name="duration"
+              value={eventData.duration}
+              onChange={handleChange}
+            />
+            <FaClock className="icon" />
+          </div>
 
-      <div id="map-container">
-        <label>Location</label>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={markerPosition}
-          zoom={13}
-          onClick={handleMapClick}
-        >
-          <Marker position={markerPosition} />
-        </GoogleMap>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Category"
+              name="category"
+              value={eventData.category}
+              onChange={handleChange}
+            />
+            <FaClipboardList className="icon" />
+          </div>
+
+          <div id="map-container">
+            <label>Location</label>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={markerPosition}
+              zoom={13}
+              onClick={handleMapClick}
+            >
+              <Marker position={markerPosition} />
+            </GoogleMap>
+          </div>
+          <div className="address-container">
+            <h3>Address:</h3>
+            <p>{address}</p>
+          </div>
+          <button type="submit" onClick={handleSubmit}>Create Event</button>
+        </div>
       </div>
-      <div className="address-container">
-        <h3>Address:</h3>
-        <p>{address}</p>
-      </div>
-      <button type="submit" onClick={handleSubmit}>Create Event</button>
     </div>
-  </div>
-</div>
 
   );
 };

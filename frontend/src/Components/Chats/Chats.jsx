@@ -1,19 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import './Chatpage.css';
 import '../MainMenu/MainMenu.jsx';
+import Navbar from '../Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
+import UserCard from '../UserCard/Usercard.jsx'
 
-import Navbar from '../Navbar/Navbar'; 
-import UserCard from '../UserCard/Usercard.jsx';
+const getUserDataFromCookies = () => {
+  const cookies = document.cookie.split('; ');
+  for (let cookie of cookies) {
+    const [key, value] = cookie.split('=');
+    if (key === 'user_data') {
+      return value;
+    }
+  }
+  return null;
+};
 
 const ChatApp = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     document.title = 'Chats';
     fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    const userId = getUserDataFromCookies();
+
+    if (userId) {
+      fetch(`/get_user_info?user_id=${userId}`, {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            setUserData(data.user);
+          } else {
+            console.log(data.message);
+          }
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+    } else {
+      console.log("No user ID found in cookies");
+    }
+
+   
   }, []);
 
   useEffect(() => {
@@ -70,14 +107,21 @@ const ChatApp = () => {
       .catch(error => console.error('Error sending message:', error));
   };
 
- 
+  const handleLogout = () => {
+    document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `remember_me=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 
+    navigate('/login');
+  };
+ 
   return (
-    
     <div className="chat-container">
-      
+      {userData ? (
+        <UserCard userData={userData} handleLogout={handleLogout} />
+      ) : (
+        <p>No user data found.</p>
+      )}
       <Navbar/>
-      <UserCard/>
       <div className="sidebar">
         <h2>Persons-Groups</h2>
         <ul className="contact-list">
