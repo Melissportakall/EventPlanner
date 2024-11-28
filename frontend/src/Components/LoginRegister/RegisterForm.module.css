@@ -1,0 +1,199 @@
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Adjust height based on content */
+    background-color: #f4f4f4;
+  }
+
+  .form_box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    /* Ensure form_box takes height from its content */
+  }
+
+  .input_group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 10px;
+  }
+
+  .input_box {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .input_box input {
+    position: relative;
+    width: 100%;
+    height: 50px; /* Set a fixed height to prevent issues */
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px; /* Ensures the corners are rounded */
+    font-size: 20px;
+    color: #000; /* Text color */
+    padding: 20px 45px 20px 20px;
+    transition: border-color 0.3s, color 0.3s; /* Transition effects */
+  }
+
+  .input_box input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    color: #007bff; /* Change text color on focus */
+  }
+
+  .input_box input::placeholder {
+    color: #888; /* Placeholder rengi gri */
+  }
+
+  .input_box input:focus::placeholder {
+    color: #555; /* Placeholder rengi focus durumunda koyulaşır */
+  }
+
+  .input_box input:not(:focus) {
+    color: #000; /* Odaklanılmadığında da yazılan metin siyah kalır */
+  }
+
+  .input_box input[type="date"] {
+    flex: 1; /* Input genişliğini ikonla uyumlu yap */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #000; /* Yazılan metin siyah */
+    background-color: #fff; /* Arka plan rengi beyaz */
+    appearance: none; /* Tarayıcı varsayılan stilini kaldır */
+  }
+
+  .input_box input[type="date"]::placeholder {
+    color: #888; /* Placeholder rengi gri */
+  }
+
+  .input_box input[type="date"]:focus {
+    outline: none;
+    border-color: #007bff; /* Odaklanıldığında kenar rengi değişir */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hafif mavi gölge */
+  }
+
+  .input_box .icon {
+    position: absolute;
+    right: 5px; /* İkonun inputun sol tarafında yer alması */
+    top: 50%;
+    transform: translateY(-50%); /* İkonun dikey olarak ortalanması */
+    font-size: 20px;
+    color: #888; /* İkon rengi placeholder ile aynı */
+    pointer-events: auto; /* İkon tıklanabilir olmaktan çıkar */
+  }
+
+
+  .input_box input:focus::placeholder {
+    color: #555; /* Placeholder rengi odaklanıldığında koyulaşır */
+  }
+
+  .input_box input:focus + .icon {
+    color: #555; /* İkon rengi odaklanıldığında koyulaşır */
+  }
+
+  .full_width {
+    grid-column: span 2;
+  }
+
+  .large_input {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .checkbox_list {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: #2600ff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  .modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal_content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+  }
+
+  .modal_content button {
+    background-color: #007bff;
+    color: 2600ff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .modal_content button:hover {
+    background-color: #0056b3;
+  }
+
+  .wrapper .remember_forgot{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin-top: 35px;
+  }
+
+  .remember_forgot label input{
+    accent-color: #fff;
+    margin-right: 5px;
+  }
+
+  .remember_forgot a{
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .remember_forgot a:hover{
+    text-decoration: underline;
+  }
+
+  .wrapper .register_link{
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+  }
+
+  .register_link p a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .register_link p a:hover{
+    text-decoration: underline;
+  }

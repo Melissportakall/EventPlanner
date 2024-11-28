@@ -24,7 +24,7 @@ const UserCard = ({ userData, handleLogout }) => {
 
   const UserID = getUserDataFromCookies();
   const UserProfilePicture = userData.profileImage
-  ? `http://127.0.0.1:5000/uploads/${userData.profileImage.split("\\").pop()}`
+  ? `/uploads/${userData.profileImage.split("\\").pop()}`
   : defaultImage;
   console.log(userData);
 

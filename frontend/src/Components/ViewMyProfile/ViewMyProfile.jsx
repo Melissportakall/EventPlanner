@@ -21,9 +21,12 @@ const ViewMyProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [pointsHistory, setPointsHistory] = useState([]);
+  const [totalPoints, setTotalPoints] = useState(0);
+
   const UserID = getUserDataFromCookies();
   const UserProfilePicture = userData && userData.profileImage
-    ? `http://127.0.0.1:5000/uploads/${userData.profileImage.split("\\").pop()}`
+    ? `/uploads/${userData.profileImage.split("\\").pop()}`
     : defaultImage;
 
   useEffect(() => {
@@ -47,7 +50,24 @@ const ViewMyProfile = () => {
       }
     };
 
+    const fetchUserPoints = async () => {
+      try {
+        const response = await fetch('/get_user_points', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (data.success) {
+          setPointsHistory(data.puanlar);
+          setTotalPoints(data.puanlar.reduce((sum, item) => sum + item.point, 0));
+        }
+      } catch (error) {
+        console.error('Error fetching points history:', error);
+      }
+    };
+
     fetchUserData();
+    fetchUserPoints();
   }, [UserID]);
 
   const handleInputChange = (e) => {
@@ -214,21 +234,41 @@ const ViewMyProfile = () => {
             </div>
             <div className="profile-text">
               <h2>{userData.name} {userData.surname}</h2>
-              <p><strong>Total Points:</strong> {userData.points || '25'}</p>
-              <p><strong>Gender:</strong> {userData.gender}</p>
-              <p><strong>Birth Date:</strong> {userData.birthdate}</p>
-              <h3>Contact Information</h3>
+              <p><strong>Username:</strong> {userData.username}</p>
               <p><strong>Email:</strong> {userData.email}</p>
               <p><strong>Phone:</strong> {userData.phone}</p>
+              <p><strong>Location:</strong> {userData.konum || 'Not specified'}</p>
+              <p>
+                  <strong>Interests:</strong> 
+                  {userData.interests
+                      ? userData.interests.split(',').map(interest => interest.trim()).join(', ')
+                      : 'Not specified'}
+              </p>
+              <p><strong>Birth Date:</strong> {userData.birthdate || 'Not specified'}</p>
+              <p><strong>Gender:</strong> {userData.gender || 'Not specified'}</p>
+              <p><strong>Total Points:</strong> {totalPoints}</p>
               <button onClick={() => setIsModalOpen(true)}>Edit Profile</button>
             </div>
           </div>
         ) : (
           <p>Loading...</p>
         )}
-        {isModalOpen && renderModal()}
+        <div className="points-history">
+          <h3>Points History</h3>
+          <div className="points-list">
+            {pointsHistory.length > 0 ? (
+              pointsHistory.map((point, index) => (
+                <div key={index} className="points-item">
+                  <p><strong>Date:</strong> {point.date}</p>
+                  <p><strong>Points:</strong> {point.point}</p>
+                </div>
+              ))
+            ) : (
+              <p>No points history available.</p>
+            )}
+          </div>
+        </div>
       </div>
-  
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
@@ -237,7 +277,6 @@ const ViewMyProfile = () => {
       />
     </div>
   );
-  
 };
 
 export default ViewMyProfile;

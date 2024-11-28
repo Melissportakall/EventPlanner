@@ -162,27 +162,49 @@ const MyEvents = () => {
   };
 
   const handleLeaveEvent = (eventId) => {
-    fetch('/leave_event', {
+    fetch('/delete_point', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ eventId }),
+      body: JSON.stringify({ point: 10 }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          alert(data.message);
-          window.location.reload();
+          console.log('10 puan başarıyla silindi!');
         } else {
+          console.error('Puan silme işlemi başarısız oldu!');
           alert(data.message);
         }
+  
+        fetch('/leave_event', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ eventId }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              alert(data.message);
+              window.location.reload();
+            } else {
+              alert(data.message);
+            }
+          })
+          .catch((error) => {
+            console.error('Error leaving event:', error);
+            alert('An error occurred while trying to leave the event.');
+          });
       })
       .catch((error) => {
-        console.error('Error leaving event:', error);
-        alert('An error occurred while trying to leave the event.');
+        console.error('Error deleting points:', error);
+        alert('An error occurred while trying to delete points.');
       });
   };
+  
 
   const drawRoute = () => {
     const directionsService = new window.google.maps.DirectionsService();

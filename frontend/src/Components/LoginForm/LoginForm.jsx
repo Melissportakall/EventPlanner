@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./LoginForm.css";
+import styles from "./LoginForm.module.css";
 import { FaUser, FaUnlockAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -10,12 +10,11 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const clearSessionCookies = () => {
-    //oturumla ilgili cookieleri temizle
     document.cookie = "user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   };
-  
+
   useEffect(() => {
-    document.title = 'Login';
+    document.title = "Login";
   }, []);
 
   useEffect(() => {
@@ -24,12 +23,10 @@ const LoginForm = () => {
       acc[name] = value;
       return acc;
     }, {});
-  
+
     if (cookies.remember_me === "true") {
-      //remember me işaretliyse ana menüye yönlendir
       navigate("/mainmenu");
     } else {
-      //remember me işaretli değilse oturum çerezlerini temizle
       clearSessionCookies();
     }
   }, [navigate]);
@@ -53,7 +50,6 @@ const LoginForm = () => {
       if (data.success) {
         alert(data.message);
 
-        //remember me işaretliyse cookie ayarla
         if (rememberMe) {
           document.cookie = `remember_me=true; path=/; max-age=${60 * 60 * 24 * 30}`;
         }
@@ -68,10 +64,10 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="wrapper">
+    <div className={styles.wrapper}>
       <form onSubmit={handleSubmit}>
         <h1>Login</h1>
-        <div className="input-box">
+        <div className={styles.input_box}>
           <input
             type="text"
             placeholder="Username"
@@ -79,9 +75,9 @@ const LoginForm = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <FaUser className="icon" />
+          <FaUser className={styles.icon} />
         </div>
-        <div className="input-box">
+        <div className={styles.input_box}>
           <input
             type="password"
             placeholder="Password"
@@ -89,9 +85,9 @@ const LoginForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <FaUnlockAlt className="icon" />
+          <FaUnlockAlt className={styles.icon} />
         </div>
-        <div className="remember-forgot">
+        <div className={styles.remember_forgot}>
           <label>
             <input
               type="checkbox"
@@ -104,8 +100,8 @@ const LoginForm = () => {
             Forgot password?
           </a>
         </div>
-        <button type="submit">Login</button>
-        <div className="register-link">
+        <button className={styles.wrapper.button} type="submit">Login</button>
+        <div className={styles.register_link}>
           <p>
             Don't have an account?{" "}
             <span

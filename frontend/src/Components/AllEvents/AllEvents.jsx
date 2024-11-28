@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AllEvents.css';
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
+import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
 import Navbar from '../Navbar/Navbar';
 import UserCard from '../UserCard/Usercard.jsx'
@@ -25,7 +25,6 @@ const getUserDataFromCookies = () => {
 const AllEvents = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [tabValue, setTabValue] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [open, setOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -73,8 +72,6 @@ const AllEvents = () => {
     } else {
       console.log("No user ID found in cookies");
     }
-
-   
   }, []);
 
   useEffect(() => {
@@ -127,11 +124,6 @@ const AllEvents = () => {
     });
   };
 
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-    filterEvents(events, newValue);
-  };
-
   const handleOpen = (event) => {
     setSelectedEvent(event);
     setOpen(true); // Modal'ı aç
@@ -142,14 +134,15 @@ const AllEvents = () => {
   };
 
   const handleClose = () => {
-    setOpen(false); // Modal'ı kapat
-    setSelectedEvent(null); // Seçilen etkinliği sıfırla
+    setOpen(false);
+    setSelectedEvent(null);
   };
 
   const handleJoin = async () => {
     if (!selectedEvent) return;
-
+  
     try {
+      // Etkinliğe katılma isteği
       const response = await fetch('/join_event', {
         method: 'POST',
         body: JSON.stringify({ eventId: selectedEvent.id }),
@@ -157,29 +150,59 @@ const AllEvents = () => {
           'Content-Type': 'application/json',
         },
       });
-
+  
       const data = await response.json();
-
+  
       if (data.success) {
         console.log('Etkinliğe başarıyla katıldınız!');
         setSnackbarMessage('Etkinliğe başarıyla katıldınız!');
-        setSnackbarOpen(true); // Snackbar'ı göster
+        setSnackbarOpen(true);
+  
+        const userId = getUserDataFromCookies();
+  
+        if (userId) {
+          const scorePayload = {
+            user_id: userId,
+            point: 10,
+            date: new Date().toISOString().split('T')[0],
+          };
+  
+          const scoreResponse = await fetch('/add_point', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(scorePayload),
+          });
+  
+          const scoreResult = await scoreResponse.json();
+  
+          if (scoreResult.success) {
+            console.log("10 points added successfully.");
+          } else {
+            console.log("Error adding points:", scoreResult.message);
+          }
+        } else {
+          console.log("User ID not found. Points cannot be added.");
+        }
+  
       } else {
         console.error('Katılma işlemi başarısız oldu!');
         setSnackbarMessage('Katılma işlemi başarısız oldu.');
-        setSnackbarOpen(true); // Snackbar'ı göster
+        setSnackbarOpen(true);
       }
-
-      handleClose(); // Katıldığında modal'ı kapat
+  
+      handleClose();
     } catch (error) {
       console.error('Hata:', error);
       setSnackbarMessage('Bir hata oluştu. Lütfen tekrar deneyin.');
-      setSnackbarOpen(true); // Snackbar'ı göster
+      setSnackbarOpen(true);
     }
   };
+  
 
   const handleSnackbarClose = () => {
-    setSnackbarOpen(false); // Snackbar'ı kapat
+    setSnackbarOpen(false);
   };
 
   useEffect(() => {
