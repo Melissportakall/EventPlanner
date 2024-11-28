@@ -268,6 +268,7 @@ const ViewMyProfile = () => {
             )}
           </div>
         </div>
+        {isModalOpen && renderModal()}
       </div>
       <Snackbar
         open={snackbarOpen}
