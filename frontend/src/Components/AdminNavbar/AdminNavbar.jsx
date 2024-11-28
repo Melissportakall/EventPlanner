@@ -9,6 +9,7 @@ const AdminNavbar = () => {
     { title: 'Notifications', icon: <LuPartyPopper />, path: '/notifications' },
     { title: 'Chats', icon: <IoChatboxEllipsesOutline />, path: '/chats' },
     { title: 'All Events', icon: <IoCreateOutline />, path: '/all-events' },
+    { title: 'Verify Events', icon: <IoCreateOutline />, path: '/admin-verify-events' },
     { title: 'View My Profile', icon: <IoCreateOutline />, path: '/view-profile' },
     { title: 'Log Out', icon: <IoCreateOutline />, path: '/logout' },
     

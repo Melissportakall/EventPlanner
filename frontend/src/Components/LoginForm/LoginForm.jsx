@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [userData, setUserData] = useState(null); // State to store user data
   const navigate = useNavigate();
 
   const clearSessionCookies = () => {
@@ -19,22 +19,22 @@ const LoginForm = () => {
   }, []);
 
   useEffect(() => {
-    if (userData) {
-      if (rememberMe) {
-        document.cookie = `remember_me=true; path=/; max-age=${60 * 60 * 24 * 30}`;
-      }
+    const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
+      const [name, value] = cookie.split("=");
+      acc[name] = value;
+      return acc;
+    }, {});
 
-      // Admin kontrolü
+    if (cookies.remember_me === "true") {
       if (userData.is_admin) {
-        console.log("Admin user detected, navigating to admin main menu...");
-        console.log("???");
-        console.log(userData);
-        navigate("/adminmainmenu");
+        navigate('/admin-mainmenu');
       } else {
-        navigate("/mainmenu");
+        navigate('/mainmenu');
       }
+    } else {
+      clearSessionCookies();
     }
-  }, [userData, rememberMe, navigate]); // Add dependencies
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,11 +55,18 @@ const LoginForm = () => {
       if (data.success) {
         alert(data.message);
 
-        setUserData(data); // Store user data in state
-
         if (rememberMe) {
           document.cookie = `remember_me=true; path=/; max-age=${60 * 60 * 24 * 30}`;
         }
+
+        setUserData(data);
+
+        if (data.is_admin) {
+          navigate('/admin-mainmenu');
+        } else {
+          navigate('/mainmenu');
+        }
+
       } else {
         alert("Invalid username or password");
       }

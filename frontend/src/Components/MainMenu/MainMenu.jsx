@@ -71,14 +71,12 @@ const MainMenu = () => {
 
    
   }, []);
-
-
   
   return (
     <div style={{ color: 'white' 
       
     }}>
-      <div class="container">
+      <div className="container">
       <h1>Welcome!</h1>
       <h2>Special events for you!</h2>
       {userData ? (

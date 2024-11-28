@@ -11,8 +11,10 @@ import MyEvents from './Components/MyEvents/MyEvents';
 import Chats from './Components/Chats/Chats';
 import ViewMyProfile from './Components/ViewMyProfile/ViewMyProfile';
 import LogOut from './Components/LogOut/LogOut';
-import  AdminMainMenu  from './Components/AdminMainMenu/AdminMainMenu';
+import AdminMainMenu  from './Components/AdminMainMenu/AdminMainMenu';
 import AdminNotifications from './Components/AdminNotifications/AdminNotifications';
+import AdminVerifyEvents from './Components/AdminVerifyEvents/AdminVerifyEvents';
+import AdminChats from './Components/AdminChats/AdminChats';
 
 function App() {
   useEffect(() => {
@@ -40,8 +42,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/adminmainmenu" element={<AdminMainMenu />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/admin-notifications" element={<AdminNotifications />} />
+          <Route path="/admin-mainmenu" element={<AdminMainMenu />} />
+          <Route path="/admin-verify-events" element={<AdminVerifyEvents />} />
+          <Route path="/admin-chats" element={<AdminChats />} />
 
           {/* AuthGuard ile korunan alanlar */}
           <Route
@@ -56,7 +61,6 @@ function App() {
                   <Route path="/chats" element={<Chats />} />
                   <Route path="/view-profile" element={<ViewMyProfile />} />
                   <Route path="/logout" element={<LogOut />} />
-                  <Route path="/notifications" element={<AdminNotifications />} />
                 </Routes>
               </AuthGuard>
             }
