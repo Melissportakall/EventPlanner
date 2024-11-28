@@ -35,6 +35,7 @@ const MainMenu = () => {
     document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     document.cookie = `remember_me=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 
+    
     navigate('/login');
   };
 

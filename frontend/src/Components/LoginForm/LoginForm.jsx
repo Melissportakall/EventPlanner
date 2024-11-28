@@ -7,6 +7,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [userData, setUserData] = useState(null); // State to store user data
   const navigate = useNavigate();
 
   const clearSessionCookies = () => {
@@ -18,18 +19,22 @@ const LoginForm = () => {
   }, []);
 
   useEffect(() => {
-    const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
-      const [name, value] = cookie.split("=");
-      acc[name] = value;
-      return acc;
-    }, {});
+    if (userData) {
+      if (rememberMe) {
+        document.cookie = `remember_me=true; path=/; max-age=${60 * 60 * 24 * 30}`;
+      }
 
-    if (cookies.remember_me === "true") {
-      navigate("/mainmenu");
-    } else {
-      clearSessionCookies();
+      // Admin kontrolü
+      if (userData.is_admin) {
+        console.log("Admin user detected, navigating to admin main menu...");
+        console.log("???");
+        console.log(userData);
+        navigate("/adminmainmenu");
+      } else {
+        navigate("/mainmenu");
+      }
     }
-  }, [navigate]);
+  }, [userData, rememberMe, navigate]); // Add dependencies
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,11 +55,11 @@ const LoginForm = () => {
       if (data.success) {
         alert(data.message);
 
+        setUserData(data); // Store user data in state
+
         if (rememberMe) {
           document.cookie = `remember_me=true; path=/; max-age=${60 * 60 * 24 * 30}`;
         }
-
-        navigate("/mainmenu");
       } else {
         alert("Invalid username or password");
       }

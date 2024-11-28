@@ -11,6 +11,8 @@ import MyEvents from './Components/MyEvents/MyEvents';
 import Chats from './Components/Chats/Chats';
 import ViewMyProfile from './Components/ViewMyProfile/ViewMyProfile';
 import LogOut from './Components/LogOut/LogOut';
+import  AdminMainMenu  from './Components/AdminMainMenu/AdminMainMenu';
+import AdminNotifications from './Components/AdminNotifications/AdminNotifications';
 
 function App() {
   useEffect(() => {
@@ -38,7 +40,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/adminmainmenu" element={<AdminMainMenu />} />
           <Route path="/register" element={<RegisterForm />} />
+
+          {/* AuthGuard ile korunan alanlar */}
           <Route
             path="/*"
             element={
@@ -51,6 +56,7 @@ function App() {
                   <Route path="/chats" element={<Chats />} />
                   <Route path="/view-profile" element={<ViewMyProfile />} />
                   <Route path="/logout" element={<LogOut />} />
+                  <Route path="/notifications" element={<AdminNotifications />} />
                 </Routes>
               </AuthGuard>
             }
@@ -59,6 +65,4 @@ function App() {
       </Router>
     </LoadScript>
   );
-}
-
-export default App;
+}export default App;
