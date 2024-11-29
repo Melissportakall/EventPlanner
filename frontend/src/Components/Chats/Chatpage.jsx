@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Chats.css'
 import './Chatpage.css';
+import './Chats.jsx';
+import './UserList.jsx'
 
 function MessageApp({ recipientId }) {
     const [messages, setMessages] = useState([]);
@@ -57,6 +59,7 @@ function MessageApp({ recipientId }) {
             mesaj_metni: newMessage
         };
 
+        console.log(newMessage)
         fetch('/send_message', {
             method: 'POST',
             headers: {

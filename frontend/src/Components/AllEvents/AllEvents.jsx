@@ -246,7 +246,20 @@ const AllEvents = () => {
 
       <Typography variant="h4" align="center" style={{color:'white'}}gutterBottom>
         <Navbar />
-        All Events Here!
+        <h1 style={{
+          color: 'white',
+          position: 'absolute',
+          marginLeft: '100px',
+          top: '80px',
+          fontSize: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginBottom: '10px' 
+        }}>
+          All Events Here!
+        </h1>
+         
+       
       </Typography>
 
       <Grid container spacing={3}>
@@ -256,6 +269,7 @@ const AllEvents = () => {
               <Paper
                   elevation={3}
                   style={{
+                  marginTop: '10px',
                   padding: '20px',
                   textAlign: 'center',
                   cursor: 'pointer',

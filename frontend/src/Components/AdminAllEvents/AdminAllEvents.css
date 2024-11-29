@@ -35,9 +35,11 @@
 
 /* Kartlar için stil */
 .event-card {
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 5px; /* Padding'i küçült */
   height: 50px; /* Kart yüksekliğini ayarlayın */
-  width: 50; /* Kart genişliği 100% olacak şekilde ayarlandı */
+  width: 30px; /* Kart genişliği 100% olacak şekilde ayarlandı */
   box-sizing: border-box; /* Padding ve border'ı toplam boyuta dahil et */
   margin: 0 5px; /* Sağ ve sol margin'i 5px olarak ayarlayın */
 }

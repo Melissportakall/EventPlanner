@@ -79,7 +79,7 @@ const MyEvents = () => {
       console.log("No user ID found in cookies");
     }
 
-   
+
   }, []);
 
   const filterEvents = (events, tabIndex) => {
@@ -177,7 +177,7 @@ const MyEvents = () => {
           console.error('Puan silme işlemi başarısız oldu!');
           alert(data.message);
         }
-  
+
         fetch('/leave_event', {
           method: 'POST',
           headers: {
@@ -204,24 +204,24 @@ const MyEvents = () => {
         alert('An error occurred while trying to delete points.');
       });
   };
-  
+
 
   const drawRoute = () => {
     const directionsService = new window.google.maps.DirectionsService();
-  
+
     //önceden render edileni sil
     if (directionsRenderer) {
       directionsRenderer.setMap(null);
     }
-  
+
     const newDirectionsRenderer = new window.google.maps.DirectionsRenderer();
     setDirectionsRenderer(newDirectionsRenderer);
-  
+
     if (map) {
       //renderer'a haritayı ekle
       newDirectionsRenderer.setMap(map);
     }
-  
+
     directionsService.route(
       {
         origin: startingPoint,
@@ -272,19 +272,32 @@ const MyEvents = () => {
   return (
     <div className="event-list-container">
       {userData ? (
-          <UserCard userData={userData} handleLogout={handleLogout} />
-        ) : (
-          <p>No user data found.</p>
-        )}
-      <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
+        <UserCard userData={userData} handleLogout={handleLogout} />
+      ) : (
+        <p>No user data found.</p>
+      )}
+      <Typography variant="h4" align="center" style={{ color: 'white',marginBottom: '0px'  }} gutterBottom={false}>
         <Navbar />
-        My Events
+        <h1 style={{
+          color: 'white',
+          position: 'absolute',
+          marginLeft: '100px',
+          top: '80px',
+          fontSize: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginBottom: '5px' // Alt boşluğu azalt
+        }}>
+          My Events
+        </h1>
+       
       </Typography>
-
+        
       <Tabs
         value={tabValue}
         onChange={handleTabChange}
         centered
+        className='my-events-tabs'
         sx={{
           '& .MuiTab-root': {
             backgroundColor: 'transparent',
@@ -294,13 +307,18 @@ const MyEvents = () => {
             border: '1px solid #ccc',
             borderRadius: '4px',
             margin: '0 5px',
-            minWidth: '50px',
+            marginLeft: '20px',
+            marginBottom: '0px',
+            width: '1400px',
+            height: '50px',
           },
           '& .Mui-selected': {
             backgroundColor: 'white',
             color: 'black',
           },
-          marginBottom: '20px',
+          marginBottom: '10px',
+          marginTop: '0px', // Bu satırı ekleyerek üstten mesafeyi ayarlayabilirsiniz
+          paddingTop: '0px'
         }}
       >
         <Tab label="Upcoming Events" />
@@ -313,6 +331,7 @@ const MyEvents = () => {
             <Grid item xs={12} sm={4} md={4} key={event.id}>
               <Paper
                 elevation={3}
+
                 style={{
                   padding: '20px',
                   textAlign: 'center',

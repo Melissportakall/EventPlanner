@@ -4,8 +4,10 @@ import { LuPartyPopper } from "react-icons/lu";
 import { FaRegCalendarAlt, FaClock, FaClipboardList } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import './CreateEvent.css';
-import Navbar from '../Navbar/Navbar'; 
+import Navbar from '../Navbar/Navbar';
 import UserCard from '../UserCard/Usercard.jsx'
+import { AiOutlinePicture } from "react-icons/ai";
+import { positions } from '@mui/system';
 
 const containerStyle = {
   width: '100%',
@@ -26,6 +28,9 @@ const getUserDataFromCookies = () => {
 const CreateEvent = () => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal görünürlüğü kontrolü
+  const [availableCategories] = useState(["Music", "Sports", "Technology", "Art", "Travel", "Books"]);
+  const [selectedCategories, setSelectedCategories] = useState([]); // Seçilen kategoriler
 
   useEffect(() => {
     document.title = 'Create Event';
@@ -33,6 +38,7 @@ const CreateEvent = () => {
 
   useEffect(() => {
     const userId = getUserDataFromCookies();
+    console.log("Modal open state:", isModalOpen);
 
     if (userId) {
       fetch(`/get_user_info?user_id=${userId}`, {
@@ -52,8 +58,17 @@ const CreateEvent = () => {
       console.log("No user ID found in cookies");
     }
 
-   
+
   }, []);
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setSelectedCategories((prevState) =>
+      checked
+        ? [...prevState, value] // Ekleniyor
+        : prevState.filter((category) => category !== value) // Çıkarılıyor
+    );
+  };
 
   const [markerPosition, setMarkerPosition] = useState({
     lat: 41.015137,
@@ -124,12 +139,13 @@ const CreateEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const eventPayload = {
       ...eventData,
       location: address,
+      category: JSON.stringify(selectedCategories)
     };
-  
+
     try {
       const eventResponse = await fetch('/create_event', {
         method: 'POST',
@@ -138,21 +154,21 @@ const CreateEvent = () => {
         },
         body: JSON.stringify(eventPayload),
       });
-  
+
       const eventResult = await eventResponse.json();
-  
+
       if (eventResult.success) {
         console.log("Event created successfully.");
-  
+
         const UserId = getUserDataFromCookies(); // Kullanıcı ID'yi al
-  
+
         if (UserId) {
           const scorePayload = {
             user_id: UserId,
             point: 15,
             date: new Date().toISOString().split('T')[0], // Bugünkü tarih
           };
-  
+
           const scoreResponse = await fetch('/add_point', {
             method: 'POST',
             headers: {
@@ -160,9 +176,9 @@ const CreateEvent = () => {
             },
             body: JSON.stringify(scorePayload),
           });
-  
+
           const scoreResult = await scoreResponse.json();
-  
+
           if (scoreResult.success) {
             console.log("Points added successfully.");
             alert("Event created successfully and 15 points added to your account!");
@@ -195,106 +211,154 @@ const CreateEvent = () => {
   return (
     <div className="container">
       {userData ? (
-          <UserCard userData={userData} handleLogout={handleLogout} />
-        ) : (
-          <p>No user data found.</p>
-        )}
+        <UserCard userData={userData} handleLogout={handleLogout} />
+      ) : (
+        <p>No user data found.</p>
+      )}
 
       <Navbar />
+      <h1>Create Event
+          <style>
+            {`h1 { text-align: center}`}
+            {`h1 { color: #ffff}`}
+            {'h1{margin-bottom:0px}'}
+          </style>
+        </h1>
       <div className="wrapper">
         <div className="form-box">
-          <h1>Create Event</h1>
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Event Name"
-              name="event_name"
-              value={eventData.event_name}
-              onChange={handleChange}
-            />
-            <LuPartyPopper className="icon" />
-          </div>
+        
 
-          <div className="input-box">
-            <input
-              type="date"
-              name="date"
-              value={eventData.date}
-              onChange={handleChange}
-            />
-            <FaRegCalendarAlt className="icon" />
-          </div>
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder="Event Name"
+            name="event_name"
+            value={eventData.event_name}
+            onChange={handleChange}
+          />
+          <LuPartyPopper className="icon" />
+        </div>
 
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Event Time"
-              name="time"
-              value={eventData.time}
-              onChange={handleChange}
-            />
-            <FaClock className="icon" />
-          </div>
+        <div className="input-box">
+          <input
+            type="date"
+            name="date"
+            value={eventData.date}
+            onChange={handleChange}
+          />
+          <FaRegCalendarAlt className="icon" />
+        </div>
 
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Event Duration (min)"
-              name="duration"
-              value={eventData.duration}
-              onChange={handleChange}
-            />
-            <FaClock className="icon" />
-          </div>
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder="Event Time"
+            name="time"
+            value={eventData.time}
+            onChange={handleChange}
+          />
+          <FaClock className="icon" />
+        </div>
 
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Category"
-              name="category"
-              value={eventData.category}
-              onChange={handleChange}
-            />
-            <FaClipboardList className="icon" />
-          </div>
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder="Event Duration (min)"
+            name="duration"
+            value={eventData.duration}
+            onChange={handleChange}
+          />
+          <FaClock className="icon" />
+        </div>
 
-          <div className="input-box">
-            <input
-              type="text"
-              placeholder="Description"
-              name="description"
-              value={eventData.description}
-              onChange={handleChange}
-            />
-            <FaClipboardList className="icon" />
-          </div>
 
-          <div id="map-container">
-            <label>Location</label>
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={markerPosition}
-              zoom={13}
-              onClick={handleMapClick}
-            >
-              <Marker position={markerPosition} />
-            </GoogleMap>
-          </div>
-          <div className="input-box">
+        <div className="input-box">
+  <input
+    type="text"
+    placeholder="Select Categories"
+    value={selectedCategories.join(", ")}
+    readOnly
+  />
+  <AiOutlinePicture
+    className="icon"
+    onClick={() => setIsModalOpen(true)}
+    style={{ cursor: 'pointer' }}
+  />
+</div>
+
+{/* Modal Görünümü */}
+{isModalOpen && (
+  <div className="modal" onClick={() => setIsModalOpen(false)}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <h2>Select Categories</h2>
+      {availableCategories.map((category) => (
+        <div key={category}>
+          <label>
             <input
-              type="text"
-              placeholder="Location"
-              value={address}
-              onChange={handleAddressChange}
-              onBlur={handleAddressBlur}
+              type="checkbox"
+              value={category}
+              checked={selectedCategories.includes(category)}
+              onChange={handleCheckboxChange}
             />
-          </div>
-          <button type="submit" onClick={handleSubmit}>Create Event</button>
+            {category}
+          </label>
+        </div>
+      ))}
+      <button onClick={() => setIsModalOpen(false)}>Close</button>
+    </div>
+  </div>
+)}
+
+
+
+
+
+
+
+
+
+
+
+
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder="Description"
+            name="description"
+            value={eventData.description}
+            onChange={handleChange}
+          />
+          <FaClipboardList className="icon" />
+        </div>
+
+        <div id="map-container">
+          <label>Location</label>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={markerPosition}
+            zoom={13}
+            onClick={handleMapClick}
+          >
+            <Marker position={markerPosition} />
+          </GoogleMap>
+        </div>
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder="Location"
+            value={address}
+            onChange={handleAddressChange}
+            onBlur={handleAddressBlur}
+          />
+        </div>
+
+
+         
+
+        <button onClick={handleSubmit}>Create Event</button>  
         </div>
       </div>
-    </div>
 
-  );
-};
-
-export default CreateEvent;
+      </div>
+  )};
+        export default CreateEvent;

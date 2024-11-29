@@ -24,17 +24,19 @@
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-right: 10px;  /* Buton ve input arasında boşluk */
+  width: 300px;
+  margin-right: 200px;  /* Buton ve input arasında boşluk */
 }
 
 .input-container button {
-  padding: 8px 16px;
-  font-size: 16px;
-  color: #faace0;
-  background-color: #7da5d0;
+  padding: 0.75rem 1rem;
+  background-color: #3b82f6;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 0.875rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .input-container button:hover {

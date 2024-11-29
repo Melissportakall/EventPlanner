@@ -1,7 +1,9 @@
 .chat-container {
   display: flex;
-  height: 500px;
-  width: 900px;
+  height: 700px;
+  width: 1200px;
+  margin-left: 300px;
+  margin-top:40px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
@@ -101,6 +103,7 @@
 .input-container {
   display: flex;
   padding: 1rem;
+ 
   border-top: 1px solid #e5e7eb;
   background-color: #ffffff;
   box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
@@ -109,6 +112,7 @@
 .input-container input {
   flex: 1;
   padding: 0.75rem;
+  width: 380px; 
   border: 1px solid #d1d5db;
   border-radius: 8px;
   margin-right: 0.5rem;
@@ -124,12 +128,14 @@
 }
 
 .input-container button {
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1rem;
   background-color: #3b82f6;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 3;
+  width:90px;
+  height:40px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }

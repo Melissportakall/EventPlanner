@@ -1,18 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+  
   .wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%; /* Adjust height based on content */
-    background-color: #f4f4f4;
+    background: transparent;
+    border:2px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 50px rgba(0,0,0,.2);
+    color: #555454;
   }
 
   .form_box {
-    background-color: #fff;
+    background: transparent;
     padding: 20px;
     border-radius: 8px;
     width: 100%;
     max-width: 800px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    color: #fff;
     /* Ensure form_box takes height from its content */
   }
 
@@ -24,9 +32,11 @@
   }
 
   .input_box {
+    background-color: #fff;
     display: flex;
     align-items: center;
     position: relative;
+    background: transparent;
   }
 
   .input_box input {
@@ -39,18 +49,18 @@
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 40px; /* Ensures the corners are rounded */
     font-size: 20px;
-    color: #000; /* Text color */
+    color: #fff;
     padding: 20px 45px 20px 20px;
     transition: border-color 0.3s, color 0.3s; /* Transition effects */
   }
 
   .input_box input:focus {
-    border-color: #007bff; /* Change border color on focus */
-    color: #007bff; /* Change text color on focus */
+    border-color: #ffffff; /* Change border color on focus */
+    color: #ffffff; /* Change text color on focus */
   }
 
   .input_box input::placeholder {
-    color: #888; /* Placeholder rengi gri */
+    color: #ffffff; /* Placeholder rengi gri */
   }
 
   .input_box input:focus::placeholder {
@@ -87,7 +97,7 @@
     top: 50%;
     transform: translateY(-50%); /* İkonun dikey olarak ortalanması */
     font-size: 20px;
-    color: #888; /* İkon rengi placeholder ile aynı */
+    color: #ffffff; /* İkon rengi placeholder ile aynı */
     pointer-events: auto; /* İkon tıklanabilir olmaktan çıkar */
   }
 
@@ -116,8 +126,8 @@
 
   button {
     padding: 12px 20px;
-    background-color: #007bff;
-    color: #2600ff;
+    background-color: #ffffff;
+    color: #fcfcfc;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -197,3 +207,12 @@
   .register_link p a:hover{
     text-decoration: underline;
   }
+
+  .input_box input {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .input_box .icon {
+    font-family: 'Poppins', sans-serif;
+  }
+  

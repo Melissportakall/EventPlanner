@@ -7,8 +7,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
   width: 250px; /* Kart genişliği */
   position: fixed; /* Kartı sabit konumda tut */
-  top: 20px; /* Üstten boşluk */
-  left: 40px; /* Soldan boşluk */
+  margin-top: 100px; /* Üstten boşluk */
+  margin-left: 40px; /* Soldan boşluk */
 }
 
 .user-card h3 {

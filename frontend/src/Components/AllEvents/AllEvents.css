@@ -35,6 +35,7 @@
 
 /* Kartlar için stil */
 .event-card {
+  margin-top: 10px;
   padding: 5px; /* Padding'i küçült */
   height: 50px; /* Kart yüksekliğini ayarlayın */
   width: 50; /* Kart genişliği 100% olacak şekilde ayarlandı */
@@ -44,6 +45,7 @@
 
 /* Grid container'ı için stil */
 .grid-container {
+  margin-top: 10px;
   display: grid;
   gap: 5px; /* Kartlar arasındaki boşluğu artır */
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 120px genişliğinde kartlar için sütunlar oluştur */

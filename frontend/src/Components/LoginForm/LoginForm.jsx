@@ -27,7 +27,7 @@ const LoginForm = () => {
 
     if (cookies.remember_me === "true") {
       if (userData.is_admin) {
-        navigate('/admin-mainmenu');
+        navigate('/admin-verify-events');
       } else {
         navigate('/mainmenu');
       }
@@ -62,7 +62,7 @@ const LoginForm = () => {
         setUserData(data);
 
         if (data.is_admin) {
-          navigate('/admin-mainmenu');
+          navigate('/admin-all-events');
         } else {
           navigate('/mainmenu');
         }

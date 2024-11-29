@@ -176,16 +176,29 @@ const AdminAllEvents = () => {
     <div className="event-list-container">
       <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
         <Navbar />
-        All Events Here!
+        <h1 style={{
+          color: 'white',
+          position: 'absolute',
+          marginLeft: '100px',
+          top: '80px',
+          fontSize: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginTop:'0px',
+          marginBottom: '40px' 
+        }}>
+          All Events Here!
+        </h1>
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{ marginTop: '100px' }}>
         {filteredEvents.length > 0 ? (
           filteredEvents.map((event) => (
             <Grid item xs={12} sm={4} md={4} key={event.id}>
               <Paper
                 elevation={3}
                 style={{
+                  
                   padding: '20px',
                   textAlign: 'center',
                   cursor: 'pointer',

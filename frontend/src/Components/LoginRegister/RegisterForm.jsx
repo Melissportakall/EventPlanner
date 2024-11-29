@@ -86,7 +86,9 @@ const RegisterForm = ({ toggleForm }) => {
         <div className={styles.wrapper}>
           <div className={styles.form_box}>
             <form onSubmit={handleSubmit}>
-              <h1>Registration</h1>
+              <h1 style={{ textAlign: 'center' }}>
+                Registration
+              </h1>
               <div className={styles.input_group}>
                 {/* Sol Sütun */}
                 <div className={styles.input_box}>
@@ -126,6 +128,11 @@ const RegisterForm = ({ toggleForm }) => {
                     name="birthdate" 
                     required 
                     onChange={handleChange} 
+                    style={{
+                      backgroundColor:'transparent',
+                      color:'#fff'
+                    }}
+                    
                   />
                   <FaBirthdayCake className={styles.icon} />
                 </div>

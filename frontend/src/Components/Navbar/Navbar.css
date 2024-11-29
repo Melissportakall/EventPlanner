@@ -1,7 +1,12 @@
 .navbar {
     
-    top: 10px; /* Üstten 10 piksel boşluk bırakır */
-    right: 10px; /* Sağdan 10 piksel boşluk bırakır */
+  width: 1400px;
+  height: 80px;
+  margin: 0 auto; /* Ortalamayı sağlar */
+  position: fixed; /* Navbar'ı sayfanın üst kısmında sabitler */
+  top: 0; /* Sayfanın üst kısmına yerleştirir */
+  left: 0;
+  right: 0;
     display: flex; /* Menü öğelerini yatay olarak hizalar */
     flex-direction: row; /* Yatay düzeni garanti altına alır */
     gap: 200px; /* Menü öğeleri arasındaki boşluk */
@@ -13,7 +18,7 @@
     align-items: center; /* Dikey hizalama */
     height: 50px; /* Menü yüksekliği */
     width: 100vw; /* Tam genişlik */
-    margin-bottom: 50px; /* Navbar ile bileşenler arasındaki boşluk */
+    margin-bottom: 70px; /* Navbar ile bileşenler arasındaki boşluk */
   }
   
   .nav-list {
