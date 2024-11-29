@@ -28,9 +28,9 @@ const getUserDataFromCookies = () => {
 const CreateEvent = () => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal görünürlüğü kontrolü
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [availableCategories] = useState(["Music", "Sports", "Technology", "Art", "Travel", "Books"]);
-  const [selectedCategories, setSelectedCategories] = useState([]); // Seçilen kategoriler
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
     document.title = 'Create Event';
@@ -57,8 +57,6 @@ const CreateEvent = () => {
     } else {
       console.log("No user ID found in cookies");
     }
-
-
   }, []);
 
   const handleCheckboxChange = (e) => {
@@ -219,15 +217,13 @@ const CreateEvent = () => {
       <Navbar />
       <h1>Create Event
           <style>
-            {`h1 { text-align: center}`}
-            {`h1 { color: #ffff}`}
-            {'h1{margin-bottom:0px}'}
+            {`h1 { text-align: center }`}
+            {`h1 { color: #ffff }`}
+            {'h1 { margin-bottom:0px }'}
           </style>
         </h1>
       <div className="wrapper">
         <div className="form-box">
-        
-
         <div className="input-box">
           <input
             type="text"
@@ -270,56 +266,42 @@ const CreateEvent = () => {
           />
           <FaClock className="icon" />
         </div>
-
-
         <div className="input-box">
-  <input
-    type="text"
-    placeholder="Select Categories"
-    value={selectedCategories.join(", ")}
-    readOnly
-  />
-  <AiOutlinePicture
-    className="icon"
-    onClick={() => setIsModalOpen(true)}
-    style={{ cursor: 'pointer' }}
-  />
-</div>
-
-{/* Modal Görünümü */}
-{isModalOpen && (
-  <div className="modal" onClick={() => setIsModalOpen(false)}>
-    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-      <h2>Select Categories</h2>
-      {availableCategories.map((category) => (
-        <div key={category}>
-          <label>
-            <input
-              type="checkbox"
-              value={category}
-              checked={selectedCategories.includes(category)}
-              onChange={handleCheckboxChange}
-            />
-            {category}
-          </label>
+          <input
+            type="text"
+            placeholder="Select Categories"
+            value={selectedCategories.join(", ")}
+            readOnly
+          />
+          <AiOutlinePicture
+            className="icon"
+            onClick={() => setIsModalOpen(true)}
+            style={{ cursor: 'pointer' }}
+          />
         </div>
-      ))}
-      <button onClick={() => setIsModalOpen(false)}>Close</button>
-    </div>
-  </div>
-)}
 
-
-
-
-
-
-
-
-
-
-
-
+        {/* Modal Görünümü */}
+        {isModalOpen && (
+          <div className="modal" onClick={() => setIsModalOpen(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h2>Select Categories</h2>
+              {availableCategories.map((category) => (
+                <div key={category}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      value={category}
+                      checked={selectedCategories.includes(category)}
+                      onChange={handleCheckboxChange}
+                    />
+                    {category}
+                  </label>
+                </div>
+              ))}
+              <button onClick={() => setIsModalOpen(false)}>Close</button>
+            </div>
+          </div>
+        )}
         <div className="input-box">
           <input
             type="text"
@@ -351,14 +333,11 @@ const CreateEvent = () => {
             onBlur={handleAddressBlur}
           />
         </div>
-
-
-         
-
         <button onClick={handleSubmit}>Create Event</button>  
         </div>
       </div>
 
       </div>
   )};
-        export default CreateEvent;
+
+export default CreateEvent;

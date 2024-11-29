@@ -62,7 +62,7 @@ const LoginForm = () => {
         setUserData(data);
 
         if (data.is_admin) {
-          navigate('/admin-all-events');
+          navigate('/admin-mainmenu');
         } else {
           navigate('/mainmenu');
         }

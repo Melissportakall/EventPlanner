@@ -50,11 +50,9 @@ function App() {
             element={
               <AuthGuard>
                 <Routes>
-                  
-                  <Route path="/admin-mainmenu" element={<AdminMainMenu />} />
                   <Route path="/admin-verify-events" element={<AdminVerifyEvents />} />
                   <Route path="/admin-chats" element={<AdminChats />} />
-                  <Route path="/admin-all-events" element={<AdminAllEvents />} />
+                  <Route path="/admin-mainmenu" element={<AdminAllEvents />} />
                   <Route path="/mainmenu" element={<MainMenu />} />
                   <Route path="/create-event" element={<CreateEvent />} />
                   <Route path="/all-events" element={<AllEvents />} />

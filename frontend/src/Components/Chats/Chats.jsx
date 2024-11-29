@@ -3,7 +3,7 @@ import './Chatpage.css';
 import '../MainMenu/MainMenu.jsx';
 import Navbar from '../Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
-import UserCard from '../UserCard/Usercard.jsx'
+import UserCard from '../UserCard/Usercard.jsx';
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
@@ -17,8 +17,8 @@ const getUserDataFromCookies = () => {
 };
 
 const ChatApp = () => {
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [events, setEvents] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const ChatApp = () => {
 
   useEffect(() => {
     document.title = 'Chats';
-    fetchUsers();
+    fetchEvents();
   }, []);
 
   useEffect(() => {
@@ -37,56 +37,54 @@ const ChatApp = () => {
         method: 'GET',
         credentials: 'include',
       })
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           if (data.success) {
             setUserData(data.user);
           } else {
             console.log(data.message);
           }
         })
-        .catch(error => console.error('Error fetching user data:', error));
+        .catch((error) => console.error('Error fetching user data:', error));
     } else {
-      console.log("No user ID found in cookies");
+      console.log('No user ID found in cookies');
     }
-
-   
   }, []);
 
   useEffect(() => {
-    if (selectedUser) {
+    if (selectedEvent) {
       fetchMessages();
       const interval = setInterval(fetchMessages, 500);
       return () => clearInterval(interval);
     }
-  }, [selectedUser]);
+  }, [selectedEvent]);
 
-  const fetchUsers = () => {
-    fetch('/get_users')
-      .then(res => res.json())
-      .then(data => setUsers(data))
-      .catch(err => console.error(err));
+  const fetchEvents = () => {
+    fetch('/get_joined_events')
+      .then((res) => res.json())
+      .then((data) => setEvents(data.events))
+      .catch((err) => console.error(err));
   };
 
   const fetchMessages = () => {
-    fetch(`/get_messages?alici_id=${selectedUser}`, {
+    fetch(`/get_messages_by_event?etkinlik_id=${selectedEvent}`, {
       method: 'GET',
-      credentials: 'include'
+      credentials: 'include',
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Gelen Mesajlar:', data);
-        setMessages(data);
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('API Yanıtı:', data);
+        setMessages(data.messages || []);
       })
-      .catch(error => console.error('Error fetching messages:', error));
+      .catch((error) => console.error('Error fetching messages:', error));
   };
 
   const sendMessage = () => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !selectedEvent) return;
 
     const messageData = {
-      alici_id: selectedUser,
-      mesaj_metni: newMessage
+      etkinlik_id: selectedEvent,
+      mesaj_metni: newMessage,
     };
 
     fetch('/send_message', {
@@ -95,16 +93,16 @@ const ChatApp = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(messageData),
-      credentials: 'include'
+      credentials: 'include',
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.message === 'Mesaj gönderildi') {
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
           setNewMessage('');
           fetchMessages();
         }
       })
-      .catch(error => console.error('Error sending message:', error));
+      .catch((error) => console.error('Error sending message:', error));
   };
 
   const handleLogout = () => {
@@ -113,7 +111,7 @@ const ChatApp = () => {
 
     navigate('/login');
   };
- 
+
   return (
     <div className="chat-container">
       {userData ? (
@@ -121,38 +119,41 @@ const ChatApp = () => {
       ) : (
         <p>No user data found.</p>
       )}
-      <Navbar/>
+      <Navbar />
       <div className="sidebar">
-        <h2>Persons-Groups</h2>
+        <h2>Events</h2>
         <ul className="contact-list">
-          {users.map(user => (
-            <li key={user.id} onClick={() => setSelectedUser(user.id)}>
-              {user.ad}
+          {events.map((event) => (
+            <li key={event.id} onClick={() => setSelectedEvent(event.id)}>
+              {event.event_name}
             </li>
           ))}
         </ul>
       </div>
       <div className="chat-area">
-        <h2>Chating Area</h2>
+        <h2>Chatting Area</h2>
         <div className="chat-messages">
-          {selectedUser && messages.map((message) => (
-            <div
-              key={message.id}
-              className={`message-bubble ${message.gonderici_ad === 'Ben' ? 'sent' : 'received'}`}
-            >
-              <strong>{message.gonderici_ad}:</strong> {message.mesaj_metni} <br />
-              <small>{message.tarih}</small>
-            </div>
-          ))}
+          {selectedEvent &&
+            messages.map((message) => (
+              <div
+                key={message.id}
+                className={`message-bubble ${
+                  message.gonderici_ad === 'Ben' ? 'sent' : 'received'
+                }`}
+              >
+                <strong>{message.gonderici_ad}:</strong> {message.mesaj_metni} <br />
+                <small>{message.tarih}</small>
+              </div>
+            ))}
         </div>
-        {selectedUser && (
+        {selectedEvent && (
           <div className="input-container">
             <input
               type="text"
               value={newMessage}
-              onChange={e => setNewMessage(e.target.value)}
+              onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Mesajınızı yazın"
-              onKeyDown={e => {
+              onKeyDown={(e) => {
                 if (e.key === 'Enter') sendMessage();
               }}
             />

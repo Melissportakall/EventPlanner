@@ -281,18 +281,15 @@ const MyEvents = () => {
         <h1 style={{
           color: 'white',
           position: 'absolute',
-          marginLeft: '100px',
           top: '80px',
           fontSize: '50px',
           left: '50%',
           transform: 'translateX(-50%)',
-          marginBottom: '5px' // Alt boşluğu azalt
+          marginBottom: '5px'
         }}>
           My Events
         </h1>
-       
       </Typography>
-        
       <Tabs
         value={tabValue}
         onChange={handleTabChange}
@@ -316,15 +313,13 @@ const MyEvents = () => {
             backgroundColor: 'white',
             color: 'black',
           },
-          marginBottom: '10px',
-          marginTop: '0px', // Bu satırı ekleyerek üstten mesafeyi ayarlayabilirsiniz
-          paddingTop: '0px'
+          marginBottom: '50px',
+          marginTop: -40
         }}
       >
         <Tab label="Upcoming Events" />
         <Tab label="Past Events" />
       </Tabs>
-
       <Grid container spacing={3}>
         {filteredEvents.length > 0 ? (
           filteredEvents.map((event) => (

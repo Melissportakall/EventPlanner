@@ -1,86 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import './Chats.css'
+import './Chats.css';
 import './Chatpage.css';
 import './Chats.jsx';
-import './UserList.jsx'
+import './UserList.jsx';
 
 function MessageApp({ recipientId }) {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    const [selectedEventId, setSelectedEventId] = useState(null);
 
     useEffect(() => {
         document.title = 'Chats';
-      }, []);
+    }, []);
 
-    //mesajları burdan alıyoz
     const fetchMessages = () => {
-        if (!recipientId) return; //alıcı id yoksa veri çekme
+        if (!selectedEventId) return;
 
-        fetch(`/get_messages?alici_id=${recipientId}`, {
+        fetch(`/get_messages_by_event?etkinlik_id=${selectedEventId}`, {
             method: 'GET',
-            credentials: 'include'  //cookieyi al
+            credentials: 'include',
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Gelen Mesajlar:', data);
-                setMessages(data);
-            })
-            .catch(error => console.error('Error fetching messages:', error));
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                setMessages(data.messages);
+            } else {
+                console.error('Error fetching messages:', data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching messages:', error));
     };
-    
-
-    // HER SANİYE MESAJLARI YENİLEME
-    
     useEffect(() => {
         if (!recipientId) return;
 
         const interval = setInterval(() => {
-            fetch(`/get_messages?alici_id=${recipientId}`, {
+            fetch(`/get_messages_by_event?etkinlik_id=${selectedEvent}`, {
                 method: 'GET',
-                credentials: 'include'
+                credentials: 'include',
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Gelen Mesajlar:', data);
-                    setMessages(data);
-                })
-                .catch(error => console.error('Error fetching messages:', error));
-        }, 500);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Gelen Mesajlar:', data);
+                if (data.success && Array.isArray(data.messages)) {
+                    setMessages(data.messages);
+                } else {
+                    console.error('Mesajlar alınamadı:', data.message);
+                }
+            })
+            .catch(error => console.error('Error fetching messages:', error));
+        }, 5000); // 5 saniyede bir mesajları al
 
         return () => clearInterval(interval);
     }, [recipientId]);
 
-    
     const sendMessage = () => {
-        if (!newMessage.trim()) return; //mesaj kutusu boşsa gönerme
+        if (!newMessage.trim() || !selectedEventId) return;
 
         const messageData = {
-            alici_id: recipientId,
-            mesaj_metni: newMessage
+            etkinlik_id: selectedEventId,
+            mesaj_metni: newMessage,
         };
 
-        console.log(newMessage)
+        console.log('Gönderilen Mesaj:', newMessage);
         fetch('/send_message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(messageData),
-            credentials: 'include'  //cookieyi gönder
+            credentials: 'include',
         })
         .then(response => response.json())
         .then(data => {
-            if (data.message === 'Mesaj gönderildi') {
-                setNewMessage('');  //gönderdikten sonra inputu temizle
-                fetchMessages(); //mesaj gönderince chati yenile
+            if (data.success) {
+                setNewMessage('');
+                fetchMessages();
+            } else {
+                console.error('Mesaj gönderilemedi:', data.message);
             }
         })
-        .catch(error => console.error('Error sending message:', error));
+        .catch(error => console.error('Mesaj gönderilirken hata oluştu:', error));
     };
 
     useEffect(() => {
         if (recipientId) {
-            fetchMessages(); //kişi seçtiğinde chati getir
+            fetchMessages();
         }
     }, [recipientId]);
 
@@ -90,15 +94,19 @@ function MessageApp({ recipientId }) {
             <div className="chat-container">
                 <h2>Mesajlar</h2>
                 <div className="messages-container">
-                    {messages.map((message) => (
-                        <div
-                            key={message.id}
-                            className={`message-bubble ${message.gonderici_ad === 'Ben' ? 'sent' : 'received'}`}
-                        >
-                            <strong>{message.gonderici_ad}:</strong> {message.mesaj_metni} <br />
-                            <small>{message.tarih}</small>
-                        </div>
-                    ))}
+                    {messages.length > 0 ? (
+                        messages.map((message) => (
+                            <div
+                                key={message.id}
+                                className={`message-bubble ${message.gonderici_ad === 'Ben' ? 'sent' : 'received'}`}
+                            >
+                                <strong>{message.gonderici_ad}:</strong> {message.mesaj_metni} <br />
+                                <small>{message.tarih}</small>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Henüz mesaj yok.</p>
+                    )}
                 </div>
                 <div className="input-container">
                     <input

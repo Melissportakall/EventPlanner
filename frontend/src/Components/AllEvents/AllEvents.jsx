@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AllEvents.css';
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';
+import { Grid, Paper, Typography, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
 import Navbar from '../Navbar/Navbar';
 import UserCard from '../UserCard/Usercard.jsx'
@@ -33,6 +33,7 @@ const AllEvents = () => {
   const [markerPosition, setMarkerPosition] = useState({ lat: 41.015137, lng: 28.979530 });
   const [isLoaded, setIsLoaded] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [tabValue, setTabValue] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -99,11 +100,11 @@ const AllEvents = () => {
       // Filter upcoming events
       const upcoming = events.filter((event) => new Date(event.date) >= now);
       setFilteredEvents(upcoming);
-    } else if (tabIndex === 1) {
+    }/* else if (tabIndex === 1) {
       // Filter past events
       const past = events.filter((event) => new Date(event.date) < now);
       setFilteredEvents(past);
-    }
+    }*/
   };
 
   const fetchCoordinates = (address) => {
@@ -236,6 +237,11 @@ const AllEvents = () => {
     navigate('/login');
   };
 
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+    filterEvents(events, newValue);
+  };
+
   return (
     <div className="event-list-container">
       {userData ? (
@@ -249,7 +255,6 @@ const AllEvents = () => {
         <h1 style={{
           color: 'white',
           position: 'absolute',
-          marginLeft: '100px',
           top: '80px',
           fontSize: '50px',
           left: '50%',
@@ -258,18 +263,53 @@ const AllEvents = () => {
         }}>
           All Events Here!
         </h1>
-         
-       
       </Typography>
+
+      <Tabs
+        value={tabValue}
+        onChange={handleTabChange}
+        centered
+        className='my-events-tabs'
+        sx={{
+          '& .MuiTab-root': {
+            backgroundColor: 'transparent',
+            color: 'white',
+            textTransform: 'none',
+            fontWeight: 'bold',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            margin: '0 5px',
+            marginLeft: '20px',
+            marginBottom: '0px',
+            width: '1400px',
+            height: '50px',
+            visibility: 'hidden',
+            pointerEvents: 'none',
+          },
+          '& .Mui-selected': {
+            backgroundColor: 'white',
+            color: 'black',
+            visibility: 'hidden',
+            pointerEvents: 'none',
+          },
+          '& .MuiTabs-indicator': {
+            display: 'none',
+          },
+          marginTop: -50
+        }}
+      >
+        <Tab label="Upcoming Events" />
+        <Tab label="Past Events" />
+      </Tabs>
 
       <Grid container spacing={3}>
         {filteredEvents.length > 0 ? (
           filteredEvents.map((event) => (
             <Grid item xs={12} sm={4} md={4} key={event.id}>
               <Paper
-                  elevation={3}
-                  style={{
-                  marginTop: '10px',
+                elevation={3}
+
+                style={{
                   padding: '20px',
                   textAlign: 'center',
                   cursor: 'pointer',
