@@ -5,12 +5,11 @@ import { IoChatboxEllipsesOutline, IoCreateOutline } from "react-icons/io5";
 
 const AdminNavbar = () => {
   const navItems = [
-    { title: 'Home Page', icon: <IoCreateOutline />, path: '/mainmenu' },
-    { title: 'Notifications', icon: <LuPartyPopper />, path: '/notifications' },
-    { title: 'Chats', icon: <IoChatboxEllipsesOutline />, path: '/chats' },
-    { title: 'All Events', icon: <IoCreateOutline />, path: '/all-events' },
+    { title: 'Home Page', icon: <IoCreateOutline />, path: '/admin-mainmenu' },
+    { title: 'Notifications', icon: <LuPartyPopper />, path: '/admin-notifications' },
+    { title: 'Chats', icon: <IoChatboxEllipsesOutline />, path: '/admin-chats' },
+    { title: 'All Events', icon: <IoCreateOutline />, path: '/admin-all-events' },
     { title: 'Verify Events', icon: <IoCreateOutline />, path: '/admin-verify-events' },
-    { title: 'View My Profile', icon: <IoCreateOutline />, path: '/view-profile' },
     { title: 'Log Out', icon: <IoCreateOutline />, path: '/logout' },
     
   ];

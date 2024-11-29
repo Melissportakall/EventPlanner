@@ -15,6 +15,7 @@ import AdminMainMenu  from './Components/AdminMainMenu/AdminMainMenu';
 import AdminNotifications from './Components/AdminNotifications/AdminNotifications';
 import AdminVerifyEvents from './Components/AdminVerifyEvents/AdminVerifyEvents';
 import AdminChats from './Components/AdminChats/AdminChats';
+import AdminAllEvents from './Components/AdminAllEvents/AdminAllEvents';
 
 function App() {
   useEffect(() => {
@@ -43,10 +44,6 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/admin-notifications" element={<AdminNotifications />} />
-          <Route path="/admin-mainmenu" element={<AdminMainMenu />} />
-          <Route path="/admin-verify-events" element={<AdminVerifyEvents />} />
-          <Route path="/admin-chats" element={<AdminChats />} />
 
           {/* AuthGuard ile korunan alanlar */}
           <Route
@@ -54,6 +51,11 @@ function App() {
             element={
               <AuthGuard>
                 <Routes>
+                  <Route path="/admin-notifications" element={<AdminNotifications />} />
+                  <Route path="/admin-mainmenu" element={<AdminMainMenu />} />
+                  <Route path="/admin-verify-events" element={<AdminVerifyEvents />} />
+                  <Route path="/admin-chats" element={<AdminChats />} />
+                  <Route path="/admin-all-events" element={<AdminAllEvents />} />
                   <Route path="/mainmenu" element={<MainMenu />} />
                   <Route path="/create-event" element={<CreateEvent />} />
                   <Route path="/all-events" element={<AllEvents />} />

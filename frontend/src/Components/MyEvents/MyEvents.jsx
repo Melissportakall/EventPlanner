@@ -294,7 +294,7 @@ const MyEvents = () => {
             border: '1px solid #ccc',
             borderRadius: '4px',
             margin: '0 5px',
-            minWidth: '150px',
+            minWidth: '50px',
           },
           '& .Mui-selected': {
             backgroundColor: 'white',

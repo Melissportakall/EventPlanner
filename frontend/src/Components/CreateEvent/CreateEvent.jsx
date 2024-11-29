@@ -258,6 +258,17 @@ const CreateEvent = () => {
             <FaClipboardList className="icon" />
           </div>
 
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Description"
+              name="description"
+              value={eventData.description}
+              onChange={handleChange}
+            />
+            <FaClipboardList className="icon" />
+          </div>
+
           <div id="map-container">
             <label>Location</label>
             <GoogleMap

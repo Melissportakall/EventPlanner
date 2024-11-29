@@ -63,6 +63,37 @@ const AdminVerifyEvents = () => {
     handleClose();
   };
 
+  const handleDelete = async () => {
+    if (!selectedEvent) return;
+
+    try {
+      const response = await fetch('/delete_event', {
+        method: 'POST',
+        body: JSON.stringify({ eventId: selectedEvent.id }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSnackbarMessage('Event deleted successfully.');
+        setPendingEvents((prev) =>
+          prev.filter((event) => event.id !== selectedEvent.id)
+        );
+      } else {
+        setSnackbarMessage(data.message || 'Error deleting event.');
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      setSnackbarMessage('Error deleting event. Please try again.');
+    }
+
+    setSnackbarOpen(true);
+    handleClose();
+  };
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -127,8 +158,11 @@ const AdminVerifyEvents = () => {
               <Typography variant="body1">
                 <strong>Category:</strong> {selectedEvent.category}
               </Typography>
-              <Button variant="contained" color="primary" onClick={handleApprove}>
+              <Button variant="contained" color="primary" onClick={handleApprove} style={{ marginRight: '10px' }}>
                 Approve Event
+              </Button>
+              <Button variant="contained" color="secondary" onClick={handleDelete}>
+                Delete Event
               </Button>
             </>
           )}

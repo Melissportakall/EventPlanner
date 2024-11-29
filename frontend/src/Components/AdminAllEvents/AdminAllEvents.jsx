@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import './AllEvents.css';
+import './AdminAllEvents.css';
 import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
-import Navbar from '../Navbar/Navbar';
-import UserCard from '../UserCard/Usercard.jsx'
+import Navbar from '../AdminNavbar/AdminNavbar';
 import { useNavigate } from 'react-router-dom';
 
 const containerStyle = {
@@ -22,7 +21,7 @@ const getUserDataFromCookies = () => {
   return null;
 };
 
-const AllEvents = () => {
+const AdminAllEvents = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -50,47 +49,6 @@ const AllEvents = () => {
         }
       })
       .catch((error) => console.error('Error fetching events:', error));
-  }, []);
-
-  useEffect(() => {
-    const userId = getUserDataFromCookies();
-
-    if (userId) {
-      fetch(`/get_user_info?user_id=${userId}`, {
-        method: 'GET',
-        credentials: 'include',
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            setUserData(data.user);
-          } else {
-            console.log(data.message);
-          }
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-    } else {
-      console.log("No user ID found in cookies");
-    }
-  }, []);
-
-  useEffect(() => {
-    const loadMapScript = () => {
-      if (window.google) {
-        setIsLoaded(true);
-      } else {
-        console.error("Google Maps API yüklenemedi.");
-      }
-    };
-    
-    if (window.google) {
-      loadMapScript();
-    } else {
-      window.addEventListener("load", loadMapScript);
-      return () => {
-        window.removeEventListener("load", loadMapScript);
-      };
-    }
   }, []);
 
   const filterEvents = (events, tabIndex) => {
@@ -138,60 +96,34 @@ const AllEvents = () => {
     setSelectedEvent(null);
   };
 
-  const handleJoin = async () => {
+  const handleDeleteEvent = async () => {
     if (!selectedEvent) return;
-  
+
     try {
-      // Etkinliğe katılma isteği
-      const response = await fetch('/join_event', {
+      // Etkinliği silme isteği
+      const response = await fetch('/delete_event', {
         method: 'POST',
         body: JSON.stringify({ eventId: selectedEvent.id }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
-  
+
       const data = await response.json();
-  
+
       if (data.success) {
-        console.log('Etkinliğe başarıyla katıldınız!');
-        setSnackbarMessage('Etkinliğe başarıyla katıldınız!');
+        console.log('Etkinlik başarıyla silindi!');
+        setSnackbarMessage('Etkinlik başarıyla silindi!');
         setSnackbarOpen(true);
-  
-        const userId = getUserDataFromCookies();
-  
-        if (userId) {
-          const scorePayload = {
-            user_id: userId,
-            point: 10,
-            date: new Date().toISOString().split('T')[0],
-          };
-  
-          const scoreResponse = await fetch('/add_point', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(scorePayload),
-          });
-  
-          const scoreResult = await scoreResponse.json();
-  
-          if (scoreResult.success) {
-            console.log("10 points added successfully.");
-          } else {
-            console.log("Error adding points:", scoreResult.message);
-          }
-        } else {
-          console.log("User ID not found. Points cannot be added.");
-        }
-  
+
+        // Silinen etkinliği listeden çıkar
+        setFilteredEvents(filteredEvents.filter(event => event.id !== selectedEvent.id));
       } else {
-        console.error('Katılma işlemi başarısız oldu!');
-        setSnackbarMessage('Katılma işlemi başarısız oldu.');
+        console.error('Etkinlik silinemedi!');
+        setSnackbarMessage('Etkinlik silinemedi!');
         setSnackbarOpen(true);
       }
-  
+
       handleClose();
     } catch (error) {
       console.error('Hata:', error);
@@ -199,52 +131,50 @@ const AllEvents = () => {
       setSnackbarOpen(true);
     }
   };
-  
+
+  const handleConcealEvent = async () => {
+    if (!selectedEvent) return;
+
+    try {
+      // Etkinliği gizleme isteği
+      const response = await fetch('/conceal_event', {
+        method: 'POST',
+        body: JSON.stringify({ eventId: selectedEvent.id }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log('Etkinlik başarıyla gizlendi!');
+        setSnackbarMessage('Etkinlik başarıyla gizlendi!');
+        setSnackbarOpen(true);
+
+        // Gizlenen etkinliği listeden çıkar (veya gizle)
+        setFilteredEvents(filteredEvents.filter(event => event.id !== selectedEvent.id));
+      } else {
+        console.error('Etkinlik gizlenemedi!');
+        setSnackbarMessage('Etkinlik gizlenemedi!');
+        setSnackbarOpen(true);
+      }
+
+      handleClose();
+    } catch (error) {
+      console.error('Hata:', error);
+      setSnackbarMessage('Bir hata oluştu. Lütfen tekrar deneyin.');
+      setSnackbarOpen(true);
+    }
+  };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
-  useEffect(() => {
-    if (isLoaded && map && selectedEvent) {
-      if (window.google.maps.marker?.AdvancedMarkerElement) {
-        const marker = new window.google.maps.marker.AdvancedMarkerElement({
-          map,
-          position: markerPosition,
-        });
-
-        return () => {
-          marker.setMap(null);
-        };
-      } else {
-        const marker = new window.google.maps.Marker({
-          map,
-          position: markerPosition,
-        });
-
-        return () => {
-          marker.setMap(null);
-        };
-      }
-    }
-  }, [isLoaded, map, selectedEvent, markerPosition]);
-
-  const handleLogout = () => {
-    document.cookie = `user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    document.cookie = `remember_me=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-
-    navigate('/login');
-  };
-
   return (
     <div className="event-list-container">
-      {userData ? (
-          <UserCard userData={userData} handleLogout={handleLogout} />
-        ) : (
-          <p>No user data found.</p>
-        )}
-
-      <Typography variant="h4" align="center" style={{color:'white'}}gutterBottom>
+      <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
         <Navbar />
         All Events Here!
       </Typography>
@@ -254,8 +184,8 @@ const AllEvents = () => {
           filteredEvents.map((event) => (
             <Grid item xs={12} sm={4} md={4} key={event.id}>
               <Paper
-                  elevation={3}
-                  style={{
+                elevation={3}
+                style={{
                   padding: '20px',
                   textAlign: 'center',
                   cursor: 'pointer',
@@ -279,7 +209,9 @@ const AllEvents = () => {
         <Box className="modal-box">
           {selectedEvent && (
             <>
-              <Typography variant="h6" align="center" marginBottom={2} marginTop={2}><strong>{selectedEvent.event_name}</strong></Typography>
+              <Typography variant="h6" align="center" marginBottom={2} marginTop={2}>
+                <strong>{selectedEvent.event_name}</strong>
+              </Typography>
               <Typography variant="body1"><strong>Açıklama:</strong> {selectedEvent.description}</Typography>
               <Typography variant="body1"><strong>Tarih:</strong> {selectedEvent.date}</Typography>
               <Typography variant="body1"><strong>Saat:</strong> {selectedEvent.time}</Typography>
@@ -291,7 +223,16 @@ const AllEvents = () => {
                 zoom={13}
                 onLoad={(mapInstance) => setMap(mapInstance)}
               ></GoogleMap>
-              <Button variant="contained" color="primary" onClick={handleJoin}>Katıl</Button>
+
+              {/* Delete and Conceal Buttons */}
+              <Box display="flex" justifyContent="space-around" marginTop={2}>
+                <Button variant="contained" color="secondary" onClick={handleDeleteEvent}>
+                  Etkinliği Sil
+                </Button>
+                <Button variant="contained" color="primary" onClick={handleConcealEvent}>
+                  Etkinliği Gizle
+                </Button>
+              </Box>
             </>
           )}
         </Box>
@@ -308,4 +249,4 @@ const AllEvents = () => {
   );
 };
 
-export default AllEvents;
+export default AdminAllEvents;
