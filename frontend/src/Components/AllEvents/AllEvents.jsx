@@ -264,8 +264,6 @@ const AllEvents = () => {
       </Typography>
 
       <Tabs
-        value={tabValue}
-        onChange={handleTabChange}
         centered
         className='my-events-tabs'
         sx={{

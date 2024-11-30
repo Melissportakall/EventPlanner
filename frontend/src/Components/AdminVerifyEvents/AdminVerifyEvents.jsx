@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper, Typography, Modal, Box, Button, Snackbar } from '@mui/material';
+import { Grid, Paper, Typography, Modal, Box, Button, Snackbar, Tabs, Tab} from '@mui/material';
 import Navbar from '../AdminNavbar/AdminNavbar';
 
 const AdminVerifyEvents = () => {
@@ -8,6 +8,8 @@ const AdminVerifyEvents = () => {
   const [open, setOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [tabValue, setTabValue] = useState(0);
+  const [filteredEvents, setFilteredEvents] = useState([]);
 
   useEffect(() => {
     fetch('/get_pending_events')
@@ -98,12 +100,68 @@ const AdminVerifyEvents = () => {
     setSnackbarOpen(false);
   };
 
+  const filterEvents = (events, tabIndex) => {
+    if (tabIndex === 0) {
+      setFilteredEvents(events);
+    }
+  };
+
+  const handleTabChange = (pendingEvents, newValue) => {
+    setTabValue(newValue);
+    filterEvents(pendingEvents, newValue);
+  };
+
   return (
     <div className="admin-verify-container">
-      <Navbar />
-      <Typography variant="h4" align="center" gutterBottom>
-        Pending Events
+      <Typography variant="h4" align="center" style={{color:'white'}}gutterBottom>
+        <Navbar />
+        <h1 style={{
+          color: 'white',
+          position: 'absolute',
+          top: '80px',
+          fontSize: '50px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginBottom: '10px' 
+        }}>
+          All Events Here!
+        </h1>
       </Typography>
+
+      <Tabs
+        centered
+        className='my-events-tabs'
+        sx={{
+          '& .MuiTab-root': {
+            backgroundColor: 'transparent',
+            color: 'white',
+            textTransform: 'none',
+            fontWeight: 'bold',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            margin: '0 5px',
+            marginLeft: '20px',
+            marginBottom: '0px',
+            width: '1400px',
+            height: '50px',
+            visibility: 'hidden',
+            pointerEvents: 'none',
+          },
+          '& .Mui-selected': {
+            backgroundColor: 'white',
+            color: 'black',
+            visibility: 'hidden',
+            pointerEvents: 'none',
+          },
+          '& .MuiTabs-indicator': {
+            display: 'none',
+          },
+          marginTop: -50
+        }}
+      >
+        <Tab label="Upcoming Events" />
+        <Tab label="Past Events" />
+      </Tabs>
 
       <Grid container spacing={3}>
         {pendingEvents.length > 0 ? (

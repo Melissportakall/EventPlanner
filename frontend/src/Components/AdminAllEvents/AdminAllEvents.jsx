@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AdminAllEvents.css';
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar } from '@mui/material';
+import { Grid, Paper, Typography, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
 import Navbar from '../AdminNavbar/AdminNavbar';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +25,7 @@ const AdminAllEvents = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [tabValue, setTabValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -172,6 +173,11 @@ const AdminAllEvents = () => {
     setSnackbarOpen(false);
   };
 
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+    filterEvents(events, newValue);
+  };
+
   return (
     <div className="event-list-container">
       <Typography variant="h4" align="center" style={{ color: 'white' }} gutterBottom>
@@ -179,17 +185,45 @@ const AdminAllEvents = () => {
         <h1 style={{
           color: 'white',
           position: 'absolute',
-          marginLeft: '100px',
           top: '80px',
           fontSize: '50px',
           left: '50%',
           transform: 'translateX(-50%)',
-          marginTop:'0px',
           marginBottom: '40px' 
         }}>
           All Events Here!
         </h1>
       </Typography>
+
+      <Tabs
+        value={tabValue}
+        onChange={handleTabChange}
+        centered
+        className='my-events-tabs'
+        sx={{
+          '& .MuiTab-root': {
+            backgroundColor: 'transparent',
+            color: 'white',
+            textTransform: 'none',
+            fontWeight: 'bold',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            margin: '0 5px',
+            marginBottom: '0px',
+            width: '1400px',
+            height: '50px',
+          },
+          '& .Mui-selected': {
+            backgroundColor: 'white',
+            color: 'black',
+          },
+          marginTop: -47,
+          marginBottom: -5,
+        }}
+      >
+        <Tab label="Upcoming Events" />
+        <Tab label="Past Events" />
+      </Tabs>
 
       <Grid container spacing={3} style={{ marginTop: '100px' }}>
         {filteredEvents.length > 0 ? (
@@ -203,6 +237,7 @@ const AdminAllEvents = () => {
                   textAlign: 'center',
                   cursor: 'pointer',
                   minHeight: '250px',
+                  marginTop: -60
                 }}
                 onClick={() => handleOpen(event)}
               >
