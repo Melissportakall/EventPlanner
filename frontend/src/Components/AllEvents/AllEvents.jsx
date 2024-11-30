@@ -143,8 +143,37 @@ const AllEvents = () => {
     if (!selectedEvent) return;
   
     try {
-      // Etkinliğe katılma isteği
-      const response = await fetch('/join_event', {
+      const userId = getUserDataFromCookies();
+      if (!userId) {
+        console.error("User ID bulunamadı.");
+        setSnackbarMessage("Kullanıcı bilgileri bulunamadı. Lütfen giriş yapın.");
+        setSnackbarOpen(true);
+        return;
+      }
+  
+      const joinedEventsResponse = await fetch(`/get_joined_events`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      const joinedEventsData = await joinedEventsResponse.json();
+  
+      if (joinedEventsData.events) {
+        const joinedEvents = joinedEventsData.events;
+  
+        const selectedEventDate = new Date(`${selectedEvent.date}T${selectedEvent.time}`);
+        const hasConflict = joinedEvents.some(event => {
+          const eventDate = new Date(`${event.date}T${event.time}`);
+          return eventDate.getTime() === selectedEventDate.getTime();
+        });
+  
+        if (hasConflict) {
+          setSnackbarMessage("Aynı tarih ve saatte bir etkinliğiniz zaten mevcut.");
+          setSnackbarOpen(true);
+          return;
+        }
+      }
+  
+      const joinResponse = await fetch('/join_event', {
         method: 'POST',
         body: JSON.stringify({ eventId: selectedEvent.id }),
         headers: {
@@ -152,41 +181,11 @@ const AllEvents = () => {
         },
       });
   
-      const data = await response.json();
-  
-      if (data.success) {
+      const joinData = await joinResponse.json();
+      if (joinData.success) {
         console.log('Etkinliğe başarıyla katıldınız!');
         setSnackbarMessage('Etkinliğe başarıyla katıldınız!');
         setSnackbarOpen(true);
-  
-        const userId = getUserDataFromCookies();
-  
-        if (userId) {
-          const scorePayload = {
-            user_id: userId,
-            point: 10,
-            date: new Date().toISOString().split('T')[0],
-          };
-  
-          const scoreResponse = await fetch('/add_point', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(scorePayload),
-          });
-  
-          const scoreResult = await scoreResponse.json();
-  
-          if (scoreResult.success) {
-            console.log("10 points added successfully.");
-          } else {
-            console.log("Error adding points:", scoreResult.message);
-          }
-        } else {
-          console.log("User ID not found. Points cannot be added.");
-        }
-  
       } else {
         console.error('Katılma işlemi başarısız oldu!');
         setSnackbarMessage('Katılma işlemi başarısız oldu.');
@@ -199,9 +198,8 @@ const AllEvents = () => {
       setSnackbarMessage('Bir hata oluştu. Lütfen tekrar deneyin.');
       setSnackbarOpen(true);
     }
-  };
+  };  
   
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };

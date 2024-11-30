@@ -44,13 +44,12 @@ const MyEvents = () => {
   useEffect(() => {
     document.title = 'My Events';
 
-    // Fetch all events
     fetch('/get_joined_events')
       .then((response) => response.json())
       .then((data) => {
         if (data.events) {
           setEvents(data.events);
-          filterEvents(data.events, 0); // Default to upcoming events
+          filterEvents(data.events, 0);
         } else {
           console.log(data.message);
         }
@@ -85,11 +84,9 @@ const MyEvents = () => {
   const filterEvents = (events, tabIndex) => {
     const now = new Date();
     if (tabIndex === 0) {
-      // Filter upcoming events
       const upcoming = events.filter((event) => new Date(event.date) >= now);
       setFilteredEvents(upcoming);
     } else if (tabIndex === 1) {
-      // Filter past events
       const past = events.filter((event) => new Date(event.date) < now);
       setFilteredEvents(past);
     }
@@ -404,12 +401,15 @@ const MyEvents = () => {
                 </Grid>
               </Grid>
 
-              {/* Get Directions Button */}
               <Button
                 variant="contained"
-                color="primary"
                 onClick={drawRoute}
-                style={{ marginTop: '10px', marginRight: '10px' }}
+                style={{
+                  marginTop: '10px',
+                  marginRight: '10px',
+                  backgroundColor: '#1976d2', 
+                  color: '#fff',
+                }}
               >
                 Get Directions
               </Button>
