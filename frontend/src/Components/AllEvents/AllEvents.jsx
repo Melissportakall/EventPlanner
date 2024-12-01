@@ -38,19 +38,15 @@ const AllEvents = () => {
   const [updatedEvent, setUpdatedEvent] = useState({}); 
   const navigate = useNavigate();
 
-
-
   const handleEdit = () => {
-    setUpdatedEvent(selectedEvent); // Seçili etkinliği düzenleme için yükle
-    setEditModalOpen(true); // Düzenleme modalını aç
-  };
-
+    setUpdatedEvent(selectedEvent);
+    setEditModalOpen(true);
+  }
   const handleUpdateChange = (field, value) => {
-    setUpdatedEvent({ ...updatedEvent, [field]: value }); // Etkinlik bilgilerini güncelle
+    setUpdatedEvent({ ...updatedEvent, [field]: value });
   };
 
   const handleSaveChanges = () => {
-    // Güncellenmiş etkinlik bilgilerini API'ye gönder
     fetch(`/update_event?event_id=${selectedEvent.id}`, {
       method: 'POST',
       headers: {
@@ -62,8 +58,7 @@ const AllEvents = () => {
       .then((data) => {
         if (data.success) {
           alert('Event updated successfully!');
-          setEditModalOpen(false); // Modalı kapat
-          // Ekstra: Listeyi yeniden yüklemek için bir fetch çağrısı yapabilirsiniz
+          setEditModalOpen(false);
         } else {
           console.error('Error updating event:', data.message);
         }
@@ -72,20 +67,19 @@ const AllEvents = () => {
   };
 
   const handleEditModalClose = () => {
-    setEditModalOpen(false); // Düzenleme modalını kapat
+    setEditModalOpen(false);
   };
 
 
   useEffect(() => {
     document.title = 'All Events';
 
-    // Fetch all events
     fetch('/get_all_events')
       .then((response) => response.json())
       .then((data) => {
         if (data.events) {
           setEvents(data.events);
-          filterEvents(data.events, 0); // Default to upcoming events
+          filterEvents(data.events, 0);
         } else {
           console.log(data.message);
         }
@@ -139,11 +133,9 @@ const AllEvents = () => {
   const filterEvents = (events, tabIndex) => {
     const now = new Date();
     if (tabIndex === 0) {
-      // Filter upcoming events
       const upcoming = events.filter((event) => new Date(event.date) >= now);
       setFilteredEvents(upcoming);
     }/* else if (tabIndex === 1) {
-      // Filter past events
       const past = events.filter((event) => new Date(event.date) < now);
       setFilteredEvents(past);
     }*/
@@ -276,12 +268,6 @@ const AllEvents = () => {
 
     navigate('/login');
   };
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-    filterEvents(events, newValue);
-  };
-
   
   return (
     
@@ -388,7 +374,6 @@ const AllEvents = () => {
         </div>
       </div>
 
-      {/* Modal */}
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
         <Box className="modal-box">
           {selectedEvent && (
@@ -418,7 +403,6 @@ const AllEvents = () => {
             </Box>
           </Modal>
 
-       {/* Düzenleme Modalı */}
        <Modal open={editModalOpen} onClose={handleEditModalClose} aria-labelledby="edit-modal-title">
         <Box
           sx={{
@@ -477,7 +461,7 @@ const AllEvents = () => {
             </Button>
           </Box>
         </Box>
-      </Modal>
+       </Modal>
 
       {/* Snackbar */}
       <Snackbar
