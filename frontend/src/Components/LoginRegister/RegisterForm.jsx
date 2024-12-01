@@ -23,7 +23,7 @@ const RegisterForm = ({ toggleForm }) => {
         interests: []
     });
 
-    const [isModalOpen, setIsModalOpen] = useState(false); // İlgi alanları modalını kontrol eder
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [availableInterests] = useState(["Music", "Sports", "Technology", "Art", "Travel", "Books"]);
 
     const handleChange = (e) => {
@@ -36,15 +36,14 @@ const RegisterForm = ({ toggleForm }) => {
         setFormData((prevState) => ({
             ...prevState,
             interests: checked
-                ? [...prevState.interests, value] // Ekleniyor
-                : prevState.interests.filter((interest) => interest !== value) // Çıkarılıyor
+                ? [...prevState.interests, value]
+                : prevState.interests.filter((interest) => interest !== value)
         }));
     };
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-          // İlk olarak mevcut kullanıcıları kontrol etmek için get_all_users isteği gönder
           const usersResponse = await fetch('/get_all_users');
           const usersData = await usersResponse.json();
   
@@ -53,7 +52,6 @@ const RegisterForm = ({ toggleForm }) => {
               return;
           }
   
-          // Mevcut kullanıcıları kontrol et
           const existingUser = usersData.users.find(user => 
               user.kullanici_adi === formData.username || 
               user.eposta === formData.email || 
@@ -61,12 +59,10 @@ const RegisterForm = ({ toggleForm }) => {
           );
   
           if (existingUser) {
-              // Eğer aynı kullanıcı adı, e-posta veya telefon numarası varsa, hata mesajı göster
               alert("Bu kullanıcı adı, e-posta ya da telefon numarası zaten kullanılıyor.");
               return;
           }
   
-          // Eğer kontrol başarılıysa, yeni kullanıcı kaydını yap
           const response = await fetch("/register", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -102,7 +98,7 @@ const RegisterForm = ({ toggleForm }) => {
           console.error("Error during registration:", error);
       }
   };
-  
+
     const navigate = useNavigate();
 
     return (
