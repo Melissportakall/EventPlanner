@@ -1,4 +1,3 @@
-
 import AdminNavbar from '../AdminNavbar/AdminNavbar';
 import React, { useEffect, useState } from 'react';
 import '../AdminAllEvents/AdminAllEvents.css'
@@ -37,7 +36,7 @@ const AdminMainMenu = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'All Events';
+    document.title = 'Admin Menu';
 
     // Fetch all events
     fetch('/get_all_events')

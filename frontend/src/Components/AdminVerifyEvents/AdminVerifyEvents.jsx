@@ -12,6 +12,8 @@ const AdminVerifyEvents = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
 
   useEffect(() => {
+    document.title = 'Verify Events';
+    
     fetch('/get_pending_events')
       .then((response) => response.json())
       .then((data) => {

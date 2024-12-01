@@ -6,7 +6,7 @@ import './AdminNavbar.css'
 const AdminNavbar = () => {
   const navItems = [
     { title: 'Home Page', icon: <IoCreateOutline />, path: '/admin-mainmenu' },
-    { title: 'Chats', icon: <IoChatboxEllipsesOutline />, path: '/admin-chats' },
+    { title: 'All Users', icon: <IoChatboxEllipsesOutline />, path: '/admin-all-users' },
     { title: 'Verify Events', icon: <IoCreateOutline />, path: '/admin-verify-events' },
     { title: 'Log Out', icon: <IoCreateOutline />, path: '/logout' },
     
