@@ -96,50 +96,51 @@ const AdminAllUsers = () => {
         <Tab label="All Users" />
       </Tabs>
 
-      <Grid container spacing={3}>
-        {users.length > 0 ? (
-          users.map((user) => (
-            <Grid item xs={12} sm={6} md={4} key={user.id}>
-              <Paper
-                elevation={3}
-                style={{
-                  padding: '20px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  minHeight: '250px',
-                  borderRadius: '25px',
-                  backgroundColor: 'white',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                  width: '250px',
-                  marginTop: '20px',
-                  marginBottom: '20px',
-                  marginLeft: '20px',
-                  marginRight: '20px',
-                  transition: 'background 0.6s ease',
-                }}
-                onClick={() => handleOpen(user)} // Kullanıcı detayları için aç
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #dc87ce, #5aaac2)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'white';
-                  e.currentTarget.style.backgroundColor = 'white';
-                }}
-              >
-                <Typography variant="h6">{user.kullanici_adi}</Typography>
-                <Typography color="textSecondary">{user.ad} {user.soyad}</Typography>
-                <Typography color="textSecondary">{user.eposta}</Typography>
-                <Typography>{user.konum || 'Konum belirtilmemiş'}</Typography>
-              </Paper>
-            </Grid>
-          ))
-        ) : (
-          <Typography variant="body1" align="center">
-            No users found.
-          </Typography>
-        )}
-      </Grid>
+      <div style={{ width: '1200px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ maxHeight: '80vh', overflowY: 'auto', width: '100%', justifyContent: 'center' }}>
+          <Grid container spacing={2}>
+            {users.length > 0 ? (
+              users.map((event) => (
+                <Grid item xs={12} sm="auto" md="auto" key={event.id} style={{ padding: '10px' }}>
+                  <Paper
+                    elevation={3}
+                    style={{
+                      padding: '20px',
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      width: '220px',
+                      height: '250px',
+                      borderRadius: '30px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                      transition: 'background 0.6s ease',
+                      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                    onClick={() => handleOpen(event)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #dc87ce, #5aaac2)';
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'white';
+                      e.currentTarget.style.backgroundColor = 'white';
+                    }}
+                  >
+                    <Typography variant="h6">{event.event_name}</Typography>
+                    <Typography color="textSecondary">{event.date}</Typography>
+                    <Typography color="textSecondary">{event.time}</Typography>
+                  </Paper>
+                </Grid>
+              ))
+            ) : (
+              <Typography variant="body1">No events found.</Typography>
+            )}
+          </Grid>
+        </div>
+      </div>
 
       {/* Modal for User Details */}
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
