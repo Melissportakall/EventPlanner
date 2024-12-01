@@ -59,6 +59,7 @@ const AllEvents = () => {
         if (data.success) {
           alert('Event updated successfully!');
           setEditModalOpen(false);
+          setOpen(false);
         } else {
           console.error('Error updating event:', data.message);
         }
