@@ -359,6 +359,7 @@ const MyEvents = () => {
               <Typography variant="body1">
                 <strong>Time:</strong> {selectedEvent.time}
               </Typography>
+              <Typography variant="body1"><strong>Kategori:</strong> {selectedEvent.category}</Typography>
               <Typography variant="body1">
                 <strong>Location:</strong> {selectedEvent.location}
               </Typography>

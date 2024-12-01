@@ -335,6 +335,7 @@ const AllEvents = () => {
               <Typography variant="body1"><strong>Saat:</strong> {selectedEvent.time}</Typography>
               <Typography variant="body1"><strong>Lokasyon:</strong> {selectedEvent.location}</Typography>
               <Typography variant="body1"><strong>Süre:</strong> {selectedEvent.duration}</Typography>
+              <Typography variant="body1"><strong>Kategori:</strong> {selectedEvent.category}</Typography>
               <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={markerPosition}
