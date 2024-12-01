@@ -42,44 +42,67 @@ const RegisterForm = ({ toggleForm }) => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch("/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            });
-            const data = await response.json();
-
-            console.log(data);
-            
-            if (data.success) {
-                const userId = data.userId;
-
-                console.log(userId);
-    
-                const pointResponse = await fetch('/add_point', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: userId, point: 20 })
-                });
-    
-                const pointData = await pointResponse.json();
-                if (pointData.success) {
-                    alert("Kayıt başarılı, 20 puan eklendi!");
-                } else {
-                    alert("Puan ekleme işlemi başarısız oldu.");
-                }
-    
-                navigate("/login");
-            } else {
-                alert("Registration failed.");
-            }
-        } catch (error) {
-            console.error("Error during registration:", error);
-        }
-    };    
-
+      e.preventDefault();
+      try {
+          // İlk olarak mevcut kullanıcıları kontrol etmek için get_all_users isteği gönder
+          const usersResponse = await fetch('/get_all_users');
+          const usersData = await usersResponse.json();
+  
+          if (!usersData.success) {
+              alert("Kullanıcıları alırken bir hata oluştu.");
+              return;
+          }
+  
+          // Mevcut kullanıcıları kontrol et
+          const existingUser = usersData.users.find(user => 
+              user.kullanici_adi === formData.username || 
+              user.eposta === formData.email || 
+              user.telefon_no === formData.phonenumber
+          );
+  
+          if (existingUser) {
+              // Eğer aynı kullanıcı adı, e-posta veya telefon numarası varsa, hata mesajı göster
+              alert("Bu kullanıcı adı, e-posta ya da telefon numarası zaten kullanılıyor.");
+              return;
+          }
+  
+          // Eğer kontrol başarılıysa, yeni kullanıcı kaydını yap
+          const response = await fetch("/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData)
+          });
+          const data = await response.json();
+  
+          console.log(data);
+          
+          if (data.success) {
+              const userId = data.userId;
+  
+              console.log(userId);
+  
+              const pointResponse = await fetch('/add_point', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ user_id: userId, point: 20 })
+              });
+  
+              const pointData = await pointResponse.json();
+              if (pointData.success) {
+                  alert("Kayıt başarılı, 20 puan eklendi!");
+              } else {
+                  alert("Puan ekleme işlemi başarısız oldu.");
+              }
+  
+              navigate("/login");
+          } else {
+              alert("Registration failed.");
+          }
+      } catch (error) {
+          console.error("Error during registration:", error);
+      }
+  };
+  
     const navigate = useNavigate();
 
     return (
