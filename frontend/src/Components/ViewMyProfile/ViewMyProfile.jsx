@@ -23,6 +23,7 @@ const ViewMyProfile = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [pointsHistory, setPointsHistory] = useState([]);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [availableInterests] = useState(["Music", "Sports", "Technology", "Art", "Travel", "Books"]);
 
   const UserID = getUserDataFromCookies();
   const UserProfilePicture = userData && userData.profileImage
@@ -30,6 +31,7 @@ const ViewMyProfile = () => {
     : defaultImage;
 
   useEffect(() => {
+    document.title = 'My Profile';
     const fetchUserData = async () => {
       if (UserID) {
         try {
@@ -41,6 +43,7 @@ const ViewMyProfile = () => {
           if (data.success) {
             setUserData(data.user);
             setEditedUserData(data.user);
+            console.log(data.user);
           } else {
             console.log(data.message);
           }
@@ -84,6 +87,7 @@ const ViewMyProfile = () => {
       formData.append('email', editedUserData.email);
       formData.append('phone', editedUserData.phone);
       formData.append('password', editedUserData.password);
+      formData.append('address', editedUserData.address)
 
       if (editedUserData.profileImageFile) {
         formData.append('photo', editedUserData.profileImageFile);
@@ -121,6 +125,23 @@ const ViewMyProfile = () => {
         profileImageFile: file,
       }));
     }
+  };
+
+  const handleInterestChange = (interest) => {
+    setEditedUserData((prevData) => {
+      const selectedInterests = prevData.ilgi_alanlari || [];
+      if (selectedInterests.includes(interest)) {
+        return {
+          ...prevData,
+          ilgi_alanlari: selectedInterests.filter((item) => item !== interest),
+        };
+      } else {
+        return {
+          ...prevData,
+          ilgi_alanlari: [...selectedInterests, interest],
+        };
+      }
+    });
   };
 
   const handleCancel = () => {
@@ -191,6 +212,35 @@ const ViewMyProfile = () => {
             />
           </label>
           <label>
+            Location:
+            <input
+              type="text"
+              name="address"
+              value={editedUserData.address || ''}
+              onChange={handleInputChange}
+              placeholder="Enter your address"
+            />
+          </label>
+          <label>
+            Interests:
+            <div className="interests-container">
+              {availableInterests.map((interest) => (
+                <div key={interest} className="interest-item">
+                  <input
+                    type="checkbox"
+                    id={`interest-${interest}`}
+                    checked={
+                      editedUserData.ilgi_alanlari &&
+                      editedUserData.ilgi_alanlari.includes(interest)
+                    }
+                    onChange={() => handleInterestChange(interest)}
+                  />
+                  <label htmlFor={`interest-${interest}`}>{interest}</label>
+                </div>
+              ))}
+            </div>
+          </label>
+          <label>
             Password:
             <input
               type="password"
@@ -217,7 +267,7 @@ const ViewMyProfile = () => {
         </form>
       </div>
     </div>
-  );
+  ); 
 
   return (
     <div className="profile-container">
@@ -237,7 +287,7 @@ const ViewMyProfile = () => {
               <p><strong>Username:</strong> {userData.username}</p>
               <p><strong>Email:</strong> {userData.email}</p>
               <p><strong>Phone:</strong> {userData.phone}</p>
-              <p><strong>Location:</strong> {userData.konum || 'Not specified'}</p>
+              <p><strong>Location:</strong> {userData.location || 'Not specified'}</p>
               <p>
                   <strong>Interests:</strong> 
                   {userData.interests

@@ -150,8 +150,6 @@ const MainMenu = () => {
       setSnackbarMessage('Bir hata oluştu. Lütfen tekrar deneyin.');
       setSnackbarOpen(true);
     }
-
-    navigate("/mainmenu");
   };  
   
   const handleSnackbarClose = () => {
@@ -387,10 +385,27 @@ const MainMenu = () => {
                     textAlign: 'center',
                     cursor: 'pointer',
                     minHeight: '250px',
+                    borderRadius: '25px',
+                    backgroundColor: 'white',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    width: '250px',
+                    marginTop: '20px',
+                    marginBottom: '20px',
+                    marginLeft: '20px',
+                    marginRight: '20px',
+                    transition: 'background 0.6s ease',
                   }}
                   onClick={() => handleOpen(event)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #dc87ce, #5aaac2)';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'white';
+                    e.currentTarget.style.backgroundColor = 'white';
+                  }}
                 >
-                  <Typography variant="h6">{event.event_name}</Typography>
+                  <Typography variant="h6" style={{ color: 'black' }}>{event.event_name}</Typography>
                   <Typography color="textSecondary">{event.date}</Typography>
                   <Typography color="textSecondary">{event.time}</Typography>
                   <Typography color="textSecondary">{event.category}</Typography>

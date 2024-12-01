@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AllEvents.css';
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
+import { Grid, Paper, Typography,TextField, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
 import Navbar from '../Navbar/Navbar';
 import UserCard from '../UserCard/Usercard.jsx'
@@ -34,7 +34,47 @@ const AllEvents = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [userData, setUserData] = useState(null);
   const [tabValue, setTabValue] = useState(0);
+  const [editModalOpen, setEditModalOpen] = useState(false); 
+  const [updatedEvent, setUpdatedEvent] = useState({}); 
   const navigate = useNavigate();
+
+
+
+  const handleEdit = () => {
+    setUpdatedEvent(selectedEvent); // Seçili etkinliği düzenleme için yükle
+    setEditModalOpen(true); // Düzenleme modalını aç
+  };
+
+  const handleUpdateChange = (field, value) => {
+    setUpdatedEvent({ ...updatedEvent, [field]: value }); // Etkinlik bilgilerini güncelle
+  };
+
+  const handleSaveChanges = () => {
+    // Güncellenmiş etkinlik bilgilerini API'ye gönder
+    fetch(`/update_event?event_id=${selectedEvent.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedEvent),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert('Event updated successfully!');
+          setEditModalOpen(false); // Modalı kapat
+          // Ekstra: Listeyi yeniden yüklemek için bir fetch çağrısı yapabilirsiniz
+        } else {
+          console.error('Error updating event:', data.message);
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+
+  const handleEditModalClose = () => {
+    setEditModalOpen(false); // Düzenleme modalını kapat
+  };
+
 
   useEffect(() => {
     document.title = 'All Events';
@@ -65,6 +105,8 @@ const AllEvents = () => {
         .then(data => {
           if (data.success) {
             setUserData(data.user);
+            console.log('User data:', data.userId);
+            console.log(userId);
           } else {
             console.log(data.message);
           }
@@ -127,7 +169,7 @@ const AllEvents = () => {
 
   const handleOpen = (event) => {
     setSelectedEvent(event);
-    setOpen(true); // Modal'ı aç
+    setOpen(true);
 
     if (event.location) {
       fetchCoordinates(event.location);
@@ -240,7 +282,9 @@ const AllEvents = () => {
     filterEvents(events, newValue);
   };
 
+  
   return (
+    
     <div className="event-list-container">
       {userData ? (
           <UserCard userData={userData} handleLogout={handleLogout} />
@@ -343,8 +387,75 @@ const AllEvents = () => {
                 onLoad={(mapInstance) => setMap(mapInstance)}
               ></GoogleMap>
               <Button variant="contained" color="primary" onClick={handleJoin}>Katıl</Button>
+              
+              {String(getUserDataFromCookies()) === String(selectedEvent.user_id) && (
+                <Button variant="contained" color="primary" onClick={handleEdit}>
+                  Düzenle
+                </Button>
+              )}
             </>
           )}
+            </Box>
+          </Modal>
+
+       {/* Düzenleme Modalı */}
+       <Modal open={editModalOpen} onClose={handleEditModalClose} aria-labelledby="edit-modal-title">
+        <Box
+          sx={{
+            width: 400,
+            backgroundColor: 'white',
+            padding: 4,
+            borderRadius: 2,
+            margin: 'auto',
+            marginTop: '10%',
+          }}
+        >
+          <Typography id="edit-modal-title" variant="h6" gutterBottom>
+            Etkinliği Güncelle
+          </Typography>
+          <TextField
+            label="Event Name"
+            value={updatedEvent.event_name || ''}
+            onChange={(e) => handleUpdateChange('event_name', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            value={updatedEvent.description || ''}
+            onChange={(e) => handleUpdateChange('description', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Date"
+            value={updatedEvent.date || ''}
+            onChange={(e) => handleUpdateChange('date', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Time"
+            value={updatedEvent.time || ''}
+            onChange={(e) => handleUpdateChange('time', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Location"
+            value={updatedEvent.location || ''}
+            onChange={(e) => handleUpdateChange('location', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <Box display="flex" justifyContent="flex-end" marginTop={2}>
+            <Button onClick={handleEditModalClose} color="secondary" style={{ marginRight: '10px' }}>
+              İptal
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleSaveChanges}>
+              Kaydet
+            </Button>
+          </Box>
         </Box>
       </Modal>
 

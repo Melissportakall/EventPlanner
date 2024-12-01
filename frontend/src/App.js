@@ -11,9 +11,8 @@ import MyEvents from './Components/MyEvents/MyEvents';
 import Chats from './Components/Chats/Chats';
 import ViewMyProfile from './Components/ViewMyProfile/ViewMyProfile';
 import LogOut from './Components/LogOut/LogOut';
-import AdminMainMenu  from './Components/AdminMainMenu/AdminMainMenu';
+import AdminAllUsers  from './Components/AdminAllUsers/AdminAllUsers';
 import AdminVerifyEvents from './Components/AdminVerifyEvents/AdminVerifyEvents';
-import AdminChats from './Components/AdminChats/AdminChats';
 import AdminAllEvents from './Components/AdminAllEvents/AdminAllEvents';
 
 function App() {
@@ -51,7 +50,7 @@ function App() {
               <AuthGuard>
                 <Routes>
                   <Route path="/admin-verify-events" element={<AdminVerifyEvents />} />
-                  <Route path="/admin-chats" element={<AdminChats />} />
+                  <Route path="/admin-all-users" element={<AdminAllUsers />} />
                   <Route path="/admin-mainmenu" element={<AdminAllEvents />} />
                   <Route path="/mainmenu" element={<MainMenu />} />
                   <Route path="/create-event" element={<CreateEvent />} />

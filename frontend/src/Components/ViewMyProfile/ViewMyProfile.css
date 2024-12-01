@@ -74,6 +74,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    height: 800;
 }
   
 .modal-content {
@@ -244,9 +245,12 @@ button[type="button"]:hover {
   }
   
   .points-list {
-    display: flex;
-    flex-direction: column;
-  }
+    max-height: 600px; /* Yükseklik belirliyoruz */
+    overflow-y: scroll; /* Dikey kaydırma çubuğu ekleniyor */
+    padding: 10px;
+    border: 1px solid #ddd; /* İsteğe bağlı: Çerçeve eklenebilir */
+    border-radius: 5px; /* İsteğe bağlı: Köşe yuvarlama */
+  }  
   
   .points-item {
     padding: 10px;
