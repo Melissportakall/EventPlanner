@@ -33,38 +33,33 @@
   width: 100%;
 }
 
-/* Kartlar için stil */
 .event-card {
   margin-top: 10px;
   margin-bottom: 10px;
-  padding: 5px; /* Padding'i küçült */
-  height: 50px; /* Kart yüksekliğini ayarlayın */
-  width: 30px; /* Kart genişliği 100% olacak şekilde ayarlandı */
-  box-sizing: border-box; /* Padding ve border'ı toplam boyuta dahil et */
-  margin: 0 5px; /* Sağ ve sol margin'i 5px olarak ayarlayın */
+  padding: 5px;
+  height: 50px;
+  width: 30px;
+  box-sizing: border-box;
+  margin: 0 5px;
 }
 
-/* Grid container'ı için stil */
 .grid-container {
   display: grid;
-  gap: 5px; /* Kartlar arasındaki boşluğu artır */
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 120px genişliğinde kartlar için sütunlar oluştur */
-  padding-left: 0;  /* Grid sol boşluğunu sıfırla */
-  padding-right: 0; /* Grid sağ boşluğunu sıfırla */
+  gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  padding-left: 0;
+  padding-right: 0;
 }
 
-
-/* Kart başlığı için stil */
 .event-card-title {
   font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem; /* Başlık boyutunu biraz daha küçült */
+  font-size: 0.9rem;
   font-weight: bold;
 }
 
-/* Kart tarih ve saat için stil */
 .event-card-details {
   font-family: 'Poppins', sans-serif;
-  font-size: 0.7rem; /* Tarih ve saat boyutunu küçült */
+  font-size: 0.7rem;
   color: gray;
 }
 

@@ -5,7 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Adjust height based on content */
+    height: 100%;
     background: transparent;
     border:2px solid rgba(255,255,255,.2);
     backdrop-filter: blur(10px);
@@ -21,7 +21,6 @@
     max-width: 800px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
     color: #fff;
-    /* Ensure form_box takes height from its content */
   }
 
   .input_group {
@@ -42,72 +41,72 @@
   .input_box input {
     position: relative;
     width: 100%;
-    height: 50px; /* Set a fixed height to prevent issues */
+    height: 50px;
     background: transparent;
     border: none;
     outline: none;
     border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 40px; /* Ensures the corners are rounded */
+    border-radius: 40px;
     font-size: 20px;
     color: #fff;
     padding: 20px 45px 20px 20px;
-    transition: border-color 0.3s, color 0.3s; /* Transition effects */
+    transition: border-color 0.3s, color 0.3s;
   }
 
   .input_box input:focus {
-    border-color: #ffffff; /* Change border color on focus */
-    color: #ffffff; /* Change text color on focus */
+    border-color: #ffffff;
+    color: #ffffff; 
   }
 
   .input_box input::placeholder {
-    color: #ffffff; /* Placeholder rengi gri */
+    color: #ffffff; 
   }
 
   .input_box input:focus::placeholder {
-    color: #555; /* Placeholder rengi focus durumunda koyulaşır */
+    color: #555; 
   }
 
   .input_box input:not(:focus) {
-    color: #000; /* Odaklanılmadığında da yazılan metin siyah kalır */
+    color: #000;
   }
 
   .input_box input[type="date"] {
-    flex: 1; /* Input genişliğini ikonla uyumlu yap */
+    flex: 1;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
-    color: #000; /* Yazılan metin siyah */
-    background-color: #fff; /* Arka plan rengi beyaz */
-    appearance: none; /* Tarayıcı varsayılan stilini kaldır */
+    color: #000; 
+    background-color: #fff; 
+    appearance: none;
   }
 
   .input_box input[type="date"]::placeholder {
-    color: #888; /* Placeholder rengi gri */
+    color: #888; 
   }
 
   .input_box input[type="date"]:focus {
     outline: none;
-    border-color: #007bff; /* Odaklanıldığında kenar rengi değişir */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hafif mavi gölge */
+    border-color: #007bff; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
   }
 
   .input_box .icon {
     position: absolute;
-    right: 5px; /* İkonun inputun sol tarafında yer alması */
+    right: 5px; 
     top: 50%;
-    transform: translateY(-50%); /* İkonun dikey olarak ortalanması */
+    transform: translateY(-50%); 
     font-size: 20px;
-    color: #ffffff; /* İkon rengi placeholder ile aynı */
-    pointer-events: auto; /* İkon tıklanabilir olmaktan çıkar */
+    color: #ffffff;
+    pointer-events: auto; 
   }
 
 
   .input_box input:focus::placeholder {
-    color: #555; /* Placeholder rengi odaklanıldığında koyulaşır */
+    color: #555; 
   }
 
   .input_box input:focus + .icon {
-    color: #555; /* İkon rengi odaklanıldığında koyulaşır */
+    color: #555; 
   }
 
   .full_width {

@@ -1,13 +1,13 @@
 .navbar {
     width: 1400px;
     height: 50px;
-    margin: 0 auto; /* Ortalamayı sağlar */
-    position: fixed; /* Navbar'ı sayfanın üst kısmında sabitler */
-    top: 0; /* Sayfanın üst kısmına yerleştirir */
+    margin: 0 auto;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
 }
 
 .nav-list{
-    justify-content: space-around; /* Öğeler arasında eşit boşluk */
+    justify-content: space-around;
 }

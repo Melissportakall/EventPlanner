@@ -4,18 +4,17 @@ import { Grid, Paper, Typography, Tabs, Tab, Modal, Box, Button } from '@mui/mat
 const Eventsdateinfo = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [tabValue, setTabValue] = useState(0); // Default to "Upcoming Events"
+  const [tabValue, setTabValue] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  // Fetch events from the API
   useEffect(() => {
     fetch('/get_joined_events')
       .then((response) => response.json())
       .then((data) => {
         if (data.events) {
           setEvents(data.events);
-          filterEvents(data.events, 0); // Filter events when data is loaded
+          filterEvents(data.events, 0);
         } else {
           console.log(data.message);
         }
@@ -23,33 +22,27 @@ const Eventsdateinfo = () => {
       .catch((error) => console.error('Error fetching events:', error));
   }, []);
 
-  // Filter events based on the selected tab (Upcoming or Past)
   const filterEvents = (events, tabIndex) => {
     const now = new Date();
     if (tabIndex === 0) {
-      // Upcoming events
       const upcoming = events.filter((event) => new Date(event.date) >= now);
       setFilteredEvents(upcoming);
     } else if (tabIndex === 1) {
-      // Past events
       const past = events.filter((event) => new Date(event.date) < now);
       setFilteredEvents(past);
     }
   };
 
-  // Handle tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
     filterEvents(events, newValue);
   };
 
-  // Open modal with event details
   const handleOpen = (event) => {
     setSelectedEvent(event);
     setOpenModal(true);
   };
 
-  // Close modal
   const handleClose = () => {
     setOpenModal(false);
     setSelectedEvent(null);
@@ -61,7 +54,6 @@ const Eventsdateinfo = () => {
 
   return (
     <div>
-      {/* Tabs for Upcoming and Past events */}
       <Tabs
         value={tabValue}
         onChange={handleTabChange}

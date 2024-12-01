@@ -3,36 +3,36 @@
     justify-content: space-between;
     align-items: center;
     background: transparent; 
-    color: white; /* Yazı rengi */
-    padding: 10px 20px; /* İç boşluk */
-    border: 8px solid transparent; /* Çerçevenin kalınlığı artırıldı */
+    color: white;
+    padding: 10px 20px; 
+    border: 8px solid transparent; 
     border:8px solid rgba(255,255,255,.2);
     backdrop-filter: blur(10px);
-    border-radius: 50px; /* Kenar yuvarlaklığı */
-    border-image-slice: 2; /* Çerçevenin görüntülenme şekli */
-    width: 100%; /* Genişliği %100 yaparak tüm ekranı kaplar */
-    max-width: 1200px; /* Maksimum genişlik ayarlayabilirsiniz */
-    margin: 0 auto; /* Ortalamak için */
+    border-radius: 50px; 
+    border-image-slice: 2; 
+    width: 100%; 
+    max-width: 1200px;
+    margin: 0 auto;
 
 }
 
 .appbar-title {
-    font-size: 24px; /* Başlık boyutu */
+    font-size: 24px; 
 }
 
 .appbar-links {
     display: flex;
-    gap: 20px; /* Linkler arasındaki boşluk */
+    gap: 20px; 
 }
 
 .appbar-links a {
-    color: white; /* Link rengi */
-    text-decoration: none; /* Alt çizgi kaldır */
-    transition: color 0.3s; /* Renk geçişi */
+    color: white; 
+    text-decoration: none; 
+    transition: color 0.3s;
 }
 
 .appbar-links a:hover {
-    color: #ddd; /* Hover rengi */
+    color: #ddd;
 }
 
 .appbar-container {

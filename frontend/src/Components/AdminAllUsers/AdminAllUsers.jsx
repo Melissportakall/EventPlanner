@@ -20,7 +20,7 @@ const AdminAllUsers = () => {
           const filteredUsers = data.users.filter(
             (user) => user.kullanici_adi !== 'admin' && user.sifre !== 'admin'
           );
-          setUsers(filteredUsers); // Filtrelenmiş kullanıcıları state'e kaydet
+          setUsers(filteredUsers); // Filtrelenmiş kullanıcıları state kaydet
         } else {
           console.error('Error fetching users:', data.message);
         }
@@ -30,16 +30,16 @@ const AdminAllUsers = () => {
 
   const handleOpen = (user) => {
     setSelectedUser(user);
-    setOpen(true); // Modal'ı aç
+    setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedUser(null); // Modal'ı kapat
+    setSelectedUser(null);
   };
 
   const handleSnackbarClose = () => {
-    setSnackbarOpen(false); // Snackbar'ı kapat
+    setSnackbarOpen(false);
   };
 
   return (
@@ -100,8 +100,8 @@ const AdminAllUsers = () => {
         <div style={{ maxHeight: '80vh', overflowY: 'auto', width: '100%', justifyContent: 'center' }}>
           <Grid container spacing={2}>
             {users.length > 0 ? (
-              users.map((event) => (
-                <Grid item xs={12} sm="auto" md="auto" key={event.id} style={{ padding: '10px' }}>
+              users.map((user) => (
+                <Grid item xs={12} sm="auto" md="auto" key={user.id} style={{ padding: '10px' }}>
                   <Paper
                     elevation={3}
                     style={{
@@ -119,7 +119,7 @@ const AdminAllUsers = () => {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                     }}
-                    onClick={() => handleOpen(event)}
+                    onClick={() => handleOpen(user)}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = 'linear-gradient(135deg, #dc87ce, #5aaac2)';
                       e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
@@ -129,9 +129,10 @@ const AdminAllUsers = () => {
                       e.currentTarget.style.backgroundColor = 'white';
                     }}
                   >
-                    <Typography variant="h6">{event.event_name}</Typography>
-                    <Typography color="textSecondary">{event.date}</Typography>
-                    <Typography color="textSecondary">{event.time}</Typography>
+                    <Typography variant="h6">{user.kullanici_adi}</Typography>
+                    <Typography color="textSecondary">{user.ad} {user.soyad}</Typography>
+                    <Typography color="textSecondary">{user.eposta}</Typography>
+                    <Typography>{user.konum || 'Konum belirtilmemiş'}</Typography>
                   </Paper>
                 </Grid>
               ))

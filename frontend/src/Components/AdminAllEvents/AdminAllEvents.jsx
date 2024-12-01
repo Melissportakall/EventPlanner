@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AdminAllEvents.css';
-import { Grid, Paper, Typography, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
+import { Grid, Paper, Typography,TextField, Modal, Button, Box, Snackbar, Tabs, Tab } from '@mui/material';
 import { GoogleMap } from '@react-google-maps/api';
 import Navbar from '../AdminNavbar/AdminNavbar';
 import { useNavigate } from 'react-router-dom';
@@ -33,18 +33,19 @@ const AdminAllEvents = () => {
   const [markerPosition, setMarkerPosition] = useState({ lat: 41.015137, lng: 28.979530 });
   const [isLoaded, setIsLoaded] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false); 
+  const [updatedEvent, setUpdatedEvent] = useState({}); 
   const navigate = useNavigate();
 
   useEffect(() => {
     document.title = 'All Events';
 
-    // Fetch all events
     fetch('/get_all_events')
       .then((response) => response.json())
       .then((data) => {
         if (data.events) {
           setEvents(data.events);
-          filterEvents(data.events, 0); // Default to upcoming events
+          filterEvents(data.events, 0);
         } else {
           console.log(data.message);
         }
@@ -55,15 +56,37 @@ const AdminAllEvents = () => {
   const filterEvents = (events, tabIndex) => {
     const now = new Date();
     if (tabIndex === 0) {
-      // Filter upcoming events
       const upcoming = events.filter((event) => new Date(event.date) >= now);
       setFilteredEvents(upcoming);
     } else if (tabIndex === 1) {
-      // Filter past events
       const past = events.filter((event) => new Date(event.date) < now);
       setFilteredEvents(past);
     }
   };
+
+  useEffect(() => {
+    if (isLoaded && map && selectedEvent) {
+      if (window.google.maps.marker?.AdvancedMarkerElement) {
+        const marker = new window.google.maps.marker.AdvancedMarkerElement({
+          map,
+          position: markerPosition,
+        });
+
+        return () => {
+          marker.setMap(null);
+        };
+      } else {
+        const marker = new window.google.maps.Marker({
+          map,
+          position: markerPosition,
+        });
+
+        return () => {
+          marker.setMap(null);
+        };
+      }
+    }
+  }, [isLoaded, map, selectedEvent, markerPosition]);
 
   const fetchCoordinates = (address) => {
     const geocoder = new window.google.maps.Geocoder();
@@ -85,7 +108,7 @@ const AdminAllEvents = () => {
 
   const handleOpen = (event) => {
     setSelectedEvent(event);
-    setOpen(true); // Modal'ı aç
+    setOpen(true);
 
     if (event.location) {
       fetchCoordinates(event.location);
@@ -101,7 +124,6 @@ const AdminAllEvents = () => {
     if (!selectedEvent) return;
 
     try {
-      // Etkinliği silme isteği
       const response = await fetch('/delete_event', {
         method: 'POST',
         body: JSON.stringify({ eventId: selectedEvent.id }),
@@ -117,7 +139,6 @@ const AdminAllEvents = () => {
         setSnackbarMessage('Etkinlik başarıyla silindi!');
         setSnackbarOpen(true);
 
-        // Silinen etkinliği listeden çıkar
         setFilteredEvents(filteredEvents.filter(event => event.id !== selectedEvent.id));
       } else {
         console.error('Etkinlik silinemedi!');
@@ -137,7 +158,6 @@ const AdminAllEvents = () => {
     if (!selectedEvent) return;
 
     try {
-      // Etkinliği gizleme isteği
       const response = await fetch('/conceal_event', {
         method: 'POST',
         body: JSON.stringify({ eventId: selectedEvent.id }),
@@ -153,7 +173,6 @@ const AdminAllEvents = () => {
         setSnackbarMessage('Etkinlik başarıyla gizlendi!');
         setSnackbarOpen(true);
 
-        // Gizlenen etkinliği listeden çıkar (veya gizle)
         setFilteredEvents(filteredEvents.filter(event => event.id !== selectedEvent.id));
       } else {
         console.error('Etkinlik gizlenemedi!');
@@ -176,6 +195,39 @@ const AdminAllEvents = () => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
     filterEvents(events, newValue);
+  };
+
+  const handleEdit = () => {
+    setUpdatedEvent(selectedEvent);
+    setEditModalOpen(true);
+  }
+  const handleUpdateChange = (field, value) => {
+    setUpdatedEvent({ ...updatedEvent, [field]: value });
+  };
+
+  const handleSaveChanges = () => {
+    fetch(`/update_event?event_id=${selectedEvent.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedEvent),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert('Event updated successfully!');
+          setEditModalOpen(false);
+          setOpen(false);
+        } else {
+          console.error('Error updating event:', data.message);
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  };
+
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
   };
 
   return (
@@ -282,8 +334,8 @@ const AdminAllEvents = () => {
               <Typography variant="body1"><strong>Açıklama:</strong> {selectedEvent.description}</Typography>
               <Typography variant="body1"><strong>Tarih:</strong> {selectedEvent.date}</Typography>
               <Typography variant="body1"><strong>Saat:</strong> {selectedEvent.time}</Typography>
-              <Typography variant="body1"><strong>Lokasyon:</strong> {selectedEvent.location}</Typography>
               <Typography variant="body1"><strong>Süre:</strong> {selectedEvent.duration}</Typography>
+              <Typography variant="body1"><strong>Lokasyon:</strong> {selectedEvent.location}</Typography>
               <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={markerPosition}
@@ -291,13 +343,15 @@ const AdminAllEvents = () => {
                 onLoad={(mapInstance) => setMap(mapInstance)}
               ></GoogleMap>
 
-              {/* Delete and Conceal Buttons */}
               <Box display="flex" justifyContent="space-around" marginTop={2}>
-                <Button variant="contained" color="secondary" onClick={handleDeleteEvent}>
-                  Etkinliği Sil
+                <Button variant="contained" color="primary" onClick={handleEdit}>
+                  Düzenle
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleConcealEvent}>
+                <Button variant="contained" color="secondary" onClick={handleConcealEvent}>
                   Etkinliği Gizle
+                </Button>
+                <Button variant="contained" color="primary" onClick={handleDeleteEvent}>
+                  Etkinliği Sil
                 </Button>
               </Box>
             </>
@@ -305,7 +359,66 @@ const AdminAllEvents = () => {
         </Box>
       </Modal>
 
-      {/* Snackbar */}
+      <Modal open={editModalOpen} onClose={handleEditModalClose} aria-labelledby="edit-modal-title">
+        <Box
+          sx={{
+            width: 400,
+            backgroundColor: 'white',
+            padding: 4,
+            borderRadius: 2,
+            margin: 'auto',
+            marginTop: '10%',
+          }}
+        >
+          <Typography id="edit-modal-title" variant="h6" gutterBottom>
+            Etkinliği Güncelle
+          </Typography>
+          <TextField
+            label="Event Name"
+            value={updatedEvent.event_name || ''}
+            onChange={(e) => handleUpdateChange('event_name', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            value={updatedEvent.description || ''}
+            onChange={(e) => handleUpdateChange('description', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Date"
+            value={updatedEvent.date || ''}
+            onChange={(e) => handleUpdateChange('date', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Time"
+            value={updatedEvent.time || ''}
+            onChange={(e) => handleUpdateChange('time', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Location"
+            value={updatedEvent.location || ''}
+            onChange={(e) => handleUpdateChange('location', e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <Box display="flex" justifyContent="flex-end" marginTop={2}>
+            <Button onClick={handleEditModalClose} color="secondary" style={{ marginRight: '10px' }}>
+              İptal
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleSaveChanges}>
+              Kaydet
+            </Button>
+          </Box>
+        </Box>
+       </Modal>
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000} // 3 saniye sonra kapanacak

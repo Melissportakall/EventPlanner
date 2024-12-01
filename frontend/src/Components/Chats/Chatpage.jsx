@@ -48,7 +48,7 @@ function MessageApp({ recipientId }) {
                 }
             })
             .catch(error => console.error('Error fetching messages:', error));
-        }, 5000); // 5 saniyede bir mesajları al
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [recipientId]);

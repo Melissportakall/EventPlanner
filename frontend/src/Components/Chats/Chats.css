@@ -1,31 +1,26 @@
 .chat-container {
- 
-  
-  height: 300px;              /* Chat uygulaması yüksekliği */
-  border: 1px solid #ddd;     /* Çerçeve (isteğe bağlı) */
+  height: 300px;             
+  border: 1px solid #ddd;     
 }
 
 .messages-container {
-  
-  overflow-y: auto;           /* Dikey kaydırma */
+  overflow-y: auto;        
   padding: 10px;
 }
 
 .input-container {
-  
   padding: 10px;
   border-top: 1px solid #ddd;
   background-color: #a55959;
 }
 
 .input-container input {
-  
   padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 300px;
-  margin-right: 200px;  /* Buton ve input arasında boşluk */
+  margin-right: 200px; 
 }
 
 .input-container button {

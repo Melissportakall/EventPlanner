@@ -325,7 +325,7 @@ const MainMenu = () => {
           style={{
             fontSize: '18px',
             fontWeight: '300',
-            color: '#FFFFFF', // Hafif gri-mavi ton
+            color: '#FFFFFF',
             textShadow: '1px 1px 2px rgba(0, 0, 0, 0.9)',
             marginTop: '5px',
           }}
@@ -369,11 +369,11 @@ const MainMenu = () => {
           <Tab label="Past Events" />
         </Tabs>
 
-        <div style={{ width: '1200px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: '710px', display: 'flex', justifyContent: 'center' }}>
         <div style={{ maxHeight: '80vh', overflowY: 'auto', width: '100%', justifyContent: 'center' }}>
           <Grid container spacing={2}>
-            {filteredEvents.length > 0 ? (
-              filteredEvents.map((event) => (
+            {interestedEvents.length > 0 ? (
+              interestedEvents.map((event) => (
                 <Grid item xs={12} sm="auto" md="auto" key={event.id} style={{ padding: '10px' }}>
                   <Paper
                     elevation={3}

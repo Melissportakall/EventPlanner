@@ -63,8 +63,8 @@ const CreateEvent = () => {
     const { value, checked } = e.target;
     setSelectedCategories((prevState) =>
       checked
-        ? [...prevState, value] // Ekleniyor
-        : prevState.filter((category) => category !== value) // Çıkarılıyor
+        ? [...prevState, value] //Ekleniyor
+        : prevState.filter((category) => category !== value) //Çıkarılıyor
     );
   };
 
@@ -158,13 +158,13 @@ const CreateEvent = () => {
       if (eventResult.success) {
         console.log("Event created successfully.");
 
-        const UserId = getUserDataFromCookies(); // Kullanıcı ID'yi al
+        const UserId = getUserDataFromCookies();
 
         if (UserId) {
           const scorePayload = {
             user_id: UserId,
             point: 15,
-            date: new Date().toISOString().split('T')[0], // Bugünkü tarih
+            date: new Date().toISOString().split('T')[0], //Bugünkü tarih
           };
 
           const scoreResponse = await fetch('/add_point', {

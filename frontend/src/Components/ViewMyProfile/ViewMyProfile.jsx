@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import NavBar from '../Navbar/Navbar';
 import defaultImage from './default-image-url.jpg';
-import './ViewMyProfile.css'; // CSS dosyasını dahil ettik
+import './ViewMyProfile.css';
 
 const getUserDataFromCookies = () => {
   const cookies = document.cookie.split('; ');
