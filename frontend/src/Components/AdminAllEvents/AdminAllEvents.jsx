@@ -191,7 +191,7 @@ const AdminAllEvents = () => {
           transform: 'translateX(-50%)',
           marginBottom: '40px' 
         }}>
-          All Events Here!
+          All Events Here
         </h1>
       </Typography>
 

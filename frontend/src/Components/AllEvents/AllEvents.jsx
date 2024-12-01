@@ -348,14 +348,26 @@ const AllEvents = () => {
             <Grid item xs={12} sm={4} md={4} key={event.id}>
               <Paper
                 elevation={3}
-
                 style={{
                   padding: '20px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   minHeight: '250px',
+                  borderRadius: '30px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  marginTop: -60,
+                  transition: 'background 0.6s ease',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 }}
                 onClick={() => handleOpen(event)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #dc87ce, #5aaac2)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'white';
+                  e.currentTarget.style.backgroundColor = 'white';
+                }}
               >
                 <Typography variant="h6">{event.event_name}</Typography>
                 <Typography color="textSecondary">{event.date}</Typography>
