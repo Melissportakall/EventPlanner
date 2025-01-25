@@ -262,9 +262,6 @@ gösterimi.
 
 
 
-
-Tabii ki, yazınızı daha etkileyici ve profesyonel bir hale getirebilirim. İşte güncellenmiş hali:
-
 Bu projede, kullanıcıların etkinlik planlamalarını kolaylaştıran kapsamlı bir web sitesi geliştirdik. Proje, React ve Python kullanılarak oluşturulmuş olup, veritabanı olarak SQLite3 tercih edilmiştir.
 
 Proje kapsamında belirtilen gereksinimlerin büyük bir kısmını başarıyla gerçekleştirdik. Ek olarak, projemiz şu özellikleri sunmaktadır:
