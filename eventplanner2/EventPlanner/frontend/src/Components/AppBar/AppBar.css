@@ -1,0 +1,43 @@
+.appbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent; 
+    color: white;
+    padding: 10px 20px; 
+    border: 8px solid transparent; 
+    border:8px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(10px);
+    border-radius: 50px; 
+    border-image-slice: 2; 
+    width: 100%; 
+    max-width: 1200px;
+    margin: 0 auto;
+
+}
+
+.appbar-title {
+    font-size: 24px; 
+}
+
+.appbar-links {
+    display: flex;
+    gap: 20px; 
+}
+
+.appbar-links a {
+    color: white; 
+    text-decoration: none; 
+    transition: color 0.3s;
+}
+
+.appbar-links a:hover {
+    color: #ddd;
+}
+
+.appbar-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+

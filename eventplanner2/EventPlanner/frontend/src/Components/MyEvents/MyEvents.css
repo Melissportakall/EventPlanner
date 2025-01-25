@@ -1,0 +1,129 @@
+
+.my-events-container {
+  padding: 40px;
+  background-color: #f9f9f9; 
+  border-radius: 10px;       
+}
+
+
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.my-events-tabs {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+
+
+.my-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+  overflow: visible;
+}
+
+
+.event-card {
+  background-color: #ffffff;
+  border-radius: 12px;  
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+  transition: all 0.3s ease;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+
+.event-card:hover {
+  transform: translateY(-10px); 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.event-card h6 {
+  font-size: 1.5rem; 
+  font-weight: 700;  
+  color: #333;
+  margin-bottom: 15px;
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+}
+
+
+.event-card .event-time {
+  color: #555;
+  font-size: 1.1rem; 
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+
+.event-card p {
+  color: #444;
+  font-size: 1.1rem; 
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-height: 80px; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+
+.event-card .event-button {
+  background-color: #007BFF; 
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.event-card .event-button:hover {
+  background-color: #0056b3; 
+  transform: scale(1.05); 
+}
+
+
+.no-events-message {
+  font-size: 1.3rem;
+  color: #555;
+  text-align: center;
+  margin-top: 30px;
+  font-weight: 600;
+}
+
+
+.coming-events-icon {
+  display: block;
+  font-size: 2rem; 
+  color: #28a745; 
+  margin-bottom: 20px;
+}
+
+.past-events-icon {
+  display: none;
+}
+
+
+.my-events-container .tab-value-1 .coming-events-icon {
+  display: block;
+}
+
+.my-events-container .tab-value-0 .coming-events-icon {
+  display: none;
+}
+
